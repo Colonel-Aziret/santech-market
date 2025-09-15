@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="10-create-promotion-relations-tables" author="developer">
+        <comment>Создание связующих таблиц для акций с товарами и категориями</comment>
+
+        <!-- Связь акций с товарами -->
+        <createTable tableName="promotion_products">
+            <column name="promotion_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Связь акций с категориями -->
+        <createTable tableName="promotion_categories">
+            <column name="promotion_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Создание первичных ключей -->
+        <addPrimaryKey
+                tableName="promotion_products"
+                columnNames="promotion_id, product_id"
+                constraintName="pk_promotion_products"/>
+
+        <addPrimaryKey
+                tableName="promotion_categories"
+                columnNames="promotion_id, category_id"
+                constraintName="pk_promotion_categories"/>
+
+        <!-- Создание внешних ключей для promotion_products -->
+        <addForeignKeyConstraint
+                baseTableName="promotion_products"
+                baseColumnNames="promotion_id"
+                constraintName="fk_promotion_products_promotion"
+                referencedTableName="promotions"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="promotion_products"
+                baseColumnNames="product_id"
+                constraintName="fk_promotion_products_product"
+                referencedTableName="products"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <!-- Создание внешних ключей для promotion_categories -->
+        <addForeignKeyConstraint
+                baseTableName="promotion_categories"
+                baseColumnNames="promotion_id"
+                constraintName="fk_promotion_categories_promotion"
+                referencedTableName="promotions"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="promotion_categories"
+                baseColumnNames="category_id"
+                constraintName="fk_promotion_categories_category"
+                referencedTableName="categories"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <!-- Добавляем комментарии -->
+        <sql>
+            COMMENT ON TABLE promotion_products IS 'Связь акций с товарами (многие ко многим)';
+            COMMENT ON TABLE promotion_categories IS 'Связь акций с категориями (многие ко многим)';
+            COMMENT ON COLUMN promotion_products.promotion_id IS 'ID акции';
+            COMMENT ON COLUMN promotion_products.product_id IS 'ID товара';
+            COMMENT ON COLUMN promotion_categories.promotion_id IS 'ID акции';
+            COMMENT ON COLUMN promotion_categories.category_id IS 'ID категории';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

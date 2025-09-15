@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="02-create-categories-table" author="developer">
+        <comment>Создание таблицы категорий товаров</comment>
+
+        <createTable tableName="categories">
+            <!-- Базовые поля -->
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля категории -->
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="image_url" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="display_order" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Добавляем комментарии -->
+        <sql>
+            COMMENT ON TABLE categories IS 'Категории товаров (Трубы, Фитинги, Арматура и т.д.)';
+            COMMENT ON COLUMN categories.name IS 'Название категории';
+            COMMENT ON COLUMN categories.description IS 'Описание категории';
+            COMMENT ON COLUMN categories.image_url IS 'URL изображения категории';
+            COMMENT ON COLUMN categories.display_order IS 'Порядок отображения (чем меньше, тем выше)';
+            COMMENT ON COLUMN categories.is_active IS 'Активна ли категория';
+        </sql>
+
+        <!-- Установим значения по умолчанию -->
+        <sql>
+            ALTER TABLE categories ALTER COLUMN display_order SET DEFAULT 0;
+            ALTER TABLE categories ALTER COLUMN is_active SET DEFAULT true;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

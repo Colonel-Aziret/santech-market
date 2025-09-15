@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="09-create-promotions-table" author="developer">
+        <comment>Создание таблицы акций и скидок</comment>
+
+        <createTable tableName="promotions">
+            <!-- Базовые поля -->
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля акции -->
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="banner_image_url" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="discount_percent" type="DECIMAL(5,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="start_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_featured" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Добавляем комментарии -->
+        <sql>
+            COMMENT ON TABLE promotions IS 'Акции и скидки';
+            COMMENT ON COLUMN promotions.title IS 'Название акции';
+            COMMENT ON COLUMN promotions.description IS 'Описание акции';
+            COMMENT ON COLUMN promotions.banner_image_url IS 'URL изображения для баннера акции';
+            COMMENT ON COLUMN promotions.discount_percent IS 'Процент скидки';
+            COMMENT ON COLUMN promotions.start_date IS 'Дата начала акции';
+            COMMENT ON COLUMN promotions.end_date IS 'Дата окончания акции';
+            COMMENT ON COLUMN promotions.is_active IS 'Активна ли акция';
+            COMMENT ON COLUMN promotions.is_featured IS 'Отображается ли на главной странице';
+        </sql>
+
+        <!-- Проверочные ограничения -->
+        <sql>
+            <![CDATA[
+            ALTER TABLE promotions ADD CONSTRAINT chk_promotions_discount_valid CHECK (discount_percent IS NULL OR (discount_percent >= 0.01 AND discount_percent <= 99.99));
+            ALTER TABLE promotions ADD CONSTRAINT chk_promotions_dates_valid CHECK (end_date > start_date);
+            ALTER TABLE promotions ADD CONSTRAINT chk_promotions_title_not_empty CHECK (LENGTH(TRIM(title)) > 0);
+            ]]>
+        </sql>
+
+        <!-- Установим значения по умолчанию -->
+        <sql>
+            ALTER TABLE promotions ALTER COLUMN is_active SET DEFAULT true;
+            ALTER TABLE promotions ALTER COLUMN is_featured SET DEFAULT false;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

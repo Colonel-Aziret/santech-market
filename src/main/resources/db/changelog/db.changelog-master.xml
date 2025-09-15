@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <!-- Версия 1.0.0 - Начальная структура базы данных -->
+    <include file="db/changelog/v1.0.0/01-create-users-table.xml"/>
+    <include file="db/changelog/v1.0.0/02-create-categories-table.xml"/>
+    <include file="db/changelog/v1.0.0/03-create-products-table.xml"/>
+    <include file="db/changelog/v1.0.0/04-create-carts-table.xml"/>
+    <include file="db/changelog/v1.0.0/05-create-cart-items-table.xml"/>
+    <include file="db/changelog/v1.0.0/06-create-orders-table.xml"/>
+    <include file="db/changelog/v1.0.0/07-create-order-items-table.xml"/>
+    <include file="db/changelog/v1.0.0/08-create-notifications-table.xml"/>
+    <include file="db/changelog/v1.0.0/09-create-promotions-table.xml"/>
+    <include file="db/changelog/v1.0.0/10-create-promotion-relations-tables.xml"/>
+    <include file="db/changelog/v1.0.0/11-create-indexes.xml"/>
+    <include file="db/changelog/v1.0.0/12-insert-initial-data.xml"/>
+
+</databaseChangeLog>

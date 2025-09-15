@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="01-create-users-table" author="developer">
+        <comment>Создание таблицы пользователей</comment>
+
+        <createTable tableName="users">
+            <!-- Базовые поля -->
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля пользователя -->
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="full_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(13)">
+                <constraints nullable="true" unique="true"/>
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Добавляем комментарии к таблице и колонкам -->
+        <sql>
+            COMMENT ON TABLE users IS 'Пользователи системы (клиенты, менеджеры, администраторы)';
+            COMMENT ON COLUMN users.username IS 'Уникальный логин пользователя';
+            COMMENT ON COLUMN users.password IS 'Хешированный пароль';
+            COMMENT ON COLUMN users.full_name IS 'Полное имя пользователя';
+            COMMENT ON COLUMN users.email IS 'Email адрес (опционально)';
+            COMMENT ON COLUMN users.phone_number IS 'Номер телефона в формате +996XXXXXXXXX';
+            COMMENT ON COLUMN users.role IS 'Роль пользователя: CLIENT, MANAGER, ADMIN';
+            COMMENT ON COLUMN users.is_active IS 'Активен ли пользователь';
+        </sql>
+
+        <!-- Проверочные ограничения -->
+        <sql>
+            ALTER TABLE users ADD CONSTRAINT chk_users_role
+                CHECK (role IN ('CLIENT', 'MANAGER', 'ADMIN'));
+
+            ALTER TABLE users ADD CONSTRAINT chk_users_phone_format
+                CHECK (phone_number IS NULL OR phone_number ~ '^\+996\d{9}$');
+
+            ALTER TABLE users ADD CONSTRAINT chk_users_username_length
+                CHECK (LENGTH(username) >= 3);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

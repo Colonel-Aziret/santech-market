@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="11-create-indexes" author="developer">
+        <comment>Создание индексов для оптимизации производительности</comment>
+
+        <!-- Индексы для таблицы products -->
+        <createIndex tableName="products" indexName="idx_products_category_id">
+            <column name="category_id"/>
+        </createIndex>
+
+        <createIndex tableName="products" indexName="idx_products_brand">
+            <column name="brand"/>
+        </createIndex>
+
+        <createIndex tableName="products" indexName="idx_products_is_active">
+            <column name="is_active"/>
+        </createIndex>
+
+        <createIndex tableName="products" indexName="idx_products_is_featured">
+            <column name="is_featured"/>
+        </createIndex>
+
+        <createIndex tableName="products" indexName="idx_products_price">
+            <column name="price"/>
+        </createIndex>
+
+        <!-- Индексы для таблицы orders -->
+        <createIndex tableName="orders" indexName="idx_orders_user_id">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex tableName="orders" indexName="idx_orders_status">
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex tableName="orders" indexName="idx_orders_order_number">
+            <column name="order_number"/>
+        </createIndex>
+
+        <createIndex tableName="orders" indexName="idx_orders_created_at">
+            <column name="created_at"/>
+        </createIndex>
+
+        <!-- Индексы для таблицы notifications -->
+        <createIndex tableName="notifications" indexName="idx_notifications_user_id">
+            <column name="user_id"/>
+        </createIndex>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_is_read">
+            <column name="is_read"/>
+        </createIndex>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_type">
+            <column name="type"/>
+        </createIndex>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_created_at">
+            <column name="created_at"/>
+        </createIndex>
+
+        <!-- Индексы для таблицы promotions -->
+        <createIndex tableName="promotions" indexName="idx_promotions_is_active">
+            <column name="is_active"/>
+        </createIndex>
+
+        <createIndex tableName="promotions" indexName="idx_promotions_is_featured">
+            <column name="is_featured"/>
+        </createIndex>
+
+        <createIndex tableName="promotions" indexName="idx_promotions_dates">
+            <column name="start_date"/>
+            <column name="end_date"/>
+        </createIndex>
+
+        <!-- Индексы для таблицы cart_items -->
+        <createIndex tableName="cart_items" indexName="idx_cart_items_cart_id">
+            <column name="cart_id"/>
+        </createIndex>
+
+        <createIndex tableName="cart_items" indexName="idx_cart_items_product_id">
+            <column name="product_id"/>
+        </createIndex>
+
+        <!-- Индексы для таблицы order_items -->
+        <createIndex tableName="order_items" indexName="idx_order_items_order_id">
+            <column name="order_id"/>
+        </createIndex>
+
+        <createIndex tableName="order_items" indexName="idx_order_items_product_id">
+            <column name="product_id"/>
+        </createIndex>
+
+        <!-- Составные индексы для быстрого поиска -->
+        <createIndex tableName="products" indexName="idx_products_category_active">
+            <column name="category_id"/>
+            <column name="is_active"/>
+        </createIndex>
+
+        <createIndex tableName="notifications" indexName="idx_notifications_user_read">
+            <column name="user_id"/>
+            <column name="is_read"/>
+        </createIndex>
+
+        <createIndex tableName="orders" indexName="idx_orders_user_status">
+            <column name="user_id"/>
+            <column name="status"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

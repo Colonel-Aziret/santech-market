@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="12-insert-initial-data" author="developer">
+        <comment>Вставка начальных данных для тестирования</comment>
+
+        <!-- Создание администратора системы -->
+        <insert tableName="users">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="username">admin</column>
+            <column name="password">$2a$12$yI8Kqm8lJUgMvjKVYlCMHOZpMl2OTVO3JmKK/OYSVfIGc/4I8VGFK</column> <!-- admin123 -->
+            <column name="full_name">Системный администратор</column>
+            <column name="email">admin@santechmarket.kg</column>
+            <column name="phone_number">+996555000001</column>
+            <column name="role">ADMIN</column>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <!-- Создание тестового менеджера -->
+        <insert tableName="users">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="username">manager</column>
+            <column name="password">$2a$12$yI8Kqm8lJUgMvjKVYlCMHOZpMl2OTVO3JmKK/OYSVfIGc/4I8VGFK</column> <!-- manager123 -->
+            <column name="full_name">Менеджер Айгуль</column>
+            <column name="email">manager@santechmarket.kg</column>
+            <column name="phone_number">+996555000002</column>
+            <column name="role">MANAGER</column>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <!-- Создание тестового клиента -->
+        <insert tableName="users">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="username">atabek1337</column>
+            <column name="password">$2a$12$yI8Kqm8lJUgMvjKVYlCMHOZpMl2OTVO3JmKK/OYSVfIGc/4I8VGFK</column> <!-- client123 -->
+            <column name="full_name">Атабеков Атабек</column>
+            <column name="email">atabek@gmail.com</column>
+            <column name="phone_number">+996554506999</column>
+            <column name="role">CLIENT</column>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <!-- Создание категорий товаров (из дизайна) -->
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Трубы</column>
+            <column name="description">Пластиковые и металлические трубы для водоснабжения и отопления</column>
+            <column name="display_order" valueNumeric="1"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Фитинги</column>
+            <column name="description">Соединительные элементы для трубопроводов</column>
+            <column name="display_order" valueNumeric="2"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Арматура</column>
+            <column name="description">Запорная и регулирующая арматура</column>
+            <column name="display_order" valueNumeric="3"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Канализация</column>
+            <column name="description">Системы канализации и водоотведения</column>
+            <column name="display_order" valueNumeric="4"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Отопление</column>
+            <column name="description">Системы отопления и теплоснабжения</column>
+            <column name="display_order" valueNumeric="5"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Герметики</column>
+            <column name="description">Герметизирующие материалы и уплотнители</column>
+            <column name="display_order" valueNumeric="6"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Шланги</column>
+            <column name="description">Гибкие шланги и подводки</column>
+            <column name="display_order" valueNumeric="7"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <insert tableName="categories">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Инструменты</column>
+            <column name="description">Инструменты для сантехнических работ</column>
+            <column name="display_order" valueNumeric="8"/>
+            <column name="is_active" valueBoolean="true"/>
+        </insert>
+
+        <!-- Создание тестовых товаров (из дизайна) -->
+        <insert tableName="products">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Труба PPR PN20 SDR6 20x3,4 (100м)</column>
+            <column name="description">Полипропиленовая труба для систем водоснабжения</column>
+            <column name="price" valueNumeric="40.00"/>
+            <column name="old_price" valueNumeric="50.00"/>
+            <column name="brand">Lammin</column>
+            <column name="sku">PPR-PN20-20-100</column>
+            <column name="specifications">{"diameter": "20 мм", "pressure": "PN20", "length": "100м", "material": "PPR"}</column>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="is_featured" valueBoolean="true"/>
+            <column name="category_id" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="name">Труба PPR PN25 арм. стеклов. 20x3,4 (100м)</column>
+            <column name="description">Армированная полипропиленовая труба со стекловолокном</column>
+            <column name="price" valueNumeric="400.00"/>
+            <column name="brand">Lammin</column>
+            <column name="sku">PPR-PN25-20-100</column>
+            <column name="specifications">{"diameter": "20 мм", "pressure": "PN25", "length": "100м", "material": "PPR", "reinforcement": "стекловолокно"}</column>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="is_featured" valueBoolean="true"/>
+            <column name="category_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Создание тестовой акции -->
+        <insert tableName="promotions">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="title">РАСПРОДАЖА труб и герметики</column>
+            <column name="description">Скидка до 20% на трубы PPR и герметизирующие материалы. Спешите купить!</column>
+            <column name="discount_percent" valueNumeric="20.00"/>
+            <column name="start_date" value="2024-08-12 00:00:00"/>
+            <column name="end_date" value="2024-09-12 23:59:59"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="is_featured" valueBoolean="true"/>
+        </insert>
+
+        <!-- Создание корзины для тестового клиента -->
+        <insert tableName="carts">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="user_id" valueNumeric="3"/>
+            <column name="total_amount" valueNumeric="0.00"/>
+            <column name="total_items" valueNumeric="0"/>
+        </insert>
+
+        <!-- Создание тестового уведомления -->
+        <insert tableName="notifications">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="user_id" valueNumeric="3"/>
+            <column name="type">DISCOUNT</column>
+            <column name="title">Скидки!</column>
+            <column name="content">До 20 августа у нас действуют большие скидки на PPR трубы. Спешите купить!</column>
+            <column name="is_read" valueBoolean="false"/>
+            <column name="metadata">{"discount_percent": 20, "category": "Трубы"}</column>
+        </insert>
+
+        <insert tableName="notifications">
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+            <column name="user_id" valueNumeric="3"/>
+            <column name="type">ANNOUNCEMENT</column>
+            <column name="title">Внимание!</column>
+            <column name="content">15 августа заканчивается акция на керамические трубы.</column>
+            <column name="is_read" valueBoolean="false"/>
+            <column name="metadata">{"end_date": "2024-08-15"}</column>
+        </insert>
+
+        <!-- Связываем акцию с категорией -->
+        <insert tableName="promotion_categories">
+            <column name="promotion_id" valueNumeric="1"/>
+            <column name="category_id" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="promotion_categories">
+            <column name="promotion_id" valueNumeric="1"/>
+            <column name="category_id" valueNumeric="6"/>
+        </insert>
+
+        <!-- Связываем акцию с товарами -->
+        <insert tableName="promotion_products">
+            <column name="promotion_id" valueNumeric="1"/>
+            <column name="product_id" valueNumeric="1"/>
+        </insert>
+
+        <insert tableName="promotion_products">
+            <column name="promotion_id" valueNumeric="1"/>
+            <column name="product_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

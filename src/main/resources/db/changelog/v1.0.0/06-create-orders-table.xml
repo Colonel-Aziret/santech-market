@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="06-create-orders-table" author="developer">
+        <comment>Создание таблицы заказов</comment>
+
+        <createTable tableName="orders">
+            <!-- Базовые поля -->
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля заказа -->
+            <column name="order_number" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_amount" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_items" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_comment" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="manager_comment" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="contact_info" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="confirmed_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="completed_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Создание внешнего ключа -->
+        <addForeignKeyConstraint
+                baseTableName="orders"
+                baseColumnNames="user_id"
+                constraintName="fk_orders_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="RESTRICT"
+                onUpdate="CASCADE"/>
+
+        <!-- Добавляем комментарии -->
+        <sql>
+            COMMENT ON TABLE orders IS 'Заказы пользователей';
+            COMMENT ON COLUMN orders.order_number IS 'Уникальный номер заказа';
+            COMMENT ON COLUMN orders.user_id IS 'ID пользователя, оформившего заказ';
+            COMMENT ON COLUMN orders.status IS 'Статус заказа: PENDING, CONFIRMED, PROCESSING, READY, COMPLETED, CANCELLED';
+            COMMENT ON COLUMN orders.total_amount IS 'Общая сумма заказа';
+            COMMENT ON COLUMN orders.total_items IS 'Общее количество товаров в заказе';
+            COMMENT ON COLUMN orders.customer_comment IS 'Комментарий клиента к заказу';
+            COMMENT ON COLUMN orders.manager_comment IS 'Внутренний комментарий менеджера';
+            COMMENT ON COLUMN orders.contact_info IS 'Контактная информация для заказа (JSON)';
+            COMMENT ON COLUMN orders.confirmed_at IS 'Дата подтверждения заказа менеджером';
+            COMMENT ON COLUMN orders.completed_at IS 'Дата завершения заказа';
+        </sql>
+
+        <!-- Проверочные ограничения -->
+        <sql>
+            ALTER TABLE orders ADD CONSTRAINT chk_orders_status
+                CHECK (status IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY', 'COMPLETED', 'CANCELLED'));
+
+            ALTER TABLE orders ADD CONSTRAINT chk_orders_total_amount_positive
+                CHECK (total_amount > 0);
+
+            ALTER TABLE orders ADD CONSTRAINT chk_orders_total_items_positive
+                CHECK (total_items > 0);
+
+            ALTER TABLE orders ADD CONSTRAINT chk_orders_order_number_format
+                CHECK (order_number ~ '^ORD-\d{8}-[A-Z0-9]{8}$');
+        </sql>
+
+        <!-- Установим значения по умолчанию -->
+        <sql>
+            ALTER TABLE orders ALTER COLUMN status SET DEFAULT 'PENDING';
+            ALTER TABLE orders ALTER COLUMN total_items SET DEFAULT 0;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="08-create-notifications-table" author="developer">
+        <comment>Создание таблицы уведомлений</comment>
+
+        <createTable tableName="notifications">
+            <!-- Базовые поля -->
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля уведомления -->
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_read" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="read_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="metadata" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Создание внешнего ключа -->
+        <addForeignKeyConstraint
+                baseTableName="notifications"
+                baseColumnNames="user_id"
+                constraintName="fk_notifications_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <!-- Добавляем комментарии -->
+        <sql>
+            COMMENT ON TABLE notifications IS 'Уведомления пользователей';
+            COMMENT ON COLUMN notifications.user_id IS 'ID пользователя-получателя';
+            COMMENT ON COLUMN notifications.type IS 'Тип уведомления: DISCOUNT, ANNOUNCEMENT, ORDER_UPDATE, NEW_PRODUCT, SYSTEM';
+            COMMENT ON COLUMN notifications.title IS 'Заголовок уведомления';
+            COMMENT ON COLUMN notifications.content IS 'Содержимое уведомления';
+            COMMENT ON COLUMN notifications.is_read IS 'Прочитано ли уведомление';
+            COMMENT ON COLUMN notifications.read_at IS 'Дата прочтения уведомления';
+            COMMENT ON COLUMN notifications.metadata IS 'Дополнительные данные уведомления (JSON)';
+        </sql>
+
+        <!-- Проверочные ограничения -->
+        <sql>
+            ALTER TABLE notifications ADD CONSTRAINT chk_notifications_type
+                CHECK (type IN ('DISCOUNT', 'ANNOUNCEMENT', 'ORDER_UPDATE', 'NEW_PRODUCT', 'SYSTEM'));
+
+            ALTER TABLE notifications ADD CONSTRAINT chk_notifications_title_not_empty
+                CHECK (LENGTH(TRIM(title)) > 0);
+
+            ALTER TABLE notifications ADD CONSTRAINT chk_notifications_content_not_empty
+                CHECK (LENGTH(TRIM(content)) > 0);
+        </sql>
+
+        <!-- Установим значения по умолчанию -->
+        <sql>
+            ALTER TABLE notifications ALTER COLUMN is_read SET DEFAULT false;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

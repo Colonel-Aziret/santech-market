@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="03-create-products-table" author="developer">
+        <comment>Создание таблицы товаров</comment>
+
+        <createTable tableName="products">
+            <!-- Базовые поля -->
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Поля товара -->
+            <column name="name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="old_price" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="brand" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sku" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="image_url" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="additional_images" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="specifications" type="TEXT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_featured" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+
+            <!-- Внешний ключ к категории -->
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- Создание внешнего ключа -->
+        <addForeignKeyConstraint
+                baseTableName="products"
+                baseColumnNames="category_id"
+                constraintName="fk_products_category"
+                referencedTableName="categories"
+                referencedColumnNames="id"
+                onDelete="RESTRICT"
+                onUpdate="CASCADE"/>
+
+        <!-- Добавляем комментарии -->
+        <sql>
+            COMMENT ON TABLE products IS 'Товары в каталоге';
+            COMMENT ON COLUMN products.name IS 'Название товара';
+            COMMENT ON COLUMN products.description IS 'Описание товара';
+            COMMENT ON COLUMN products.price IS 'Текущая цена товара';
+            COMMENT ON COLUMN products.old_price IS 'Старая цена для отображения скидки';
+            COMMENT ON COLUMN products.brand IS 'Бренд/производитель';
+            COMMENT ON COLUMN products.sku IS 'Артикул товара';
+            COMMENT ON COLUMN products.image_url IS 'Главное изображение товара';
+            COMMENT ON COLUMN products.additional_images IS 'Дополнительные изображения (JSON массив)';
+            COMMENT ON COLUMN products.specifications IS 'Характеристики товара (JSON объект)';
+            COMMENT ON COLUMN products.is_active IS 'Активен ли товар';
+            COMMENT ON COLUMN products.is_featured IS 'Рекомендуемый товар для главной страницы';
+            COMMENT ON COLUMN products.category_id IS 'ID категории товара';
+        </sql>
+
+        <!-- Проверочные ограничения -->
+        <sql>
+            ALTER TABLE products ADD CONSTRAINT chk_products_price_positive
+                CHECK (price > 0);
+
+            ALTER TABLE products ADD CONSTRAINT chk_products_old_price_positive
+                CHECK (old_price IS NULL OR old_price > 0);
+
+            ALTER TABLE products ADD CONSTRAINT chk_products_name_not_empty
+                CHECK (LENGTH(TRIM(name)) > 0);
+        </sql>
+
+        <!-- Установим значения по умолчанию -->
+        <sql>
+            ALTER TABLE products ALTER COLUMN is_active SET DEFAULT true;
+            ALTER TABLE products ALTER COLUMN is_featured SET DEFAULT false;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
