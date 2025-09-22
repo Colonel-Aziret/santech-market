@@ -18,5 +18,6 @@
     <include file="db/changelog/v1.0.0/10-create-promotion-relations-tables.xml"/>
     <include file="db/changelog/v1.0.0/11-create-indexes.xml"/>
     <include file="db/changelog/v1.0.0/12-insert-initial-data.xml"/>
+    <include file="db/changelog/v1.0.0/13-fix-user-passwords.xml"/>
 
 </databaseChangeLog>
