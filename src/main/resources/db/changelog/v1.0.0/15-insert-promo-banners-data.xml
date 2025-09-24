@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="15-insert-promo-banners-data" author="system">
+        <comment>Добавление тестовых промо-баннеров</comment>
+
+        <insert tableName="promo_banners">
+            <column name="id" value="1"/>
+            <column name="created_at" value="2025-09-16T00:45:43"/>
+            <column name="updated_at" value="2025-09-16T00:45:43"/>
+            <column name="title" value="РАСПРОДАЖА"/>
+            <column name="subtitle" value="Трубы и герметики с 12.08 по 12.09"/>
+            <column name="image_url" value="/images/banners/sale-banner-1.jpg"/>
+            <column name="link_url" value="/categories/1"/>
+            <column name="display_order" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="start_date" value="2025-08-12T00:00:00"/>
+            <column name="end_date" value="2025-12-09T23:59:59"/>
+            <column name="background_color" value="#007BFF"/>
+            <column name="text_color" value="#FFFFFF"/>
+        </insert>
+
+        <insert tableName="promo_banners">
+            <column name="id" value="2"/>
+            <column name="created_at" value="2025-09-16T00:45:43"/>
+            <column name="updated_at" value="2025-09-16T00:45:43"/>
+            <column name="title" value="Скидки!"/>
+            <column name="subtitle" value="До 20 августа у нас действуют большие скидки на PPR трубы. Спешите купить!"/>
+            <column name="image_url" value="/images/banners/discount-banner.jpg"/>
+            <column name="link_url" value="/products/search?query=PPR"/>
+            <column name="display_order" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="start_date" value="2025-08-01T00:00:00"/>
+            <column name="end_date" value="2025-12-20T23:59:59"/>
+            <column name="background_color" value="#28A745"/>
+            <column name="text_color" value="#FFFFFF"/>
+        </insert>
+
+        <insert tableName="promo_banners">
+            <column name="id" value="3"/>
+            <column name="created_at" value="2025-09-16T00:45:43"/>
+            <column name="updated_at" value="2025-09-16T00:45:43"/>
+            <column name="title" value="Внимание!"/>
+            <column name="subtitle" value="15 августа заканчивается акция на керамические трубы."/>
+            <column name="image_url" value="/images/banners/ceramic-tubes-promo.jpg"/>
+            <column name="link_url" value="/categories/2"/>
+            <column name="display_order" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="start_date" value="2025-07-01T00:00:00"/>
+            <column name="end_date" value="2025-12-15T23:59:59"/>
+            <column name="background_color" value="#FFC107"/>
+            <column name="text_color" value="#000000"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

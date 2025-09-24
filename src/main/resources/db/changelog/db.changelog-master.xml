@@ -19,5 +19,7 @@
     <include file="db/changelog/v1.0.0/11-create-indexes.xml"/>
     <include file="db/changelog/v1.0.0/12-insert-initial-data.xml"/>
     <include file="db/changelog/v1.0.0/13-fix-user-passwords.xml"/>
+    <include file="db/changelog/v1.0.0/14-create-promo-banners-table.xml"/>
+    <include file="db/changelog/v1.0.0/15-insert-promo-banners-data.xml"/>
 
 </databaseChangeLog>

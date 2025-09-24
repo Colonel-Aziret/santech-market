@@ -39,10 +39,12 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/categories").permitAll()
                         .requestMatchers("/products/**").permitAll()
+                        .requestMatchers("/promo-banners").permitAll()
                         .requestMatchers("/test/**").permitAll()
 
                         // Swagger/OpenAPI
-                        .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/v1/v3/api-docs/**").permitAll()
 
                         // Actuator endpoints
                         .requestMatchers("/actuator/health").permitAll()
