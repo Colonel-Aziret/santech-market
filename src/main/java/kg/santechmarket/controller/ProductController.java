@@ -105,6 +105,27 @@ public class ProductController {
         return ResponseEntity.ok(brands);
     }
 
+    @GetMapping("/search-by-spec")
+    @Operation(summary = "Поиск по характеристике", description = "Поиск товаров по конкретной характеристике")
+    public ResponseEntity<Page<Product>> searchBySpecification(
+            @Parameter(description = "Ключ характеристики") @RequestParam String specKey,
+            @Parameter(description = "Значение характеристики") @RequestParam String specValue,
+            @PageableDefault(size = 20) Pageable pageable) {
+        Page<Product> products = productService.findBySpecification(specKey, specValue, pageable);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/search-pipes")
+    @Operation(summary = "Поиск труб по характеристикам", description = "Специализированный поиск труб по диаметру, давлению и материалу")
+    public ResponseEntity<Page<Product>> searchPipesBySpecs(
+            @Parameter(description = "Диаметр трубы") @RequestParam(required = false) String diameter,
+            @Parameter(description = "Рабочее давление") @RequestParam(required = false) String pressure,
+            @Parameter(description = "Материал") @RequestParam(required = false) String material,
+            @PageableDefault(size = 20) Pageable pageable) {
+        Page<Product> products = productService.findByMultipleSpecifications(diameter, pressure, material, pageable);
+        return ResponseEntity.ok(products);
+    }
+
     @PostMapping
     @Operation(summary = "Создать товар", description = "Создает новый товар")
     @SecurityRequirement(name = "JWT")

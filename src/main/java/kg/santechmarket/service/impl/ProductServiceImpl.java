@@ -267,6 +267,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * Поиск товаров по конкретной характеристике
+     */
+    public Page<Product> findBySpecification(String specKey, String specValue, Pageable pageable) {
+        log.debug("Поиск товаров по характеристике: {}={}", specKey, specValue);
+        return productRepository.findBySpecification(specKey, specValue, pageable);
+    }
+
+    /**
+     * Поиск товаров по нескольким характеристикам (для труб)
+     */
+    public Page<Product> findByMultipleSpecifications(String diameter, String pressure, String material, Pageable pageable) {
+        log.debug("Поиск товаров по характеристикам: диаметр={}, давление={}, материал={}",
+                diameter, pressure, material);
+        return productRepository.findByMultipleSpecifications(diameter, pressure, material, pageable);
+    }
+
+    /**
      * Валидация товара
      */
     private void validateProduct(Product product) {

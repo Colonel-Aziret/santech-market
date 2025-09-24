@@ -61,6 +61,21 @@ public interface CartService {
     Cart syncCartPrices(Long userId);
 
     /**
+     * Увеличить количество товара на 1
+     */
+    Cart incrementItemQuantity(Long userId, Long productId);
+
+    /**
+     * Уменьшить количество товара на 1
+     */
+    Cart decrementItemQuantity(Long userId, Long productId);
+
+    /**
+     * Получить количество уникальных товаров в корзине
+     */
+    int getUniqueItemsCount(Long userId);
+
+    /**
      * Валидация корзины перед оформлением заказа
      */
     void validateCartForCheckout(Long userId);

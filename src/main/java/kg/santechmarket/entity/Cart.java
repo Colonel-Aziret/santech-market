@@ -110,6 +110,56 @@ public class Cart extends BaseEntity {
     }
 
     /**
+     * Увеличить количество товара на 1
+     *
+     * @param productId ID товара
+     */
+    public void incrementItemQuantity(Long productId) {
+        items.stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .ifPresent(item -> {
+                    item.setQuantity(item.getQuantity() + 1);
+                    recalculateTotal();
+                });
+    }
+
+    /**
+     * Уменьшить количество товара на 1 (если станет 0, товар удаляется)
+     *
+     * @param productId ID товара
+     */
+    public void decrementItemQuantity(Long productId) {
+        CartItem item = items.stream()
+                .filter(cartItem -> cartItem.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        if (item != null) {
+            if (item.getQuantity() <= 1) {
+                removeItem(productId);
+            } else {
+                item.setQuantity(item.getQuantity() - 1);
+                recalculateTotal();
+            }
+        }
+    }
+
+    /**
+     * Проверить, пустая ли корзина
+     */
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    /**
+     * Получить количество уникальных товаров в корзине
+     */
+    public int getUniqueItemsCount() {
+        return items.size();
+    }
+
+    /**
      * Пересчитать общую стоимость и количество товаров
      */
     private void recalculateTotal() {

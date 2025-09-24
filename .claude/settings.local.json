@@ -16,7 +16,8 @@
       "Bash(openssl dgst:*)",
       "Bash(curl:*)",
       "Bash(javac:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
