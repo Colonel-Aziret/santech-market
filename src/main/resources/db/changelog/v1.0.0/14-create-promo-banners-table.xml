@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="14-create-promo-banners-table" author="system">
+        <comment>Создание таблицы промо-баннеров</comment>
+
+        <createTable tableName="promo_banners">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="subtitle" type="VARCHAR(500)"/>
+
+            <column name="image_url" type="VARCHAR(255)"/>
+
+            <column name="link_url" type="VARCHAR(255)"/>
+
+            <column name="display_order" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="is_active" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="start_date" type="TIMESTAMP"/>
+
+            <column name="end_date" type="TIMESTAMP"/>
+
+            <column name="background_color" type="VARCHAR(7)"/>
+
+            <column name="text_color" type="VARCHAR(7)"/>
+        </createTable>
+
+        <!-- Индексы для оптимизации запросов -->
+        <createIndex tableName="promo_banners" indexName="idx_promo_banner_active">
+            <column name="is_active"/>
+        </createIndex>
+
+        <createIndex tableName="promo_banners" indexName="idx_promo_banner_display_order">
+            <column name="display_order"/>
+        </createIndex>
+
+        <createIndex tableName="promo_banners" indexName="idx_promo_banner_dates">
+            <column name="start_date"/>
+            <column name="end_date"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

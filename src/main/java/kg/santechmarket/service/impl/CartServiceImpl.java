@@ -252,4 +252,49 @@ public class CartServiceImpl implements CartService {
 
         log.info("Корзина пользователя {} прошла валидацию для оформления заказа", userId);
     }
+
+    /**
+     * Увеличить количество товара на 1
+     */
+    @Transactional
+    public Cart incrementItemQuantity(Long userId, Long productId) {
+        log.info("Увеличение количества товара {} в корзине пользователя {}", productId, userId);
+
+        Cart cart = cartRepository.findByUserIdWithItems(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Корзина не найдена"));
+
+        cart.incrementItemQuantity(productId);
+
+        Cart savedCart = cartRepository.save(cart);
+        log.info("Количество товара {} увеличено в корзине пользователя {}", productId, userId);
+
+        return savedCart;
+    }
+
+    /**
+     * Уменьшить количество товара на 1
+     */
+    @Transactional
+    public Cart decrementItemQuantity(Long userId, Long productId) {
+        log.info("Уменьшение количества товара {} в корзине пользователя {}", productId, userId);
+
+        Cart cart = cartRepository.findByUserIdWithItems(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Корзина не найдена"));
+
+        cart.decrementItemQuantity(productId);
+
+        Cart savedCart = cartRepository.save(cart);
+        log.info("Количество товара {} уменьшено в корзине пользователя {}", productId, userId);
+
+        return savedCart;
+    }
+
+    /**
+     * Получить количество уникальных товаров в корзине
+     */
+    public int getUniqueItemsCount(Long userId) {
+        return cartRepository.findByUserIdWithItems(userId)
+                .map(Cart::getUniqueItemsCount)
+                .orElse(0);
+    }
 }

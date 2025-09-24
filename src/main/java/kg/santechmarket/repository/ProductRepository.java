@@ -58,12 +58,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByNameContainingIgnoreCase(@Param("searchTerm") String searchTerm, Pageable pageable);
 
     /**
-     * Расширенный поиск товаров (по названию, бренду, описанию)
+     * Расширенный поиск товаров (по названию, бренду, описанию, характеристикам)
      */
     @Query("SELECT p FROM Product p WHERE " +
             "(LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
             "LOWER(p.brand) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-            "LOWER(p.description) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
+            "LOWER(p.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(p.specifications) LIKE LOWER(CONCAT('%', :searchTerm, '%'))) " +
             "AND p.isActive = true")
     Page<Product> searchProducts(@Param("searchTerm") String searchTerm, Pageable pageable);
 
@@ -89,7 +90,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
             "AND (:searchTerm IS NULL OR " +
             "    LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-            "    LOWER(p.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
+            "    LOWER(p.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "    LOWER(p.specifications) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
     Page<Product> findProductsWithFilters(@Param("categoryId") Long categoryId,
                                           @Param("brand") String brand,
                                           @Param("minPrice") BigDecimal minPrice,
@@ -118,6 +120,31 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * Получить количество активных товаров
      */
     long countByIsActiveTrue();
+
+    /**
+     * Поиск товаров по конкретной характеристике (например, диаметр: 20)
+     */
+    @Query(value = "SELECT * FROM products p WHERE " +
+            "p.is_active = true " +
+            "AND p.specifications::text LIKE CONCAT('%\"', :specKey, '\": \"', :specValue, '\"%')",
+            nativeQuery = true)
+    Page<Product> findBySpecification(@Param("specKey") String specKey,
+                                      @Param("specValue") String specValue,
+                                      Pageable pageable);
+
+    /**
+     * Поиск товаров по нескольким характеристикам
+     */
+    @Query(value = "SELECT * FROM products p WHERE " +
+            "p.is_active = true " +
+            "AND (:diameter IS NULL OR p.specifications::text LIKE CONCAT('%\"diameter\": \"', :diameter, '%')) " +
+            "AND (:pressure IS NULL OR p.specifications::text LIKE CONCAT('%\"pressure\": \"', :pressure, '%')) " +
+            "AND (:material IS NULL OR p.specifications::text LIKE CONCAT('%\"material\": \"', :material, '%'))",
+            nativeQuery = true)
+    Page<Product> findByMultipleSpecifications(@Param("diameter") String diameter,
+                                               @Param("pressure") String pressure,
+                                               @Param("material") String material,
+                                               Pageable pageable);
 
     /**
      * Похожие товары (той же категории, исключая текущий)

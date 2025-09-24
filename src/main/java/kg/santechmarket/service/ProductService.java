@@ -96,6 +96,16 @@ public interface ProductService {
     void toggleFeatured(Long id);
 
     /**
+     * Поиск товаров по конкретной характеристике
+     */
+    Page<Product> findBySpecification(String specKey, String specValue, Pageable pageable);
+
+    /**
+     * Поиск товаров по нескольким характеристикам (для труб)
+     */
+    Page<Product> findByMultipleSpecifications(String diameter, String pressure, String material, Pageable pageable);
+
+    /**
      * Получить статистику товаров
      */
     long getTotalProductCount();

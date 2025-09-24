@@ -97,6 +97,34 @@ public class CartController {
         return ResponseEntity.ok(isEmpty);
     }
 
+    @PatchMapping("/items/{productId}/increment")
+    @Operation(summary = "Увеличить количество товара на 1", description = "Увеличивает количество указанного товара в корзине на 1")
+    public ResponseEntity<Cart> incrementItemQuantity(
+            @Parameter(description = "ID товара") @PathVariable Long productId,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        Cart cart = cartService.incrementItemQuantity(user.getId(), productId);
+        return ResponseEntity.ok(cart);
+    }
+
+    @PatchMapping("/items/{productId}/decrement")
+    @Operation(summary = "Уменьшить количество товара на 1", description = "Уменьшает количество указанного товара в корзине на 1. Если останется 0 - товар удаляется")
+    public ResponseEntity<Cart> decrementItemQuantity(
+            @Parameter(description = "ID товара") @PathVariable Long productId,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        Cart cart = cartService.decrementItemQuantity(user.getId(), productId);
+        return ResponseEntity.ok(cart);
+    }
+
+    @GetMapping("/unique-count")
+    @Operation(summary = "Получить количество уникальных товаров", description = "Возвращает количество уникальных товаров в корзине")
+    public ResponseEntity<Integer> getUniqueItemsCount(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        int count = cartService.getUniqueItemsCount(user.getId());
+        return ResponseEntity.ok(count);
+    }
+
     @PostMapping("/sync-prices")
     @Operation(summary = "Синхронизировать цены", description = "Синхронизирует цены в корзине с актуальными ценами товаров")
     public ResponseEntity<Cart> syncCartPrices(Authentication authentication) {
