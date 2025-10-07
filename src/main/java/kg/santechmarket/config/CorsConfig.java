@@ -20,8 +20,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Разрешенные origins
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        // Разрешенные origins (все источники)
+        configuration.setAllowedOriginPatterns(List.of("*"));
 
         // Разрешенные HTTP методы
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
