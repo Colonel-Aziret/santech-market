@@ -17,7 +17,8 @@
       "Bash(curl:*)",
       "Bash(javac:*)",
       "Bash(timeout:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(powershell:*)"
     ],
     "deny": [],
     "ask": []
