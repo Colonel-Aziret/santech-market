@@ -5,7 +5,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kg.santechmarket.config.JwtService;
 import kg.santechmarket.dto.AuthDto;
+import kg.santechmarket.dto.ErrorResponse;
+import kg.santechmarket.entity.RefreshToken;
 import kg.santechmarket.entity.User;
+import kg.santechmarket.enums.ErrorCode;
+import kg.santechmarket.enums.UserRole;
+import kg.santechmarket.enums.UserStatus;
+import kg.santechmarket.service.RefreshTokenService;
 import kg.santechmarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +43,69 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
+
+    /**
+     * Регистрация нового пользователя
+     */
+    @PostMapping("/register")
+    @Operation(summary = "Регистрация", description = "Регистрация нового пользователя со статусом PENDING (ожидает одобрения менеджера)")
+    public ResponseEntity<?> register(@Valid @RequestBody AuthDto.RegisterRequest request) {
+        log.info("Регистрация нового пользователя: {}", request.username());
+
+        try {
+            // Проверяем, существует ли пользователь
+            if (userService.existsByUsername(request.username())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ErrorResponse("Пользователь с таким логином уже существует", ErrorCode.USER_ALREADY_EXISTS.getCode()));
+            }
+
+            if (userService.existsByPhoneNumber(request.phoneNumber())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ErrorResponse("Пользователь с таким номером телефона уже существует", ErrorCode.USER_ALREADY_EXISTS.getCode()));
+            }
+
+            if (request.email() != null && !request.email().isEmpty() && userService.existsByEmail(request.email())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new ErrorResponse("Пользователь с таким email уже существует", ErrorCode.USER_ALREADY_EXISTS.getCode()));
+            }
+
+            // Создаём пользователя
+            User newUser = new User();
+            newUser.setUsername(request.username());
+            newUser.setPassword(request.password()); // будет хеширован в сервисе
+            newUser.setFullName(request.fullName());
+            newUser.setPhoneNumber(request.phoneNumber());
+            newUser.setEmail(request.email());
+            newUser.setRole(UserRole.CLIENT);
+            newUser.setStatus(UserStatus.PENDING);
+            newUser.setIsActive(false); // неактивен до одобрения
+
+            User savedUser = userService.createUser(newUser);
+
+            AuthDto.RegisterResponse response = new AuthDto.RegisterResponse(
+                    savedUser.getId(),
+                    savedUser.getUsername(),
+                    savedUser.getFullName(),
+                    savedUser.getPhoneNumber(),
+                    savedUser.getEmail(),
+                    savedUser.getStatus().name(),
+                    "Регистрация успешна! Ваша заявка на рассмотрении. Менеджер свяжется с вами в течение 1-2 рабочих дней."
+            );
+
+            log.info("Пользователь {} успешно зарегистрирован со статусом PENDING", savedUser.getUsername());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Ошибка валидации при регистрации {}: {}", request.username(), e.getMessage());
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponse(e.getMessage(), ErrorCode.VALIDATION_ERROR.getCode()));
+        } catch (Exception e) {
+            log.error("Ошибка при регистрации пользователя {}: {}", request.username(), e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Не удалось зарегистрироваться", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
+        }
+    }
 
     /**
      * Вход в систему
@@ -58,12 +127,16 @@ public class AuthController {
             // Получение пользователя
             User user = (User) authentication.getPrincipal();
 
-            // Генерация JWT токена
-            String token = jwtService.generateToken(user);
+            // Генерация access токена
+            String accessToken = jwtService.generateToken(user);
+
+            // Генерация refresh токена
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
             // Создание ответа
             AuthDto.LoginResponse response = new AuthDto.LoginResponse(
-                    token,
+                    accessToken,
+                    refreshToken.getToken(),
                     "Bearer",
                     jwtService.getExpirationMs() / 1000, // в секундах
                     mapToUserInfo(user)
@@ -75,11 +148,11 @@ public class AuthController {
         } catch (AuthenticationException e) {
             log.warn("Неудачная попытка входа для пользователя: {}", loginRequest.username());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ErrorResponse("Неверный логин или пароль"));
+                    .body(new ErrorResponse("Неверный логин или пароль", ErrorCode.AUTH_INVALID_CREDENTIALS.getCode()));
         } catch (Exception e) {
             log.error("Ошибка при входе пользователя {}: {}", loginRequest.username(), e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("Внутренняя ошибка сервера"));
+                    .body(new ErrorResponse("Внутренняя ошибка сервера", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
         }
     }
 
@@ -124,11 +197,11 @@ public class AuthController {
 
         } catch (IllegalArgumentException e) {
             log.warn("Ошибка валидации при обновлении профиля {}: {}", currentUser.getUsername(), e.getMessage());
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), ErrorCode.VALIDATION_ERROR.getCode()));
         } catch (Exception e) {
             log.error("Ошибка при обновлении профиля {}: {}", currentUser.getUsername(), e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("Не удалось обновить профиль"));
+                    .body(new ErrorResponse("Не удалось обновить профиль", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
         }
     }
 
@@ -145,7 +218,7 @@ public class AuthController {
             // Проверяем текущий пароль
             if (!userService.checkPassword(currentUser, request.currentPassword())) {
                 log.warn("Неверный текущий пароль при смене для пользователя: {}", currentUser.getUsername());
-                return ResponseEntity.badRequest().body(new ErrorResponse("Неверный текущий пароль"));
+                return ResponseEntity.badRequest().body(new ErrorResponse("Неверный текущий пароль", ErrorCode.USER_INVALID_PASSWORD.getCode()));
             }
 
             // Создаем объект с новым паролем
@@ -167,7 +240,74 @@ public class AuthController {
         } catch (Exception e) {
             log.error("Ошибка при смене пароля для {}: {}", currentUser.getUsername(), e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorResponse("Не удалось изменить пароль"));
+                    .body(new ErrorResponse("Не удалось изменить пароль", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
+        }
+    }
+
+    /**
+     * Обновление access токена с помощью refresh токена
+     */
+    @PostMapping("/refresh")
+    @Operation(summary = "Обновить токен", description = "Обновление access токена с помощью refresh токена")
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody AuthDto.RefreshTokenRequest request) {
+        String refreshTokenValue = request.refreshToken();
+        log.info("Запрос обновления токена");
+
+        try {
+            // Ищем refresh токен
+            RefreshToken refreshToken = refreshTokenService.findByToken(refreshTokenValue)
+                    .orElseThrow(() -> new IllegalArgumentException("Refresh токен не найден"));
+
+            // Проверяем, не истёк ли токен
+            refreshToken = refreshTokenService.verifyExpiration(refreshToken);
+
+            // Получаем пользователя
+            User user = refreshToken.getUser();
+
+            // Генерируем новый access токен
+            String newAccessToken = jwtService.generateToken(user);
+
+            // Создаём новый refresh токен
+            RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(user);
+
+            // Создание ответа
+            AuthDto.RefreshTokenResponse response = new AuthDto.RefreshTokenResponse(
+                    newAccessToken,
+                    newRefreshToken.getToken(),
+                    "Bearer",
+                    jwtService.getExpirationMs() / 1000 // в секундах
+            );
+
+            log.info("Токен успешно обновлён для пользователя: {}", user.getUsername());
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Ошибка при обновлении токена: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ErrorResponse(e.getMessage(), ErrorCode.AUTH_REFRESH_TOKEN_INVALID.getCode()));
+        } catch (Exception e) {
+            log.error("Ошибка при обновлении токена: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Не удалось обновить токен", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
+        }
+    }
+
+    /**
+     * Выход из системы (удаление refresh токена)
+     */
+    @PostMapping("/logout")
+    @Operation(summary = "Выход из системы", description = "Удаление refresh токена пользователя")
+    public ResponseEntity<?> logout(@AuthenticationPrincipal User currentUser) {
+        log.info("Выход из системы для пользователя: {}", currentUser.getUsername());
+
+        try {
+            refreshTokenService.deleteByUser(currentUser);
+            log.info("Пользователь {} вышел из системы", currentUser.getUsername());
+            return ResponseEntity.ok(new SuccessResponse("Вы успешно вышли из системы"));
+        } catch (Exception e) {
+            log.error("Ошибка при выходе из системы для {}: {}", currentUser.getUsername(), e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Не удалось выйти из системы", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
         }
     }
 
@@ -184,12 +324,6 @@ public class AuthController {
                 user.getRole().name(),
                 user.getIsActive()
         );
-    }
-
-    /**
-     * DTO для ошибок
-     */
-    public record ErrorResponse(String message) {
     }
 
     /**

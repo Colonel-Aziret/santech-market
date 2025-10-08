@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="17-add-user-status-column" author="azire">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="users" columnName="status"/>
+            </not>
+        </preConditions>
+
+        <!-- Добавляем колонку status -->
+        <addColumn tableName="users">
+            <column name="status" type="VARCHAR(20)" defaultValue="APPROVED">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <!-- Обновляем существующих активных пользователей на APPROVED -->
+        <sql>
+            UPDATE users SET status = 'APPROVED' WHERE is_active = true;
+        </sql>
+
+        <!-- Обновляем существующих неактивных пользователей на BLOCKED -->
+        <sql>
+            UPDATE users SET status = 'BLOCKED' WHERE is_active = false;
+        </sql>
+
+        <!-- Создаём индекс для быстрого поиска -->
+        <createIndex indexName="idx_users_status" tableName="users">
+            <column name="status"/>
+        </createIndex>
+
+        <rollback>
+            <dropIndex indexName="idx_users_status" tableName="users"/>
+            <dropColumn tableName="users" columnName="status"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

@@ -122,4 +122,30 @@ public class UserController {
         long count = userService.getUserCountByRole(role);
         return ResponseEntity.ok(count);
     }
+
+    @GetMapping("/pending")
+    @Operation(summary = "Получить пользователей на модерации", description = "Возвращает список пользователей со статусом PENDING")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<Page<User>> getPendingUsers(@PageableDefault(size = 20) Pageable pageable) {
+        Page<User> users = userService.getPendingUsers(pageable);
+        return ResponseEntity.ok(users);
+    }
+
+    @PatchMapping("/{id}/approve")
+    @Operation(summary = "Одобрить пользователя", description = "Одобряет регистрацию пользователя (PENDING -> APPROVED)")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<User> approveUser(@Parameter(description = "ID пользователя") @PathVariable Long id) {
+        User user = userService.approveUser(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PatchMapping("/{id}/reject")
+    @Operation(summary = "Отклонить пользователя", description = "Отклоняет регистрацию пользователя (PENDING -> REJECTED)")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<User> rejectUser(
+            @Parameter(description = "ID пользователя") @PathVariable Long id,
+            @Parameter(description = "Причина отклонения") @RequestParam(required = false) String reason) {
+        User user = userService.rejectUser(id, reason);
+        return ResponseEntity.ok(user);
+    }
 }

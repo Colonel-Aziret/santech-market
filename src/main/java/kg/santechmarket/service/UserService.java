@@ -83,4 +83,34 @@ public interface UserService extends UserDetailsService {
      * Проверить корректность пароля
      */
     boolean checkPassword(User user, String rawPassword);
+
+    /**
+     * Проверить существование пользователя по логину
+     */
+    boolean existsByUsername(String username);
+
+    /**
+     * Проверить существование пользователя по email
+     */
+    boolean existsByEmail(String email);
+
+    /**
+     * Проверить существование пользователя по номеру телефона
+     */
+    boolean existsByPhoneNumber(String phoneNumber);
+
+    /**
+     * Одобрить пользователя (PENDING -> APPROVED)
+     */
+    User approveUser(Long id);
+
+    /**
+     * Отклонить пользователя (PENDING -> REJECTED)
+     */
+    User rejectUser(Long id, String reason);
+
+    /**
+     * Получить пользователей на модерации (PENDING)
+     */
+    Page<User> getPendingUsers(Pageable pageable);
 }

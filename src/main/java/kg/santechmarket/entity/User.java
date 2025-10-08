@@ -1,11 +1,13 @@
 package kg.santechmarket.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import kg.santechmarket.enums.UserRole;
+import kg.santechmarket.enums.UserStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -90,6 +92,13 @@ public class User extends BaseEntity implements UserDetails {
     private Boolean isActive = true;
 
     /**
+     * Статус пользователя (PENDING, APPROVED, REJECTED, BLOCKED)
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private UserStatus status = UserStatus.PENDING;
+
+    /**
      * Заказы пользователя
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -99,6 +108,7 @@ public class User extends BaseEntity implements UserDetails {
      * Корзина пользователя
      */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Cart cart;
 
     // Реализация UserDetails для Spring Security

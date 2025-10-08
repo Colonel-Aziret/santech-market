@@ -21,5 +21,7 @@
     <include file="db/changelog/v1.0.0/13-fix-user-passwords.xml"/>
     <include file="db/changelog/v1.0.0/14-create-promo-banners-table.xml"/>
     <include file="db/changelog/v1.0.0/15-insert-promo-banners-data.xml"/>
+    <include file="db/changelog/v1.0.0/16-create-refresh-tokens-table.xml"/>
+    <include file="db/changelog/v1.0.0/17-add-user-status-column.xml"/>
 
 </databaseChangeLog>

@@ -2,6 +2,7 @@ package kg.santechmarket.repository;
 
 import kg.santechmarket.entity.User;
 import kg.santechmarket.enums.UserRole;
+import kg.santechmarket.enums.UserStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -85,4 +86,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Получить количество активных пользователей
      */
     long countByIsActiveTrue();
+
+    /**
+     * Найти пользователей по статусу с пагинацией
+     */
+    Page<User> findByStatus(UserStatus status, Pageable pageable);
+
+    /**
+     * Найти пользователей по статусу
+     */
+    List<User> findByStatus(UserStatus status);
 }

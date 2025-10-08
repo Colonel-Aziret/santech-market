@@ -33,3 +33,12 @@ build/
 .vscode/
 
 .claude
+
+### File Uploads ###
+uploads/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+!src/main/resources/design/*.jpg

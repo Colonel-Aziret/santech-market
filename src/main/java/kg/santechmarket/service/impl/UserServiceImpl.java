@@ -2,6 +2,7 @@ package kg.santechmarket.service.impl;
 
 import kg.santechmarket.entity.User;
 import kg.santechmarket.enums.UserRole;
+import kg.santechmarket.enums.UserStatus;
 import kg.santechmarket.repository.UserRepository;
 import kg.santechmarket.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -196,6 +197,66 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkPassword(User user, String rawPassword) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber).isPresent();
+    }
+
+    @Override
+    @Transactional
+    public User approveUser(Long id) {
+        log.info("Одобрение пользователя с ID: {}", id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + id));
+
+        if (user.getStatus() != UserStatus.PENDING) {
+            throw new IllegalStateException("Одобрить можно только пользователей со статусом PENDING");
+        }
+
+        user.setStatus(UserStatus.APPROVED);
+        user.setIsActive(true);
+        User savedUser = userRepository.save(user);
+
+        log.info("Пользователь {} одобрен и активирован", user.getUsername());
+        return savedUser;
+    }
+
+    @Override
+    @Transactional
+    public User rejectUser(Long id, String reason) {
+        log.info("Отклонение пользователя с ID: {}", id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + id));
+
+        if (user.getStatus() != UserStatus.PENDING) {
+            throw new IllegalStateException("Отклонить можно только пользователей со статусом PENDING");
+        }
+
+        user.setStatus(UserStatus.REJECTED);
+        user.setIsActive(false);
+        User savedUser = userRepository.save(user);
+
+        log.info("Пользователь {} отклонён. Причина: {}", user.getUsername(), reason);
+        return savedUser;
+    }
+
+    @Override
+    public Page<User> getPendingUsers(Pageable pageable) {
+        return userRepository.findByStatus(UserStatus.PENDING, pageable);
     }
 
     /**
