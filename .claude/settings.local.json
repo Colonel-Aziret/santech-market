@@ -18,7 +18,8 @@
       "Bash(javac:*)",
       "Bash(timeout:*)",
       "Bash(git add:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(.mvnw.cmd spring-boot:*)"
     ],
     "deny": [],
     "ask": []

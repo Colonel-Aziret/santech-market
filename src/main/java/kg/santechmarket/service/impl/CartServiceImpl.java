@@ -1,5 +1,7 @@
 package kg.santechmarket.service.impl;
 
+import kg.santechmarket.dto.CartItemDTO;
+import kg.santechmarket.dto.CartResponseDTO;
 import kg.santechmarket.entity.Cart;
 import kg.santechmarket.entity.CartItem;
 import kg.santechmarket.entity.Product;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для работы с корзиной пользователя
@@ -296,5 +300,46 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findByUserIdWithItems(userId)
                 .map(Cart::getUniqueItemsCount)
                 .orElse(0);
+    }
+
+    /**
+     * Конвертировать Cart в CartResponseDTO
+     */
+    public CartResponseDTO toCartResponseDTO(Cart cart) {
+        if (cart == null) {
+            return null;
+        }
+
+        List<CartItemDTO> itemDTOs = cart.getItems().stream()
+                .map(this::toCartItemDTO)
+                .collect(Collectors.toList());
+
+        return CartResponseDTO.builder()
+                .id(cart.getId())
+                .items(itemDTOs)
+                .totalAmount(cart.getTotalAmount())
+                .totalItems(cart.getTotalItems())
+                .uniqueItemsCount(cart.getUniqueItemsCount())
+                .createdAt(cart.getCreatedAt())
+                .updatedAt(cart.getUpdatedAt())
+                .build();
+    }
+
+    /**
+     * Конвертировать CartItem в CartItemDTO
+     */
+    private CartItemDTO toCartItemDTO(CartItem item) {
+        Product product = item.getProduct();
+
+        return CartItemDTO.builder()
+                .id(item.getId())
+                .productId(product.getId())
+                .productName(product.getName())
+                .productImageUrl(product.getImageUrl())
+                .productBrand(product.getBrand())
+                .quantity(item.getQuantity())
+                .price(item.getPrice())
+                .totalPrice(item.getTotalPrice())
+                .build();
     }
 }

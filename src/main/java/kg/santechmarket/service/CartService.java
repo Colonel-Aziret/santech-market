@@ -1,5 +1,6 @@
 package kg.santechmarket.service;
 
+import kg.santechmarket.dto.CartResponseDTO;
 import kg.santechmarket.entity.Cart;
 
 import java.math.BigDecimal;
@@ -79,4 +80,9 @@ public interface CartService {
      * Валидация корзины перед оформлением заказа
      */
     void validateCartForCheckout(Long userId);
+
+    /**
+     * Конвертировать Cart в CartResponseDTO
+     */
+    CartResponseDTO toCartResponseDTO(Cart cart);
 }

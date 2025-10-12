@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kg.santechmarket.dto.CartResponseDTO;
 import kg.santechmarket.entity.Cart;
 import kg.santechmarket.entity.User;
 import kg.santechmarket.service.CartService;
@@ -27,42 +28,46 @@ public class CartController {
     @GetMapping
     @Operation(summary = "Получить корзину пользователя", description = "Возвращает текущую корзину авторизованного пользователя")
     @ApiResponse(responseCode = "200", description = "Успешно получена корзина")
-    public ResponseEntity<Cart> getUserCart(Authentication authentication) {
+    public ResponseEntity<CartResponseDTO> getUserCart(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.getOrCreateUserCart(user.getId());
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/items")
     @Operation(summary = "Добавить товар в корзину", description = "Добавляет указанное количество товара в корзину пользователя")
-    public ResponseEntity<Cart> addItemToCart(
+    public ResponseEntity<CartResponseDTO> addItemToCart(
             @Parameter(description = "ID товара") @RequestParam Long productId,
             @Parameter(description = "Количество") @RequestParam Integer quantity,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.addItemToCart(user.getId(), productId, quantity);
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/items/{productId}")
     @Operation(summary = "Обновить количество товара", description = "Обновляет количество указанного товара в корзине")
-    public ResponseEntity<Cart> updateItemQuantity(
+    public ResponseEntity<CartResponseDTO> updateItemQuantity(
             @Parameter(description = "ID товара") @PathVariable Long productId,
             @Parameter(description = "Новое количество") @RequestParam Integer quantity,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.updateItemQuantity(user.getId(), productId, quantity);
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/items/{productId}")
     @Operation(summary = "Удалить товар из корзины", description = "Удаляет товар из корзины пользователя")
-    public ResponseEntity<Cart> removeItemFromCart(
+    public ResponseEntity<CartResponseDTO> removeItemFromCart(
             @Parameter(description = "ID товара") @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.removeItemFromCart(user.getId(), productId);
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping
@@ -99,22 +104,24 @@ public class CartController {
 
     @PatchMapping("/items/{productId}/increment")
     @Operation(summary = "Увеличить количество товара на 1", description = "Увеличивает количество указанного товара в корзине на 1")
-    public ResponseEntity<Cart> incrementItemQuantity(
+    public ResponseEntity<CartResponseDTO> incrementItemQuantity(
             @Parameter(description = "ID товара") @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.incrementItemQuantity(user.getId(), productId);
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/items/{productId}/decrement")
     @Operation(summary = "Уменьшить количество товара на 1", description = "Уменьшает количество указанного товара в корзине на 1. Если останется 0 - товар удаляется")
-    public ResponseEntity<Cart> decrementItemQuantity(
+    public ResponseEntity<CartResponseDTO> decrementItemQuantity(
             @Parameter(description = "ID товара") @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.decrementItemQuantity(user.getId(), productId);
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/unique-count")
@@ -127,10 +134,11 @@ public class CartController {
 
     @PostMapping("/sync-prices")
     @Operation(summary = "Синхронизировать цены", description = "Синхронизирует цены в корзине с актуальными ценами товаров")
-    public ResponseEntity<Cart> syncCartPrices(Authentication authentication) {
+    public ResponseEntity<CartResponseDTO> syncCartPrices(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.syncCartPrices(user.getId());
-        return ResponseEntity.ok(cart);
+        CartResponseDTO response = cartService.toCartResponseDTO(cart);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/validate")
