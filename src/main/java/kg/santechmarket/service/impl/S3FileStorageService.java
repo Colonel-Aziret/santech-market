@@ -1,13 +1,21 @@
 package kg.santechmarket.service.impl;
 
 import kg.santechmarket.service.FileStorageService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -51,18 +59,18 @@ public class S3FileStorageService implements FileStorageService {
     @Value("${file-storage.s3.cloudfront-domain:}")
     private String cloudfrontDomain;
 
-    // private S3Client s3Client; // Будет использоваться после подключения AWS SDK
+    private S3Client s3Client;
 
-    // @PostConstruct
-    // public void init() {
-    //     // Инициализация S3 клиента
-    //     AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
-    //     this.s3Client = S3Client.builder()
-    //             .region(Region.of(region))
-    //             .credentialsProvider(StaticCredentialsProvider.create(credentials))
-    //             .build();
-    //     log.info("S3 клиент инициализирован для bucket: {}", bucketName);
-    // }
+    @PostConstruct
+    public void init() {
+        // Инициализация S3 клиента
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+        this.s3Client = S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .build();
+        log.info("S3 клиент инициализирован для bucket: {}", bucketName);
+    }
 
     @Override
     public String store(MultipartFile file, String category) {
@@ -82,16 +90,16 @@ public class S3FileStorageService implements FileStorageService {
         String s3Key = category + "/" + newFilename;
 
         try {
-            // TODO: Реализовать загрузку в S3
-            // PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-            //         .bucket(bucketName)
-            //         .key(s3Key)
-            //         .contentType(file.getContentType())
-            //         .acl(ObjectCannedACL.PUBLIC_READ)
-            //         .build();
-            //
-            // s3Client.putObject(putObjectRequest,
-            //         RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+            // Загрузка в S3
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(s3Key)
+                    .contentType(file.getContentType())
+                    .acl(ObjectCannedACL.PUBLIC_READ)
+                    .build();
+
+            s3Client.putObject(putObjectRequest,
+                    RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
             log.info("Файл загружен в S3: {}", s3Key);
 
@@ -102,6 +110,9 @@ public class S3FileStorageService implements FileStorageService {
                 return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, s3Key);
             }
 
+        } catch (IOException e) {
+            log.error("Ошибка чтения файла: {}", originalFilename, e);
+            throw new RuntimeException("Не удалось прочитать файл: " + originalFilename, e);
         } catch (Exception e) {
             log.error("Ошибка загрузки файла в S3: {}", originalFilename, e);
             throw new RuntimeException("Не удалось загрузить файл в S3: " + originalFilename, e);
@@ -114,13 +125,13 @@ public class S3FileStorageService implements FileStorageService {
             // Извлечение S3 key из URL
             String s3Key = extractS3Key(fileUrl);
 
-            // TODO: Реализовать удаление из S3
-            // DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-            //         .bucket(bucketName)
-            //         .key(s3Key)
-            //         .build();
-            //
-            // s3Client.deleteObject(deleteObjectRequest);
+            // Удаление из S3
+            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(s3Key)
+                    .build();
+
+            s3Client.deleteObject(deleteObjectRequest);
 
             log.info("Файл удалён из S3: {}", s3Key);
 
@@ -135,17 +146,18 @@ public class S3FileStorageService implements FileStorageService {
         try {
             String s3Key = extractS3Key(fileUrl);
 
-            // TODO: Реализовать проверку существования в S3
-            // HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
-            //         .bucket(bucketName)
-            //         .key(s3Key)
-            //         .build();
-            //
-            // s3Client.headObject(headObjectRequest);
-            // return true;
+            // Проверка существования в S3
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(s3Key)
+                    .build();
 
-            return false; // Временная заглушка
+            s3Client.headObject(headObjectRequest);
+            return true;
 
+        } catch (NoSuchKeyException e) {
+            log.debug("Файл не найден в S3: {}", fileUrl);
+            return false;
         } catch (Exception e) {
             log.error("Ошибка проверки существования файла в S3: {}", fileUrl, e);
             return false;
