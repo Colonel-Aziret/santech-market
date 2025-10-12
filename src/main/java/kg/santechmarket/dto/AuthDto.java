@@ -76,7 +76,14 @@ public class AuthDto {
             @Size(max = 100, message = "Имя не может превышать 100 символов")
             String fullName,
 
+            @jakarta.validation.constraints.Email(message = "Некорректный формат email")
             String email,
+
+            @NotBlank(message = "Номер телефона не может быть пустым")
+            @jakarta.validation.constraints.Pattern(
+                    regexp = "^\\+996\\d{9}$",
+                    message = "Номер телефона должен быть в формате +996XXXXXXXXX"
+            )
             String phoneNumber
     ) {
     }

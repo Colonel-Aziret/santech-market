@@ -81,4 +81,51 @@ public interface CategoryService {
      * Получить категорию с количеством товаров
      */
     List<CategoryDto.CategoryWithProductCount> getCategoriesWithProductCount();
+
+    // ===== Методы для работы с иерархией (подкатегории) =====
+
+    /**
+     * Получить все корневые категории (для главной страницы)
+     */
+    List<Category> findAllRootCategories();
+
+    /**
+     * Получить все активные корневые категории
+     */
+    List<Category> findActiveRootCategories();
+
+    /**
+     * Получить дерево категорий с подкатегориями
+     */
+    List<Category> getCategoryTree();
+
+    /**
+     * Получить подкатегории для указанной категории
+     */
+    List<Category> getSubcategories(Long parentId);
+
+    /**
+     * Получить активные подкатегории
+     */
+    List<Category> getActiveSubcategories(Long parentId);
+
+    /**
+     * Создать подкатегорию
+     */
+    Category createSubcategory(Long parentId, Category subcategory);
+
+    /**
+     * Переместить категорию в другую родительскую категорию
+     */
+    Category moveCategoryToParent(Long categoryId, Long newParentId);
+
+    /**
+     * Получить путь от корня до категории (breadcrumbs)
+     */
+    List<Category> getCategoryPath(Long categoryId);
+
+    /**
+     * Проверить, может ли категория быть родителем для другой (предотвращение циклов)
+     */
+    boolean canBeParent(Long potentialParentId, Long childId);
 }

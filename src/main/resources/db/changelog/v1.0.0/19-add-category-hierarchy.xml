@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="19-add-category-hierarchy" author="developer">
+        <comment>Добавление поддержки иерархии категорий (подкатегории)</comment>
+
+        <!-- Добавляем колонку parent_id -->
+        <addColumn tableName="categories">
+            <column name="parent_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <!-- Создаем внешний ключ на саму таблицу (self-referencing) -->
+        <addForeignKeyConstraint
+                baseTableName="categories"
+                baseColumnNames="parent_id"
+                constraintName="fk_categories_parent"
+                referencedTableName="categories"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <!-- Создаем индекс для оптимизации запросов по родительской категории -->
+        <createIndex tableName="categories" indexName="idx_category_parent">
+            <column name="parent_id"/>
+        </createIndex>
+
+        <!-- Создаем индекс для активных категорий -->
+        <createIndex tableName="categories" indexName="idx_category_active">
+            <column name="is_active"/>
+        </createIndex>
+
+        <!-- Добавляем комментарий -->
+        <sql>
+            COMMENT ON COLUMN categories.parent_id IS 'ID родительской категории (NULL для корневых категорий)';
+        </sql>
+
+        <!-- Добавляем проверку на циклические ссылки (категория не может быть родителем самой себя) -->
+        <sql>
+            ALTER TABLE categories ADD CONSTRAINT chk_category_not_self_parent
+                CHECK (id != parent_id);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

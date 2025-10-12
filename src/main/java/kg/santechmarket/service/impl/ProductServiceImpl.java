@@ -2,7 +2,9 @@ package kg.santechmarket.service.impl;
 
 import kg.santechmarket.entity.Category;
 import kg.santechmarket.entity.Product;
+import kg.santechmarket.entity.ProductImage;
 import kg.santechmarket.repository.CategoryRepository;
+import kg.santechmarket.repository.ProductImageRepository;
 import kg.santechmarket.repository.ProductRepository;
 import kg.santechmarket.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductImageRepository productImageRepository;
 
     /**
      * Найти товар по ID
@@ -188,7 +191,6 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setBrand(productUpdate.getBrand());
         existingProduct.setSku(productUpdate.getSku());
         existingProduct.setImageUrl(productUpdate.getImageUrl());
-        existingProduct.setAdditionalImages(productUpdate.getAdditionalImages());
         existingProduct.setSpecifications(productUpdate.getSpecifications());
         existingProduct.setIsActive(productUpdate.getIsActive());
         existingProduct.setIsFeatured(productUpdate.getIsFeatured());
@@ -303,5 +305,97 @@ public class ProductServiceImpl implements ProductService {
         if (product.getCategory() == null) {
             throw new IllegalArgumentException("Категория товара обязательна");
         }
+    }
+
+    /**
+     * Добавить изображение к товару
+     */
+    @Transactional
+    @Override
+    public ProductImage addImageToProduct(Long productId, String imageUrl, Integer displayOrder, String altText) {
+        log.info("Добавление изображения к товару с ID: {}", productId);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Товар не найден: " + productId));
+
+        ProductImage productImage = new ProductImage();
+        productImage.setProduct(product);
+        productImage.setImageUrl(imageUrl);
+        productImage.setDisplayOrder(displayOrder != null ? displayOrder : 0);
+        productImage.setAltText(altText);
+
+        ProductImage savedImage = productImageRepository.save(productImage);
+        log.info("Изображение добавлено к товару {} с ID {}", product.getName(), savedImage.getId());
+
+        return savedImage;
+    }
+
+    /**
+     * Получить все изображения товара
+     */
+    @Override
+    public List<ProductImage> getProductImages(Long productId) {
+        log.debug("Получение изображений для товара с ID: {}", productId);
+        return productImageRepository.findByProductIdOrderByDisplayOrderAsc(productId);
+    }
+
+    /**
+     * Удалить изображение товара
+     */
+    @Transactional
+    @Override
+    public void deleteProductImage(Long productId, Long imageId) {
+        log.info("Удаление изображения с ID {} у товара с ID {}", imageId, productId);
+
+        ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
+                .orElseThrow(() -> new IllegalArgumentException("Изображение не найдено"));
+
+        productImageRepository.delete(image);
+        log.info("Изображение удалено");
+    }
+
+    /**
+     * Обновить порядок отображения изображения
+     */
+    @Transactional
+    @Override
+    public ProductImage updateImageOrder(Long productId, Long imageId, Integer newOrder) {
+        log.info("Обновление порядка изображения с ID {} у товара с ID {}", imageId, productId);
+
+        ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
+                .orElseThrow(() -> new IllegalArgumentException("Изображение не найдено"));
+
+        image.setDisplayOrder(newOrder);
+        ProductImage updatedImage = productImageRepository.save(image);
+        log.info("Порядок изображения обновлен на {}", newOrder);
+
+        return updatedImage;
+    }
+
+    /**
+     * Обновить изображение товара
+     */
+    @Transactional
+    @Override
+    public ProductImage updateProductImage(Long productId, Long imageId, String imageUrl, Integer displayOrder, String altText) {
+        log.info("Обновление изображения с ID {} у товара с ID {}", imageId, productId);
+
+        ProductImage image = productImageRepository.findByProductIdAndId(productId, imageId)
+                .orElseThrow(() -> new IllegalArgumentException("Изображение не найдено"));
+
+        if (imageUrl != null) {
+            image.setImageUrl(imageUrl);
+        }
+        if (displayOrder != null) {
+            image.setDisplayOrder(displayOrder);
+        }
+        if (altText != null) {
+            image.setAltText(altText);
+        }
+
+        ProductImage updatedImage = productImageRepository.save(image);
+        log.info("Изображение обновлено");
+
+        return updatedImage;
     }
 }

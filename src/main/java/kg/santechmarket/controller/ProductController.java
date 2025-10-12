@@ -6,18 +6,22 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kg.santechmarket.dto.ProductImageDto;
 import kg.santechmarket.entity.Product;
+import kg.santechmarket.entity.ProductImage;
 import kg.santechmarket.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -198,5 +202,98 @@ public class ProductController {
     public ResponseEntity<Long> getProductCountByCategory(@Parameter(description = "ID категории") @PathVariable Long categoryId) {
         long count = productService.getProductCountByCategory(categoryId);
         return ResponseEntity.ok(count);
+    }
+
+    // ===== Управление изображениями товаров =====
+
+    @GetMapping("/{productId}/images")
+    @Operation(summary = "Получить все изображения товара", description = "Возвращает список всех изображений товара")
+    public ResponseEntity<List<ProductImageDto.ImageResponse>> getProductImages(
+            @Parameter(description = "ID товара") @PathVariable Long productId) {
+        List<ProductImage> images = productService.getProductImages(productId);
+        List<ProductImageDto.ImageResponse> response = images.stream()
+                .map(img -> new ProductImageDto.ImageResponse(
+                        img.getId(),
+                        img.getImageUrl(),
+                        img.getDisplayOrder(),
+                        img.getAltText()
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{productId}/images")
+    @Operation(summary = "Добавить изображение к товару", description = "Добавляет новое изображение к товару")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<ProductImageDto.ImageResponse> addProductImage(
+            @Parameter(description = "ID товара") @PathVariable Long productId,
+            @Valid @RequestBody ProductImageDto.AddImageRequest request) {
+        ProductImage image = productService.addImageToProduct(
+                productId,
+                request.imageUrl(),
+                request.displayOrder(),
+                request.altText()
+        );
+        ProductImageDto.ImageResponse response = new ProductImageDto.ImageResponse(
+                image.getId(),
+                image.getImageUrl(),
+                image.getDisplayOrder(),
+                image.getAltText()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{productId}/images/{imageId}")
+    @Operation(summary = "Обновить изображение товара", description = "Обновляет информацию об изображении товара")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<ProductImageDto.ImageResponse> updateProductImage(
+            @Parameter(description = "ID товара") @PathVariable Long productId,
+            @Parameter(description = "ID изображения") @PathVariable Long imageId,
+            @Valid @RequestBody ProductImageDto.UpdateImageRequest request) {
+        ProductImage image = productService.updateProductImage(
+                productId,
+                imageId,
+                request.imageUrl(),
+                request.displayOrder(),
+                request.altText()
+        );
+        ProductImageDto.ImageResponse response = new ProductImageDto.ImageResponse(
+                image.getId(),
+                image.getImageUrl(),
+                image.getDisplayOrder(),
+                image.getAltText()
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{productId}/images/{imageId}/order")
+    @Operation(summary = "Изменить порядок изображения", description = "Изменяет порядок отображения изображения")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<ProductImageDto.ImageResponse> updateImageOrder(
+            @Parameter(description = "ID товара") @PathVariable Long productId,
+            @Parameter(description = "ID изображения") @PathVariable Long imageId,
+            @Parameter(description = "Новый порядок") @RequestParam Integer order) {
+        ProductImage image = productService.updateImageOrder(productId, imageId, order);
+        ProductImageDto.ImageResponse response = new ProductImageDto.ImageResponse(
+                image.getId(),
+                image.getImageUrl(),
+                image.getDisplayOrder(),
+                image.getAltText()
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{productId}/images/{imageId}")
+    @Operation(summary = "Удалить изображение товара", description = "Удаляет изображение товара")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<Void> deleteProductImage(
+            @Parameter(description = "ID товара") @PathVariable Long productId,
+            @Parameter(description = "ID изображения") @PathVariable Long imageId) {
+        productService.deleteProductImage(productId, imageId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package kg.santechmarket.service;
 
 import kg.santechmarket.entity.Product;
+import kg.santechmarket.entity.ProductImage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -113,4 +114,29 @@ public interface ProductService {
     long getActiveProductCount();
 
     long getProductCountByCategory(Long categoryId);
+
+    /**
+     * Добавить изображение к товару
+     */
+    ProductImage addImageToProduct(Long productId, String imageUrl, Integer displayOrder, String altText);
+
+    /**
+     * Получить все изображения товара
+     */
+    List<ProductImage> getProductImages(Long productId);
+
+    /**
+     * Удалить изображение товара
+     */
+    void deleteProductImage(Long productId, Long imageId);
+
+    /**
+     * Обновить порядок отображения изображения
+     */
+    ProductImage updateImageOrder(Long productId, Long imageId, Integer newOrder);
+
+    /**
+     * Обновить изображение товара
+     */
+    ProductImage updateProductImage(Long productId, Long imageId, String imageUrl, Integer displayOrder, String altText);
 }

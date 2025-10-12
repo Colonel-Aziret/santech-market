@@ -23,5 +23,8 @@
     <include file="db/changelog/v1.0.0/15-insert-promo-banners-data.xml"/>
     <include file="db/changelog/v1.0.0/16-create-refresh-tokens-table.xml"/>
     <include file="db/changelog/v1.0.0/17-add-user-status-column.xml"/>
+    <include file="db/changelog/v1.0.0/18-create-product-images-table.xml"/>
+    <include file="db/changelog/v1.0.0/19-add-category-hierarchy.xml"/>
+    <include file="db/changelog/v1.0.0/20-insert-test-products.xml"/>
 
 </databaseChangeLog>

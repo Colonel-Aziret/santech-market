@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="20-insert-test-products" author="developer">
+        <comment>Добавление тестовых продуктов с изображениями для мобильного приложения</comment>
+
+        <!-- Трубы полипропиленовые -->
+        <insert tableName="products">
+            <column name="name" value="Труба PPR PN20 20мм белая (4м)"/>
+            <column name="description" value="Полипропиленовая труба для холодного и горячего водоснабжения. Рабочая температура до +80°C. Производство Турция."/>
+            <column name="price" value="450.00"/>
+            <column name="old_price" value="550.00"/>
+            <column name="brand" value="Pilsa"/>
+            <column name="sku" value="PPR-PN20-20"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800"/>
+            <column name="specifications" value='{"diameter": "20мм", "pressure": "PN20", "length": "4м", "material": "PPR", "color": "белый"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба PPR PN25 армированная 25мм (4м)"/>
+            <column name="description" value="Армированная стекловолокном труба для систем отопления и горячего водоснабжения. Выдерживает температуру до +95°C."/>
+            <column name="price" value="780.00"/>
+            <column name="brand" value="Kalde"/>
+            <column name="sku" value="PPR-PN25-25"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800"/>
+            <column name="specifications" value='{"diameter": "25мм", "pressure": "PN25", "length": "4м", "material": "PPR армированный", "reinforcement": "стекловолокно"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба металлопластиковая 16мм (100м)"/>
+            <column name="description" value="Металлопластиковая труба с защитным покрытием. Универсальное применение для водоснабжения и отопления."/>
+            <column name="price" value="3200.00"/>
+            <column name="old_price" value="3800.00"/>
+            <column name="brand" value="Henco"/>
+            <column name="sku" value="MP-16-100"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1597740985671-2a8a3b1e0b94?w=800"/>
+            <column name="specifications" value='{"diameter": "16мм", "length": "100м", "material": "металлопластик", "application": "универсальная"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <!-- Фитинги -->
+        <insert tableName="products">
+            <column name="name" value="Уголок PPR 90° 20мм"/>
+            <column name="description" value="Полипропиленовый уголок для соединения труб под углом 90 градусов. Подходит для труб диаметром 20мм."/>
+            <column name="price" value="45.00"/>
+            <column name="brand" value="Pilsa"/>
+            <column name="sku" value="ANGLE-PPR-20"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1565122982-28d37e1a8460?w=800"/>
+            <column name="specifications" value='{"angle": "90°", "diameter": "20мм", "material": "PPR", "type": "уголок"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="2"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Тройник PPR 20x20x20мм"/>
+            <column name="description" value="Полипропиленовый тройник для разветвления трубопровода. Равнопроходной."/>
+            <column name="price" value="65.00"/>
+            <column name="brand" value="Kalde"/>
+            <column name="sku" value="TEE-PPR-20"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800"/>
+            <column name="specifications" value='{"diameter": "20x20x20мм", "material": "PPR", "type": "тройник равнопроходной"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="2"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Муфта переходная PPR 25x20мм"/>
+            <column name="description" value="Переходная муфта для соединения труб разного диаметра (25мм на 20мм)."/>
+            <column name="price" value="38.00"/>
+            <column name="brand" value="Pilsa"/>
+            <column name="sku" value="COUPL-PPR-2520"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800"/>
+            <column name="specifications" value='{"diameter": "25x20мм", "material": "PPR", "type": "муфта переходная"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="2"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <!-- Краны и смесители -->
+        <insert tableName="products">
+            <column name="name" value="Кран шаровый 1/2 дюйма полнопроходной"/>
+            <column name="description" value="Латунный шаровый кран для перекрытия воды. Ручка-бабочка. Резьба внутренняя-внутренняя."/>
+            <column name="price" value="280.00"/>
+            <column name="old_price" value="350.00"/>
+            <column name="brand" value="Valtec"/>
+            <column name="sku" value="VALVE-BALL-12"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800"/>
+            <column name="specifications" value='{"size": "1/2 дюйма", "material": "латунь", "type": "шаровый полнопроходной", "thread": "внутренняя-внутренняя"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="3"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Смеситель для кухни с высоким изливом"/>
+            <column name="description" value="Однорычажный смеситель для кухни. Высокий поворотный излив. Хромированное покрытие."/>
+            <column name="price" value="3500.00"/>
+            <column name="old_price" value="4200.00"/>
+            <column name="brand" value="Grohe"/>
+            <column name="sku" value="MIXER-KITCH-01"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800"/>
+            <column name="specifications" value='{"type": "однорычажный", "mounting": "на мойку", "spout": "высокий поворотный", "finish": "хром"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="3"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Смеситель для ванны с душем"/>
+            <column name="description" value="Двухвентильный смеситель для ванны с переключателем на душ. В комплекте лейка и шланг 1.5м."/>
+            <column name="price" value="4200.00"/>
+            <column name="brand" value="Hansgrohe"/>
+            <column name="sku" value="MIXER-BATH-01"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=800"/>
+            <column name="specifications" value='{"type": "двухвентильный", "mounting": "на стену", "includes": "лейка + шланг 1.5м", "finish": "хром"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="3"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <!-- Сантехника -->
+        <insert tableName="products">
+            <column name="name" value="Унитаз-компакт напольный керамический"/>
+            <column name="description" value="Унитаз с бачком. Система смыва двойная (3/6 литров). Нижнее подключение воды. Сиденье в комплекте."/>
+            <column name="price" value="12500.00"/>
+            <column name="old_price" value="15000.00"/>
+            <column name="brand" value="Cersanit"/>
+            <column name="sku" value="TOILET-COMP-01"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800"/>
+            <column name="specifications" value='{"type": "компакт напольный", "flush": "двойная 3/6л", "connection": "нижнее", "includes": "бачок + сиденье"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="4"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Раковина керамическая 60см с пьедесталом"/>
+            <column name="description" value="Классическая раковина с полупьедесталом. Отверстие под смеситель. Белая керамика."/>
+            <column name="price" value="5800.00"/>
+            <column name="brand" value="Santeri"/>
+            <column name="sku" value="SINK-PED-60"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800"/>
+            <column name="specifications" value='{"width": "60см", "type": "с полупьедесталом", "holes": "1 отверстие", "material": "керамика", "color": "белый"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="4"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Душевая кабина 90x90см с поддоном"/>
+            <column name="description" value="Квадратная душевая кабина с глубоким поддоном. Прозрачное стекло 6мм. Раздвижные двери."/>
+            <column name="price" value="28000.00"/>
+            <column name="old_price" value="35000.00"/>
+            <column name="brand" value="Timo"/>
+            <column name="sku" value="SHOWER-90-01"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800"/>
+            <column name="specifications" value='{"size": "90x90см", "tray": "глубокий акриловый", "glass": "прозрачное 6мм", "doors": "раздвижные"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="4"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <!-- Инструменты -->
+        <insert tableName="products">
+            <column name="name" value="Паяльник для полипропиленовых труб 1500Вт"/>
+            <column name="description" value="Профессиональный паяльник для PPR труб. Мощность 1500Вт. В комплекте насадки 20, 25, 32мм, подставка, перчатки."/>
+            <column name="price" value="4500.00"/>
+            <column name="brand" value="Энкор"/>
+            <column name="sku" value="TOOL-WELD-1500"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=800"/>
+            <column name="specifications" value='{"power": "1500Вт", "nozzles": "20, 25, 32мм", "includes": "подставка + перчатки", "type": "для PPR"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="true"/>
+            <column name="category_id" value="5"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труборез для полипропиленовых труб 0-42мм"/>
+            <column name="description" value="Ручной труборез с храповым механизмом. Режет трубы диаметром до 42мм. Острые лезвия из закаленной стали."/>
+            <column name="price" value="1200.00"/>
+            <column name="brand" value="Rems"/>
+            <column name="sku" value="TOOL-CUT-42"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800"/>
+            <column name="specifications" value='{"max_diameter": "42мм", "mechanism": "храповый", "blade": "закаленная сталь", "type": "ручной"}'/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="5"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

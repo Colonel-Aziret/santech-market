@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -242,5 +244,144 @@ public class CategoryServiceImpl implements CategoryService {
         if (category.getDisplayOrder() != null && category.getDisplayOrder() <= 0) {
             throw new IllegalArgumentException("Порядок отображения должен быть больше 0");
         }
+    }
+
+    // ===== Имплементация методов для иерархии (подкатегории) =====
+
+    @Override
+    public List<Category> findAllRootCategories() {
+        log.debug("Получение всех корневых категорий");
+        return categoryRepository.findByParentIsNullOrderByDisplayOrderAsc();
+    }
+
+    @Override
+    public List<Category> findActiveRootCategories() {
+        log.debug("Получение активных корневых категорий");
+        return categoryRepository.findByParentIsNullAndIsActiveTrueOrderByDisplayOrderAsc();
+    }
+
+    @Override
+    public List<Category> getCategoryTree() {
+        log.debug("Получение дерева категорий");
+        return categoryRepository.findAllRootCategoriesWithSubcategories();
+    }
+
+    @Override
+    public List<Category> getSubcategories(Long parentId) {
+        log.debug("Получение подкатегорий для категории с ID: {}", parentId);
+
+        // Проверяем существование родительской категории
+        if (!categoryRepository.existsById(parentId)) {
+            throw new IllegalArgumentException("Категория не найдена: " + parentId);
+        }
+
+        return categoryRepository.findByParentIdOrderByDisplayOrderAsc(parentId);
+    }
+
+    @Override
+    public List<Category> getActiveSubcategories(Long parentId) {
+        log.debug("Получение активных подкатегорий для категории с ID: {}", parentId);
+
+        // Проверяем существование родительской категории
+        if (!categoryRepository.existsById(parentId)) {
+            throw new IllegalArgumentException("Категория не найдена: " + parentId);
+        }
+
+        return categoryRepository.findByParentIdAndIsActiveTrueOrderByDisplayOrderAsc(parentId);
+    }
+
+    @Override
+    @Transactional
+    public Category createSubcategory(Long parentId, Category subcategory) {
+        log.info("Создание подкатегории для категории с ID: {}", parentId);
+
+        // Проверяем существование родительской категории
+        Category parent = categoryRepository.findById(parentId)
+                .orElseThrow(() -> new IllegalArgumentException("Родительская категория не найдена: " + parentId));
+
+        // Устанавливаем родителя
+        subcategory.setParent(parent);
+
+        // Создаём подкатегорию через обычный метод create
+        return createCategory(subcategory);
+    }
+
+    @Override
+    @Transactional
+    public Category moveCategoryToParent(Long categoryId, Long newParentId) {
+        log.info("Перемещение категории {} к новому родителю {}", categoryId, newParentId);
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + categoryId));
+
+        // Если newParentId == null, делаем категорию корневой
+        if (newParentId == null) {
+            category.setParent(null);
+            log.info("Категория {} теперь корневая", categoryId);
+        } else {
+            // Проверяем, что новый родитель существует
+            Category newParent = categoryRepository.findById(newParentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Новая родительская категория не найдена: " + newParentId));
+
+            // Проверяем на циклические ссылки
+            if (!canBeParent(newParentId, categoryId)) {
+                throw new IllegalArgumentException("Нельзя переместить категорию: это создаст циклическую ссылку");
+            }
+
+            category.setParent(newParent);
+            log.info("Категория {} перемещена к родителю {}", categoryId, newParentId);
+        }
+
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public List<Category> getCategoryPath(Long categoryId) {
+        log.debug("Получение пути для категории с ID: {}", categoryId);
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + categoryId));
+
+        List<Category> path = new ArrayList<>();
+        Category current = category;
+
+        // Идём от категории к корню
+        while (current != null) {
+            path.add(current);
+            current = current.getParent();
+        }
+
+        // Разворачиваем список, чтобы путь был от корня к текущей категории
+        Collections.reverse(path);
+
+        return path;
+    }
+
+    @Override
+    public boolean canBeParent(Long potentialParentId, Long childId) {
+        log.debug("Проверка, может ли категория {} быть родителем для {}", potentialParentId, childId);
+
+        // Категория не может быть родителем самой себе
+        if (potentialParentId.equals(childId)) {
+            return false;
+        }
+
+        // Проверяем, не является ли potentialParent потомком child
+        Category potentialParent = categoryRepository.findById(potentialParentId).orElse(null);
+        if (potentialParent == null) {
+            return false;
+        }
+
+        // Идём вверх по иерархии от potentialParent
+        Category current = potentialParent.getParent();
+        while (current != null) {
+            if (current.getId().equals(childId)) {
+                // child является предком potentialParent - циклическая ссылка
+                return false;
+            }
+            current = current.getParent();
+        }
+
+        return true;
     }
 }

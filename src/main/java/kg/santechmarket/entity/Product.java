@@ -79,10 +79,11 @@ public class Product extends BaseEntity {
     private String imageUrl;
 
     /**
-     * Дополнительные изображения товара (JSON массив URL)
+     * Дополнительные изображения товара
      */
-    @Column(name = "additional_images", columnDefinition = "TEXT")
-    private String additionalImages;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OrderBy("displayOrder ASC")
+    private List<ProductImage> additionalImages;
 
     /**
      * Характеристики товара (JSON объект)

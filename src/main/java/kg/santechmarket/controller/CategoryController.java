@@ -150,4 +150,69 @@ public class CategoryController {
         long count = categoryService.getActiveCategoryCount();
         return ResponseEntity.ok(count);
     }
+
+    // ===== Эндпоинты для работы с иерархией (подкатегории) =====
+
+    @GetMapping("/root")
+    @Operation(summary = "Получить корневые категории", description = "Возвращает список корневых категорий (без родителя)")
+    public ResponseEntity<List<Category>> getRootCategories() {
+        List<Category> categories = categoryService.findActiveRootCategories();
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/tree")
+    @Operation(summary = "Получить дерево категорий", description = "Возвращает полное дерево категорий с подкатегориями")
+    public ResponseEntity<List<Category>> getCategoryTree() {
+        List<Category> tree = categoryService.getCategoryTree();
+        return ResponseEntity.ok(tree);
+    }
+
+    @GetMapping("/{parentId}/subcategories")
+    @Operation(summary = "Получить подкатегории", description = "Возвращает список подкатегорий для указанной категории")
+    public ResponseEntity<List<Category>> getSubcategories(
+            @Parameter(description = "ID родительской категории") @PathVariable Long parentId) {
+        List<Category> subcategories = categoryService.getActiveSubcategories(parentId);
+        return ResponseEntity.ok(subcategories);
+    }
+
+    @GetMapping("/{categoryId}/path")
+    @Operation(summary = "Получить путь категории", description = "Возвращает путь от корня до указанной категории (breadcrumbs)")
+    public ResponseEntity<List<Category>> getCategoryPath(
+            @Parameter(description = "ID категории") @PathVariable Long categoryId) {
+        List<Category> path = categoryService.getCategoryPath(categoryId);
+        return ResponseEntity.ok(path);
+    }
+
+    @PostMapping("/{parentId}/subcategories")
+    @Operation(summary = "Создать подкатегорию", description = "Создает новую подкатегорию для указанной родительской категории")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<Category> createSubcategory(
+            @Parameter(description = "ID родительской категории") @PathVariable Long parentId,
+            @Valid @RequestBody Category subcategory) {
+        Category createdSubcategory = categoryService.createSubcategory(parentId, subcategory);
+        return ResponseEntity.ok(createdSubcategory);
+    }
+
+    @PatchMapping("/{categoryId}/move-to-parent")
+    @Operation(summary = "Переместить категорию к другому родителю", description = "Перемещает категорию к новой родительской категории")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<Category> moveCategoryToParent(
+            @Parameter(description = "ID категории") @PathVariable Long categoryId,
+            @Parameter(description = "ID нового родителя (null для корневой)") @RequestParam(required = false) Long newParentId) {
+        Category movedCategory = categoryService.moveCategoryToParent(categoryId, newParentId);
+        return ResponseEntity.ok(movedCategory);
+    }
+
+    @GetMapping("/can-be-parent")
+    @Operation(summary = "Проверить возможность родительства", description = "Проверяет, может ли одна категория быть родителем для другой")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    public ResponseEntity<Boolean> canBeParent(
+            @Parameter(description = "ID потенциального родителя") @RequestParam Long potentialParentId,
+            @Parameter(description = "ID дочерней категории") @RequestParam Long childId) {
+        boolean canBe = categoryService.canBeParent(potentialParentId, childId);
+        return ResponseEntity.ok(canBe);
+    }
 }
