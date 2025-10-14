@@ -1,5 +1,6 @@
 package kg.santechmarket.service;
 
+import kg.santechmarket.dto.PromoBannerDto;
 import kg.santechmarket.entity.PromoBanner;
 
 import java.util.List;
@@ -13,12 +14,12 @@ public interface PromoBannerService {
     /**
      * Получить все активные баннеры для главной страницы
      */
-    List<PromoBanner> getActiveBanners();
+    List<PromoBannerDto.BannerResponse> getActiveBanners();
 
     /**
      * Получить все активные баннеры с учетом временных рамок
      */
-    List<PromoBanner> getCurrentBanners();
+    List<PromoBannerDto.BannerResponse> getCurrentBanners();
 
     /**
      * Получить баннер по ID
@@ -58,5 +59,5 @@ public interface PromoBannerService {
     /**
      * Получить все баннеры (для админки)
      */
-    List<PromoBanner> getAllBanners();
+    List<PromoBannerDto.BannerResponse> getAllBanners();
 }

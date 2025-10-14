@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kg.santechmarket.dto.PromoBannerDto;
 import kg.santechmarket.entity.PromoBanner;
 import kg.santechmarket.service.PromoBannerService;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class PromoBannerController {
     @GetMapping
     @Operation(summary = "Получить все активные баннеры", description = "Возвращает список активных промо-баннеров для главной страницы")
     @ApiResponse(responseCode = "200", description = "Успешно получен список баннеров")
-    public ResponseEntity<List<PromoBanner>> getActiveBanners() {
-        List<PromoBanner> banners = promoBannerService.getCurrentBanners();
+    public ResponseEntity<List<PromoBannerDto.BannerResponse>> getActiveBanners() {
+        List<PromoBannerDto.BannerResponse> banners = promoBannerService.getCurrentBanners();
         return ResponseEntity.ok(banners);
     }
 
@@ -43,8 +44,8 @@ public class PromoBannerController {
     @Operation(summary = "Получить все баннеры", description = "Возвращает список всех баннеров (для админки)")
     @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<List<PromoBanner>> getAllBanners() {
-        List<PromoBanner> banners = promoBannerService.getAllBanners();
+    public ResponseEntity<List<PromoBannerDto.BannerResponse>> getAllBanners() {
+        List<PromoBannerDto.BannerResponse> banners = promoBannerService.getAllBanners();
         return ResponseEntity.ok(banners);
     }
 

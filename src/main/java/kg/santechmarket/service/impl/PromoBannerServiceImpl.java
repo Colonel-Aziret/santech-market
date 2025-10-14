@@ -1,10 +1,13 @@
 package kg.santechmarket.service.impl;
 
+import kg.santechmarket.dto.PromoBannerDto;
 import kg.santechmarket.entity.PromoBanner;
 import kg.santechmarket.repository.PromoBannerRepository;
 import kg.santechmarket.service.PromoBannerService;
+import kg.santechmarket.util.UrlUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,17 +23,47 @@ public class PromoBannerServiceImpl implements PromoBannerService {
 
     private final PromoBannerRepository promoBannerRepository;
 
-    @Override
-    public List<PromoBanner> getActiveBanners() {
-        log.debug("Получение всех активных баннеров");
-        return promoBannerRepository.findByIsActiveTrueOrderByDisplayOrderAsc();
+    @Value("${file-storage.local.base-url}")
+    private String baseUrl;
+
+    /**
+     * Конвертирует entity в DTO с полными URL
+     */
+    private PromoBannerDto.BannerResponse toDto(PromoBanner banner) {
+        return PromoBannerDto.BannerResponse.builder()
+                .id(banner.getId())
+                .title(banner.getTitle())
+                .subtitle(banner.getSubtitle())
+                .imageUrl(UrlUtil.buildFullUrl(banner.getImageUrl(), baseUrl))
+                .linkUrl(banner.getLinkUrl())
+                .displayOrder(banner.getDisplayOrder())
+                .isActive(banner.getIsActive())
+                .startDate(banner.getStartDate())
+                .endDate(banner.getEndDate())
+                .backgroundColor(banner.getBackgroundColor())
+                .textColor(banner.getTextColor())
+                .createdAt(banner.getCreatedAt())
+                .updatedAt(banner.getUpdatedAt())
+                .build();
     }
 
     @Override
-    public List<PromoBanner> getCurrentBanners() {
+    public List<PromoBannerDto.BannerResponse> getActiveBanners() {
+        log.debug("Получение всех активных баннеров");
+        return promoBannerRepository.findByIsActiveTrueOrderByDisplayOrderAsc()
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<PromoBannerDto.BannerResponse> getCurrentBanners() {
         log.debug("Получение текущих активных баннеров");
         LocalDateTime now = LocalDateTime.now();
-        return promoBannerRepository.findActiveBannersForCurrentTime(now);
+        return promoBannerRepository.findActiveBannersForCurrentTime(now)
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
     @Override
@@ -121,8 +154,11 @@ public class PromoBannerServiceImpl implements PromoBannerService {
     }
 
     @Override
-    public List<PromoBanner> getAllBanners() {
+    public List<PromoBannerDto.BannerResponse> getAllBanners() {
         log.debug("Получение всех баннеров");
-        return promoBannerRepository.findAll();
+        return promoBannerRepository.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 }
