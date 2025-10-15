@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="21-simplify-promo-banners" author="system">
+        <comment>Упрощение таблицы promo_banners - оставляем только imageUrl и displayOrder</comment>
+
+        <!-- Удаляем индексы -->
+        <dropIndex tableName="promo_banners" indexName="idx_promo_banner_dates"/>
+        <dropIndex tableName="promo_banners" indexName="idx_promo_banner_active"/>
+
+        <!-- Удаляем ненужные колонки -->
+        <dropColumn tableName="promo_banners" columnName="title"/>
+        <dropColumn tableName="promo_banners" columnName="subtitle"/>
+        <dropColumn tableName="promo_banners" columnName="link_url"/>
+        <dropColumn tableName="promo_banners" columnName="is_active"/>
+        <dropColumn tableName="promo_banners" columnName="start_date"/>
+        <dropColumn tableName="promo_banners" columnName="end_date"/>
+        <dropColumn tableName="promo_banners" columnName="background_color"/>
+        <dropColumn tableName="promo_banners" columnName="text_color"/>
+
+        <!-- Делаем image_url обязательным -->
+        <addNotNullConstraint tableName="promo_banners"
+                              columnName="image_url"
+                              columnDataType="VARCHAR(255)"/>
+    </changeSet>
+
+</databaseChangeLog>

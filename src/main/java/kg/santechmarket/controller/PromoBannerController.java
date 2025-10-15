@@ -25,10 +25,10 @@ public class PromoBannerController {
     private final PromoBannerService promoBannerService;
 
     @GetMapping
-    @Operation(summary = "Получить все активные баннеры", description = "Возвращает список активных промо-баннеров для главной страницы")
+    @Operation(summary = "Получить все баннеры", description = "Возвращает список всех промо-баннеров, отсортированных по displayOrder")
     @ApiResponse(responseCode = "200", description = "Успешно получен список баннеров")
-    public ResponseEntity<List<PromoBannerDto.BannerResponse>> getActiveBanners() {
-        List<PromoBannerDto.BannerResponse> banners = promoBannerService.getCurrentBanners();
+    public ResponseEntity<List<PromoBannerDto.BannerResponse>> getAllBanners() {
+        List<PromoBannerDto.BannerResponse> banners = promoBannerService.getAllBanners();
         return ResponseEntity.ok(banners);
     }
 
@@ -38,15 +38,6 @@ public class PromoBannerController {
         return promoBannerService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/all")
-    @Operation(summary = "Получить все баннеры", description = "Возвращает список всех баннеров (для админки)")
-    @SecurityRequirement(name = "JWT")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<List<PromoBannerDto.BannerResponse>> getAllBanners() {
-        List<PromoBannerDto.BannerResponse> banners = promoBannerService.getAllBanners();
-        return ResponseEntity.ok(banners);
     }
 
     @PostMapping
@@ -69,24 +60,6 @@ public class PromoBannerController {
         return ResponseEntity.ok(updatedBanner);
     }
 
-    @PatchMapping("/{id}/activate")
-    @Operation(summary = "Активировать баннер", description = "Активирует баннер")
-    @SecurityRequirement(name = "JWT")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Void> activateBanner(@Parameter(description = "ID баннера") @PathVariable Long id) {
-        promoBannerService.activateBanner(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PatchMapping("/{id}/deactivate")
-    @Operation(summary = "Деактивировать баннер", description = "Деактивирует баннер")
-    @SecurityRequirement(name = "JWT")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Void> deactivateBanner(@Parameter(description = "ID баннера") @PathVariable Long id) {
-        promoBannerService.deactivateBanner(id);
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить баннер", description = "Полностью удаляет баннер")
     @SecurityRequirement(name = "JWT")
@@ -94,14 +67,5 @@ public class PromoBannerController {
     public ResponseEntity<Void> deleteBanner(@Parameter(description = "ID баннера") @PathVariable Long id) {
         promoBannerService.deleteBanner(id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/stats/active-count")
-    @Operation(summary = "Получить количество активных баннеров", description = "Возвращает количество активных баннеров")
-    @SecurityRequirement(name = "JWT")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Long> getActiveBannerCount() {
-        long count = promoBannerService.getActiveBannerCount();
-        return ResponseEntity.ok(count);
     }
 }

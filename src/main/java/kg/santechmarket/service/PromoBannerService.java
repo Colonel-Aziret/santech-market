@@ -12,14 +12,9 @@ import java.util.Optional;
 public interface PromoBannerService {
 
     /**
-     * Получить все активные баннеры для главной страницы
+     * Получить все баннеры для главной страницы (отсортированные по displayOrder)
      */
-    List<PromoBannerDto.BannerResponse> getActiveBanners();
-
-    /**
-     * Получить все активные баннеры с учетом временных рамок
-     */
-    List<PromoBannerDto.BannerResponse> getCurrentBanners();
+    List<PromoBannerDto.BannerResponse> getAllBanners();
 
     /**
      * Получить баннер по ID
@@ -37,27 +32,7 @@ public interface PromoBannerService {
     PromoBanner updateBanner(Long id, PromoBanner bannerUpdate);
 
     /**
-     * Активировать баннер
-     */
-    void activateBanner(Long id);
-
-    /**
-     * Деактивировать баннер
-     */
-    void deactivateBanner(Long id);
-
-    /**
      * Удалить баннер
      */
     void deleteBanner(Long id);
-
-    /**
-     * Получить количество активных баннеров
-     */
-    long getActiveBannerCount();
-
-    /**
-     * Получить все баннеры (для админки)
-     */
-    List<PromoBannerDto.BannerResponse> getAllBanners();
 }

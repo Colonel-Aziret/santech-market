@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,35 +31,17 @@ public class PromoBannerServiceImpl implements PromoBannerService {
     private PromoBannerDto.BannerResponse toDto(PromoBanner banner) {
         return PromoBannerDto.BannerResponse.builder()
                 .id(banner.getId())
-                .title(banner.getTitle())
-                .subtitle(banner.getSubtitle())
                 .imageUrl(UrlUtil.buildFullUrl(banner.getImageUrl(), baseUrl))
-                .linkUrl(banner.getLinkUrl())
                 .displayOrder(banner.getDisplayOrder())
-                .isActive(banner.getIsActive())
-                .startDate(banner.getStartDate())
-                .endDate(banner.getEndDate())
-                .backgroundColor(banner.getBackgroundColor())
-                .textColor(banner.getTextColor())
                 .createdAt(banner.getCreatedAt())
                 .updatedAt(banner.getUpdatedAt())
                 .build();
     }
 
     @Override
-    public List<PromoBannerDto.BannerResponse> getActiveBanners() {
-        log.debug("Получение всех активных баннеров");
-        return promoBannerRepository.findByIsActiveTrueOrderByDisplayOrderAsc()
-                .stream()
-                .map(this::toDto)
-                .toList();
-    }
-
-    @Override
-    public List<PromoBannerDto.BannerResponse> getCurrentBanners() {
-        log.debug("Получение текущих активных баннеров");
-        LocalDateTime now = LocalDateTime.now();
-        return promoBannerRepository.findActiveBannersForCurrentTime(now)
+    public List<PromoBannerDto.BannerResponse> getAllBanners() {
+        log.debug("Получение всех баннеров, отсортированных по displayOrder");
+        return promoBannerRepository.findAllByOrderByDisplayOrderAsc()
                 .stream()
                 .map(this::toDto)
                 .toList();
@@ -75,7 +56,7 @@ public class PromoBannerServiceImpl implements PromoBannerService {
     @Override
     @Transactional
     public PromoBanner createBanner(PromoBanner banner) {
-        log.info("Создание нового баннера: {}", banner.getTitle());
+        log.info("Создание нового баннера с URL: {}", banner.getImageUrl());
         return promoBannerRepository.save(banner);
     }
 
@@ -86,53 +67,16 @@ public class PromoBannerServiceImpl implements PromoBannerService {
 
         return promoBannerRepository.findById(id)
                 .map(existingBanner -> {
-                    existingBanner.setTitle(bannerUpdate.getTitle());
-                    existingBanner.setSubtitle(bannerUpdate.getSubtitle());
-                    existingBanner.setImageUrl(bannerUpdate.getImageUrl());
-                    existingBanner.setLinkUrl(bannerUpdate.getLinkUrl());
-                    existingBanner.setDisplayOrder(bannerUpdate.getDisplayOrder());
-                    existingBanner.setStartDate(bannerUpdate.getStartDate());
-                    existingBanner.setEndDate(bannerUpdate.getEndDate());
-                    existingBanner.setBackgroundColor(bannerUpdate.getBackgroundColor());
-                    existingBanner.setTextColor(bannerUpdate.getTextColor());
+                    if (bannerUpdate.getImageUrl() != null) {
+                        existingBanner.setImageUrl(bannerUpdate.getImageUrl());
+                    }
+                    if (bannerUpdate.getDisplayOrder() != null) {
+                        existingBanner.setDisplayOrder(bannerUpdate.getDisplayOrder());
+                    }
 
                     return promoBannerRepository.save(existingBanner);
                 })
                 .orElseThrow(() -> new RuntimeException("Баннер с ID " + id + " не найден"));
-    }
-
-    @Override
-    @Transactional
-    public void activateBanner(Long id) {
-        log.info("Активация баннера с ID: {}", id);
-
-        promoBannerRepository.findById(id)
-                .ifPresentOrElse(
-                        banner -> {
-                            banner.setIsActive(true);
-                            promoBannerRepository.save(banner);
-                        },
-                        () -> {
-                            throw new RuntimeException("Баннер с ID " + id + " не найден");
-                        }
-                );
-    }
-
-    @Override
-    @Transactional
-    public void deactivateBanner(Long id) {
-        log.info("Деактивация баннера с ID: {}", id);
-
-        promoBannerRepository.findById(id)
-                .ifPresentOrElse(
-                        banner -> {
-                            banner.setIsActive(false);
-                            promoBannerRepository.save(banner);
-                        },
-                        () -> {
-                            throw new RuntimeException("Баннер с ID " + id + " не найден");
-                        }
-                );
     }
 
     @Override
@@ -145,20 +89,5 @@ public class PromoBannerServiceImpl implements PromoBannerService {
         }
 
         promoBannerRepository.deleteById(id);
-    }
-
-    @Override
-    public long getActiveBannerCount() {
-        log.debug("Подсчет количества активных баннеров");
-        return promoBannerRepository.countByIsActiveTrue();
-    }
-
-    @Override
-    public List<PromoBannerDto.BannerResponse> getAllBanners() {
-        log.debug("Получение всех баннеров");
-        return promoBannerRepository.findAll()
-                .stream()
-                .map(this::toDto)
-                .toList();
     }
 }

@@ -77,8 +77,16 @@ public class Cart extends BaseEntity {
      * @param productId ID товара
      */
     public void removeItem(Long productId) {
-        items.removeIf(item -> item.getProduct().getId().equals(productId));
-        recalculateTotal();
+        CartItem itemToRemove = items.stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+        if (itemToRemove != null) {
+            items.remove(itemToRemove);
+            itemToRemove.setCart(null);
+            recalculateTotal();
+        }
     }
 
     /**
@@ -172,5 +180,12 @@ public class Cart extends BaseEntity {
         totalItems = items.stream()
                 .mapToInt(CartItem::getQuantity)
                 .sum();
+    }
+
+    /**
+     * Публичный метод для пересчета итогов (используется в сервисе)
+     */
+    public void recalculateTotals() {
+        recalculateTotal();
     }
 }

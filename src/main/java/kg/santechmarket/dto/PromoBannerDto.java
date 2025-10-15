@@ -1,5 +1,6 @@
 package kg.santechmarket.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,16 +22,8 @@ public class PromoBannerDto {
     @AllArgsConstructor
     public static class BannerResponse {
         private Long id;
-        private String title;
-        private String subtitle;
-        private String imageUrl;  // Полный URL с базовым адресом
-        private String linkUrl;
+        private String imageUrl;
         private Integer displayOrder;
-        private Boolean isActive;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
-        private String backgroundColor;
-        private String textColor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -42,15 +35,10 @@ public class PromoBannerDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateBannerRequest {
-        private String title;
-        private String subtitle;
-        private String imageUrl;  // Относительный путь или полный URL
-        private String linkUrl;
+        @NotBlank(message = "URL изображения не может быть пустым")
+        private String imageUrl;
+
         private Integer displayOrder;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
-        private String backgroundColor;
-        private String textColor;
     }
 
     /**
@@ -60,14 +48,7 @@ public class PromoBannerDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateBannerRequest {
-        private String title;
-        private String subtitle;
-        private String imageUrl;  // Относительный путь или полный URL
-        private String linkUrl;
+        private String imageUrl;
         private Integer displayOrder;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
-        private String backgroundColor;
-        private String textColor;
     }
 }

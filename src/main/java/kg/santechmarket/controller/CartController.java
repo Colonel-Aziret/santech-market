@@ -19,15 +19,21 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/cart")
 @RequiredArgsConstructor
-@Tag(name = "Shopping Cart", description = "API для управления корзиной покупок")
+@Tag(name = "Корзина", description = "API для управления корзиной покупок: добавление/удаление товаров, изменение количества")
 @SecurityRequirement(name = "JWT")
 public class CartController {
 
     private final CartService cartService;
 
     @GetMapping
-    @Operation(summary = "Получить корзину пользователя", description = "Возвращает текущую корзину авторизованного пользователя")
-    @ApiResponse(responseCode = "200", description = "Успешно получена корзина")
+    @Operation(
+            summary = "Получить корзину пользователя",
+            description = "Возвращает текущую корзину авторизованного пользователя со всеми товарами, количеством и общей стоимостью"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Корзина успешно получена"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован")
+    })
     public ResponseEntity<CartResponseDTO> getUserCart(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.getOrCreateUserCart(user.getId());
@@ -36,10 +42,26 @@ public class CartController {
     }
 
     @PostMapping("/items")
-    @Operation(summary = "Добавить товар в корзину", description = "Добавляет указанное количество товара в корзину пользователя")
+    @Operation(
+            summary = "Добавить товар в корзину",
+            description = """
+                    Добавляет указанное количество товара в корзину пользователя.
+                    Если товар уже есть в корзине, количество будет увеличено на указанное значение.
+                    """
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар успешно добавлен в корзину"),
+            @ApiResponse(responseCode = "400", description = "Неверные параметры или товар недоступен"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "404", description = "Товар не найден")
+    })
     public ResponseEntity<CartResponseDTO> addItemToCart(
-            @Parameter(description = "ID товара") @RequestParam Long productId,
-            @Parameter(description = "Количество") @RequestParam Integer quantity,
+            @Parameter(description = "ID товара для добавления", example = "5", required = true)
+            @RequestParam Long productId,
+
+            @Parameter(description = "Количество товара", example = "2", required = true)
+            @RequestParam Integer quantity,
+
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.addItemToCart(user.getId(), productId, quantity);
@@ -103,9 +125,18 @@ public class CartController {
     }
 
     @PatchMapping("/items/{productId}/increment")
-    @Operation(summary = "Увеличить количество товара на 1", description = "Увеличивает количество указанного товара в корзине на 1")
+    @Operation(
+            summary = "Увеличить количество товара на 1",
+            description = "Увеличивает количество указанного товара в корзине на 1. Удобно для кнопки '+' в интерфейсе."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Количество успешно увеличено"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "404", description = "Товар не найден в корзине")
+    })
     public ResponseEntity<CartResponseDTO> incrementItemQuantity(
-            @Parameter(description = "ID товара") @PathVariable Long productId,
+            @Parameter(description = "ID товара в корзине", example = "5", required = true)
+            @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.incrementItemQuantity(user.getId(), productId);
@@ -114,9 +145,18 @@ public class CartController {
     }
 
     @PatchMapping("/items/{productId}/decrement")
-    @Operation(summary = "Уменьшить количество товара на 1", description = "Уменьшает количество указанного товара в корзине на 1. Если останется 0 - товар удаляется")
+    @Operation(
+            summary = "Уменьшить количество товара на 1",
+            description = "Уменьшает количество указанного товара в корзине на 1. Если количество станет 0, товар будет удален из корзины. Удобно для кнопки '-' в интерфейсе."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Количество успешно уменьшено"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "404", description = "Товар не найден в корзине")
+    })
     public ResponseEntity<CartResponseDTO> decrementItemQuantity(
-            @Parameter(description = "ID товара") @PathVariable Long productId,
+            @Parameter(description = "ID товара в корзине", example = "5", required = true)
+            @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Cart cart = cartService.decrementItemQuantity(user.getId(), productId);

@@ -6,6 +6,7 @@ import kg.santechmarket.entity.Cart;
 import kg.santechmarket.entity.CartItem;
 import kg.santechmarket.entity.Product;
 import kg.santechmarket.entity.User;
+import kg.santechmarket.repository.CartItemRepository;
 import kg.santechmarket.repository.CartRepository;
 import kg.santechmarket.repository.ProductRepository;
 import kg.santechmarket.service.CartService;
@@ -36,6 +37,7 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
 
     /**
      * Получить корзину пользователя (создать, если не существует)
@@ -267,9 +269,18 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserIdWithItems(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Корзина не найдена"));
 
-        cart.incrementItemQuantity(productId);
+        // Находим CartItem и явно сохраняем изменения
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Товар не найден в корзине"));
 
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        cartItemRepository.save(cartItem); // Явно сохраняем CartItem
+
+        cart.recalculateTotals(); // Пересчитываем итоги корзины
         Cart savedCart = cartRepository.save(cart);
+
         log.info("Количество товара {} увеличено в корзине пользователя {}", productId, userId);
 
         return savedCart;
@@ -285,7 +296,20 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserIdWithItems(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Корзина не найдена"));
 
-        cart.decrementItemQuantity(productId);
+        // Находим CartItem
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Товар не найден в корзине"));
+
+        // Если количество станет 0, удаляем товар
+        if (cartItem.getQuantity() <= 1) {
+            cart.removeItem(productId);
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            cartItemRepository.save(cartItem); // Явно сохраняем CartItem
+            cart.recalculateTotals(); // Пересчитываем итоги корзины
+        }
 
         Cart savedCart = cartRepository.save(cart);
         log.info("Количество товара {} уменьшено в корзине пользователя {}", productId, userId);

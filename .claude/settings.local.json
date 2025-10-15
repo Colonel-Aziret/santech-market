@@ -19,7 +19,8 @@
       "Bash(timeout:*)",
       "Bash(git add:*)",
       "Bash(powershell:*)",
-      "Bash(.mvnw.cmd spring-boot:*)"
+      "Bash(.mvnw.cmd spring-boot:*)",
+      "Bash(./mvnw.cmd clean:*)"
     ],
     "deny": [],
     "ask": []

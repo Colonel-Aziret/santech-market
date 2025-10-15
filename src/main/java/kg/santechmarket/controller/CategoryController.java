@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
-@Tag(name = "Category Management", description = "API для управления категориями товаров")
+@Tag(name = "Категории", description = "API для управления категориями товаров: просмотр, создание, редактирование, работа с иерархией (подкатегориями)")
 public class CategoryController {
 
     private final CategoryService categoryService;

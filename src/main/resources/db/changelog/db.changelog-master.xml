@@ -26,5 +26,7 @@
     <include file="db/changelog/v1.0.0/18-create-product-images-table.xml"/>
     <include file="db/changelog/v1.0.0/19-add-category-hierarchy.xml"/>
     <include file="db/changelog/v1.0.0/20-insert-test-products.xml"/>
+    <include file="db/changelog/v1.0.0/21-simplify-promo-banners.xml"/>
+    <include file="db/changelog/v1.0.0/22-add-category-subcategories.xml"/>
 
 </databaseChangeLog>

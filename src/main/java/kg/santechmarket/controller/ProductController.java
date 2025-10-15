@@ -26,22 +26,47 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
-@Tag(name = "Product Management", description = "API для управления товарами")
+@Tag(name = "Товары", description = "API для управления товарами: просмотр, поиск, фильтрация, управление (CRUD операции)")
 public class ProductController {
 
     private final ProductService productService;
 
     @GetMapping
-    @Operation(summary = "Получить все активные товары", description = "Возвращает постраничный список всех активных товаров")
-    @ApiResponse(responseCode = "200", description = "Успешно получен список товаров")
-    public ResponseEntity<Page<Product>> getAllActiveProducts(@PageableDefault(size = 20) Pageable pageable) {
+    @Operation(
+            summary = "Получить все активные товары",
+            description = "Возвращает постраничный список всех активных товаров с сортировкой и пагинацией. По умолчанию 20 товаров на странице."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Список товаров успешно получен"
+            )
+    })
+    public ResponseEntity<Page<Product>> getAllActiveProducts(
+            @Parameter(description = "Параметры пагинации и сортировки (page, size, sort)")
+            @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findAllActiveProducts(pageable);
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Получить товар по ID", description = "Возвращает информацию о товаре по его идентификатору")
-    public ResponseEntity<Product> getProductById(@Parameter(description = "ID товара") @PathVariable Long id) {
+    @Operation(
+            summary = "Получить товар по ID",
+            description = "Возвращает полную информацию о товаре по его идентификатору, включая все характеристики и изображения"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Товар найден"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Товар не найден или неактивен"
+            )
+    })
+    public ResponseEntity<Product> getProductById(
+            @Parameter(description = "ID товара", example = "1", required = true)
+            @PathVariable Long id) {
         return productService.findActiveById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -64,22 +89,55 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "Поиск товаров", description = "Поиск товаров по названию")
+    @Operation(
+            summary = "Поиск товаров",
+            description = "Полнотекстовый поиск товаров по названию и описанию. Результаты сортируются по релевантности."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Результаты поиска получены")
+    })
     public ResponseEntity<Page<Product>> searchProducts(
-            @Parameter(description = "Поисковый запрос") @RequestParam String query,
+            @Parameter(description = "Поисковый запрос", example = "труба полипропиленовая", required = true)
+            @RequestParam String query,
+            @Parameter(description = "Параметры пагинации")
             @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.searchProducts(query, pageable);
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/filter")
-    @Operation(summary = "Фильтрация товаров", description = "Комплексная фильтрация товаров по различным параметрам")
+    @Operation(
+            summary = "Фильтрация товаров",
+            description = """
+                    Комплексная фильтрация товаров по различным параметрам:
+                    - Категория товара
+                    - Бренд/производитель
+                    - Диапазон цен (от и до)
+                    - Текстовый поиск
+
+                    Все параметры опциональны и могут комбинироваться.
+                    """
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Отфильтрованный список товаров получен")
+    })
     public ResponseEntity<Page<Product>> filterProducts(
-            @Parameter(description = "ID категории") @RequestParam(required = false) Long categoryId,
-            @Parameter(description = "Бренд") @RequestParam(required = false) String brand,
-            @Parameter(description = "Минимальная цена") @RequestParam(required = false) BigDecimal minPrice,
-            @Parameter(description = "Максимальная цена") @RequestParam(required = false) BigDecimal maxPrice,
-            @Parameter(description = "Поисковый запрос") @RequestParam(required = false) String search,
+            @Parameter(description = "ID категории для фильтрации", example = "5")
+            @RequestParam(required = false) Long categoryId,
+
+            @Parameter(description = "Бренд/производитель", example = "PRO AQUA")
+            @RequestParam(required = false) String brand,
+
+            @Parameter(description = "Минимальная цена в сомах", example = "100")
+            @RequestParam(required = false) BigDecimal minPrice,
+
+            @Parameter(description = "Максимальная цена в сомах", example = "5000")
+            @RequestParam(required = false) BigDecimal maxPrice,
+
+            @Parameter(description = "Текстовый поиск", example = "труба")
+            @RequestParam(required = false) String search,
+
+            @Parameter(description = "Параметры пагинации")
             @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findProductsWithFilters(
                 categoryId, brand, minPrice, maxPrice, search, pageable);
@@ -131,39 +189,91 @@ public class ProductController {
     }
 
     @PostMapping
-    @Operation(summary = "Создать товар", description = "Создает новый товар")
+    @Operation(
+            summary = "Создать новый товар",
+            description = """
+                    Создание нового товара в системе. Доступно только для ADMIN и MANAGER.
+
+                    Обязательные поля:
+                    - name (название)
+                    - price (цена)
+                    - categoryId (ID категории)
+
+                    Опциональные поля:
+                    - description, brand, specifications, isActive, isFeatured и др.
+                    """
+    )
     @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар успешно создан"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации данных"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав (требуется ADMIN или MANAGER)")
+    })
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         Product createdProduct = productService.createProduct(product);
         return ResponseEntity.ok(createdProduct);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Обновить товар", description = "Обновляет информацию о товаре")
+    @Operation(
+            summary = "Обновить товар",
+            description = "Полное обновление информации о товаре. Доступно только для ADMIN и MANAGER."
+    )
     @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар успешно обновлен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации данных"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав"),
+            @ApiResponse(responseCode = "404", description = "Товар не найден")
+    })
     public ResponseEntity<Product> updateProduct(
-            @Parameter(description = "ID товара") @PathVariable Long id,
+            @Parameter(description = "ID товара", example = "1", required = true)
+            @PathVariable Long id,
             @Valid @RequestBody Product productUpdate) {
         Product updatedProduct = productService.updateProduct(id, productUpdate);
         return ResponseEntity.ok(updatedProduct);
     }
 
     @PatchMapping("/{id}/deactivate")
-    @Operation(summary = "Деактивировать товар", description = "Деактивирует товар (мягкое удаление)")
+    @Operation(
+            summary = "Деактивировать товар",
+            description = "Мягкое удаление товара - товар скрывается из каталога, но остается в базе данных. Доступно только для ADMIN и MANAGER."
+    )
     @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Void> deactivateProduct(@Parameter(description = "ID товара") @PathVariable Long id) {
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар деактивирован"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав"),
+            @ApiResponse(responseCode = "404", description = "Товар не найден")
+    })
+    public ResponseEntity<Void> deactivateProduct(
+            @Parameter(description = "ID товара", example = "1", required = true)
+            @PathVariable Long id) {
         productService.deactivateProduct(id);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/activate")
-    @Operation(summary = "Активировать товар", description = "Активирует ранее деактивированный товар")
+    @Operation(
+            summary = "Активировать товар",
+            description = "Восстановление ранее деактивированного товара - товар снова становится видимым в каталоге. Доступно только для ADMIN и MANAGER."
+    )
     @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Void> activateProduct(@Parameter(description = "ID товара") @PathVariable Long id) {
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар активирован"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав"),
+            @ApiResponse(responseCode = "404", description = "Товар не найден")
+    })
+    public ResponseEntity<Void> activateProduct(
+            @Parameter(description = "ID товара", example = "1", required = true)
+            @PathVariable Long id) {
         productService.activateProduct(id);
         return ResponseEntity.ok().build();
     }

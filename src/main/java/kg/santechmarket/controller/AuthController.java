@@ -49,7 +49,36 @@ public class AuthController {
      * Регистрация нового пользователя
      */
     @PostMapping("/register")
-    @Operation(summary = "Регистрация", description = "Регистрация нового пользователя со статусом PENDING (ожидает одобрения менеджера)")
+    @Operation(
+            summary = "Регистрация нового пользователя",
+            description = "Регистрация нового пользователя со статусом PENDING (ожидает одобрения менеджера). После регистрации пользователь не может войти в систему до одобрения менеджером."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "201",
+                    description = "Пользователь успешно зарегистрирован",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.RegisterResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Ошибка валидации (логин/телефон/email уже существует или неверный формат)",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<?> register(@Valid @RequestBody AuthDto.RegisterRequest request) {
         log.info("Регистрация нового пользователя: {}", request.username());
 
@@ -111,7 +140,36 @@ public class AuthController {
      * Вход в систему
      */
     @PostMapping("/login")
-    @Operation(summary = "Вход в систему", description = "Аутентификация пользователя и получение JWT токена")
+    @Operation(
+            summary = "Вход в систему",
+            description = "Аутентификация пользователя по логину и паролю. При успешной авторизации возвращает access токен (срок действия 24 часа) и refresh токен для продления сессии."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Успешная авторизация",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.LoginResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "Неверный логин или пароль",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<?> login(@Valid @RequestBody AuthDto.LoginRequest loginRequest) {
         log.info("Попытка входа пользователя: {}", loginRequest.username());
 
@@ -160,7 +218,29 @@ public class AuthController {
      * Получение профиля текущего пользователя
      */
     @GetMapping("/profile")
-    @Operation(summary = "Получить профиль", description = "Получение информации о текущем пользователе")
+    @Operation(
+            summary = "Получить профиль текущего пользователя",
+            description = "Получение полной информации о профиле авторизованного пользователя"
+    )
+    @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "JWT")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Профиль успешно получен",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.UserInfo.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "Не авторизован (отсутствует или недействителен токен)",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<AuthDto.UserInfo> getProfile(@AuthenticationPrincipal User currentUser) {
         log.debug("Запрос профиля пользователя: {}", currentUser.getUsername());
 
@@ -172,7 +252,45 @@ public class AuthController {
      * Обновление профиля пользователя
      */
     @PutMapping("/profile")
-    @Operation(summary = "Обновить профиль", description = "Обновление информации профиля пользователя")
+    @Operation(
+            summary = "Обновить профиль",
+            description = "Обновление информации профиля текущего пользователя (ФИО, email, телефон)"
+    )
+    @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "JWT")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Профиль успешно обновлен",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.UserInfo.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Ошибка валидации данных",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "Не авторизован",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<?> updateProfile(@AuthenticationPrincipal User currentUser,
                                            @Valid @RequestBody AuthDto.UpdateProfileRequest request) {
         log.info("Обновление профиля пользователя: {}", currentUser.getUsername());
@@ -209,7 +327,45 @@ public class AuthController {
      * Смена пароля
      */
     @PostMapping("/change-password")
-    @Operation(summary = "Сменить пароль", description = "Изменение пароля текущего пользователя")
+    @Operation(
+            summary = "Сменить пароль",
+            description = "Изменение пароля текущего пользователя. Требуется указать текущий пароль для подтверждения."
+    )
+    @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "JWT")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Пароль успешно изменен",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = SuccessResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Неверный текущий пароль",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "Не авторизован",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<?> changePassword(@AuthenticationPrincipal User currentUser,
                                             @Valid @RequestBody AuthDto.ChangePasswordRequest request) {
         log.info("Запрос смены пароля для пользователя: {}", currentUser.getUsername());
@@ -248,7 +404,36 @@ public class AuthController {
      * Обновление access токена с помощью refresh токена
      */
     @PostMapping("/refresh")
-    @Operation(summary = "Обновить токен", description = "Обновление access токена с помощью refresh токена")
+    @Operation(
+            summary = "Обновить токен",
+            description = "Обновление access токена с помощью refresh токена. Возвращает новую пару токенов (access и refresh)."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Токен успешно обновлен",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.RefreshTokenResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "Refresh токен не найден или истек",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<?> refreshToken(@Valid @RequestBody AuthDto.RefreshTokenRequest request) {
         String refreshTokenValue = request.refreshToken();
         log.info("Запрос обновления токена");
@@ -296,7 +481,37 @@ public class AuthController {
      * Выход из системы (удаление refresh токена)
      */
     @PostMapping("/logout")
-    @Operation(summary = "Выход из системы", description = "Удаление refresh токена пользователя")
+    @Operation(
+            summary = "Выход из системы",
+            description = "Удаление refresh токена пользователя. После выхода для повторной авторизации потребуется выполнить вход заново."
+    )
+    @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "JWT")
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Выход выполнен успешно",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = SuccessResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "401",
+                    description = "Не авторизован",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
     public ResponseEntity<?> logout(@AuthenticationPrincipal User currentUser) {
         log.info("Выход из системы для пользователя: {}", currentUser.getUsername());
 
@@ -329,6 +544,10 @@ public class AuthController {
     /**
      * DTO для успешных операций
      */
-    public record SuccessResponse(String message) {
+    @io.swagger.v3.oas.annotations.media.Schema(description = "Успешный ответ операции")
+    public record SuccessResponse(
+            @io.swagger.v3.oas.annotations.media.Schema(description = "Сообщение об успешной операции", example = "Операция выполнена успешно")
+            String message
+    ) {
     }
 }
