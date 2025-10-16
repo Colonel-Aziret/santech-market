@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="24-update-banner-images-to-svg" author="system">
+        <comment>Обновление путей к изображениям баннеров на SVG формат</comment>
+
+        <update tableName="promo_banners">
+            <column name="image_url" value="/images/banners/sale-banner-1.svg"/>
+            <where>id = 1</where>
+        </update>
+
+        <update tableName="promo_banners">
+            <column name="image_url" value="/images/banners/discount-banner.svg"/>
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="promo_banners">
+            <column name="image_url" value="/images/banners/ceramic-tubes-promo.svg"/>
+            <where>id = 3</where>
+        </update>
+
+    </changeSet>
+
+</databaseChangeLog>
