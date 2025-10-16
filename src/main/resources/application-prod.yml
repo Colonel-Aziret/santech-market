@@ -1,0 +1,156 @@
+spring:
+  application:
+    name: santech-market
+
+  # Database Configuration (используем переменные окружения)
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:santech_market}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+    # Connection Pool настройки для production
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: none  # ВАЖНО! В production только validate или none
+    show-sql: false   # Отключаем вывод SQL для производительности
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        use_sql_comments: false
+        default_schema: public
+        # Оптимизации для production
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
+        order_inserts: true
+        order_updates: true
+        query:
+          in_clause_parameter_padding: true
+    defer-datasource-initialization: false
+
+  # Liquibase Configuration
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    default-schema: public
+    drop-first: false  # КРИТИЧНО! Никогда не дропать БД в production
+
+  # Security Configuration
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}  # Обязательно через переменную окружения!
+      expiration: 86400000           # 24 часа
+      refresh-expiration: 604800000  # 7 дней
+
+  # Jackson Configuration
+  jackson:
+    default-property-inclusion: NON_NULL
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: false  # Убираем форматирование для уменьшения размера
+    deserialization:
+      fail-on-unknown-properties: false
+
+  # File Upload Configuration
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+      file-size-threshold: 2KB
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+  # Production оптимизации
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/css
+    min-response-size: 1024
+  error:
+    include-message: always
+    include-stacktrace: never  # ВАЖНО! Не показываем stacktrace клиентам
+    include-exception: false
+    whitelabel:
+      enabled: false
+  http2:
+    enabled: true
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus  # Добавили prometheus для мониторинга
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true  # Для kubernetes/docker health checks
+  health:
+    diskspace:
+      enabled: true
+      threshold: 10GB
+    db:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging Configuration (оптимизировано для production)
+logging:
+  level:
+    root: INFO
+    kg.santechmarket: INFO
+    org.springframework.security: WARN
+    org.springframework.web: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  file:
+    name: /var/log/santech-market/application.log
+    max-size: 10MB
+    max-history: 30
+    total-size-cap: 1GB
+
+# OpenAPI Documentation (закрываем в production)
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:false}  # По умолчанию отключено
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:false}
+  packages-to-scan: kg.santechmarket.controller
+
+# File Storage Configuration
+file-storage:
+  type: ${FILE_STORAGE_TYPE:local}  # local или s3
+
+  # Local storage (для начала)
+  local:
+    upload-dir: ${FILE_UPLOAD_DIR:/opt/santech-market/uploads}
+    base-url: ${APP_BASE_URL:https://api.yourdomain.kg}/api/v1
+
+  # AWS S3 configuration (для будущего масштабирования)
+  s3:
+    bucket-name: ${AWS_S3_BUCKET:santech-market-images}
+    region: ${AWS_REGION:us-east-1}
+    access-key: ${AWS_ACCESS_KEY:}
+    secret-key: ${AWS_SECRET_KEY:}
+    cloudfront-domain: ${AWS_CLOUDFRONT_DOMAIN:}
