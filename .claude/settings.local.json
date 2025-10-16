@@ -21,7 +21,8 @@
       "Bash(powershell:*)",
       "Bash(.mvnw.cmd spring-boot:*)",
       "Bash(./mvnw.cmd clean:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []

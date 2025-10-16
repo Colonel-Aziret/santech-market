@@ -1,0 +1,43 @@
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Градиентный фон -->
+  <defs>
+    <linearGradient id="yellowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFC107;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF9800;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Фон -->
+  <rect width="1200" height="400" fill="url(#yellowGradient)"/>
+
+  <!-- Декоративные элементы -->
+  <circle cx="150" cy="200" r="120" fill="rgba(0,0,0,0.1)"/>
+  <circle cx="1050" cy="150" r="90" fill="rgba(0,0,0,0.1)"/>
+
+  <!-- Восклицательный знак в круге -->
+  <circle cx="200" cy="200" r="60" fill="#FF5722"/>
+  <text x="200" y="235" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    !
+  </text>
+
+  <!-- Текст ВНИМАНИЕ! -->
+  <text x="650" y="140" font-family="Arial, sans-serif" font-size="68" font-weight="bold" fill="#000000" text-anchor="middle">
+    ВНИМАНИЕ!
+  </text>
+
+  <!-- Подзаголовок строка 1 -->
+  <text x="650" y="210" font-family="Arial, sans-serif" font-size="34" fill="#000000" text-anchor="middle">
+    15 августа заканчивается акция
+  </text>
+
+  <!-- Подзаголовок строка 2 -->
+  <text x="650" y="260" font-family="Arial, sans-serif" font-size="34" fill="#000000" text-anchor="middle">
+    на керамические трубы
+  </text>
+
+  <!-- Таймер -->
+  <rect x="500" y="290" width="300" height="70" rx="10" fill="#FF5722"/>
+  <text x="650" y="340" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    УСПЕЙТЕ КУПИТЬ!
+  </text>
+</svg>

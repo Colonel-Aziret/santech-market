@@ -1,0 +1,40 @@
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Градиентный фон -->
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007BFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Фон -->
+  <rect width="1200" height="400" fill="url(#blueGradient)"/>
+
+  <!-- Декоративные элементы -->
+  <circle cx="100" cy="100" r="80" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1100" cy="300" r="100" fill="rgba(255,255,255,0.1)"/>
+
+  <!-- Текст РАСПРОДАЖА -->
+  <text x="600" y="150" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    РАСПРОДАЖА
+  </text>
+
+  <!-- Подзаголовок -->
+  <text x="600" y="220" font-family="Arial, sans-serif" font-size="36" fill="#FFFFFF" text-anchor="middle">
+    Трубы и герметики
+  </text>
+
+  <!-- Даты -->
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="32" fill="#FFD700" text-anchor="middle">
+    с 12.08 по 12.09
+  </text>
+
+  <!-- Скидка -->
+  <circle cx="1000" cy="120" r="70" fill="#FFD700"/>
+  <text x="1000" y="115" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#007BFF" text-anchor="middle">
+    ДО
+  </text>
+  <text x="1000" y="155" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="#007BFF" text-anchor="middle">
+    30%
+  </text>
+</svg>

@@ -1,0 +1,37 @@
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Градиентный фон -->
+  <defs>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#28A745;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e7e34;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Фон -->
+  <rect width="1200" height="400" fill="url(#greenGradient)"/>
+
+  <!-- Декоративные элементы -->
+  <rect x="50" y="50" width="150" height="150" rx="20" fill="rgba(255,255,255,0.15)" transform="rotate(15 125 125)"/>
+  <rect x="1000" y="200" width="120" height="120" rx="20" fill="rgba(255,255,255,0.15)" transform="rotate(-15 1060 260)"/>
+
+  <!-- Текст Скидки! -->
+  <text x="600" y="130" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    СКИДКИ!
+  </text>
+
+  <!-- Подзаголовок строка 1 -->
+  <text x="600" y="200" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="middle">
+    До 20 августа у нас действуют
+  </text>
+
+  <!-- Подзаголовок строка 2 -->
+  <text x="600" y="245" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="middle">
+    большие скидки на PPR трубы
+  </text>
+
+  <!-- Призыв к действию -->
+  <rect x="450" y="280" width="300" height="60" rx="30" fill="#FFD700"/>
+  <text x="600" y="320" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#28A745" text-anchor="middle">
+    Спешите купить!
+  </text>
+</svg>
