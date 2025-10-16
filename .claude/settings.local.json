@@ -20,7 +20,8 @@
       "Bash(git add:*)",
       "Bash(powershell:*)",
       "Bash(.mvnw.cmd spring-boot:*)",
-      "Bash(./mvnw.cmd clean:*)"
+      "Bash(./mvnw.cmd clean:*)",
+      "Bash(chmod:*)"
     ],
     "deny": [],
     "ask": []

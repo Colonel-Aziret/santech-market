@@ -1,0 +1,1314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="23-insert-100-test-products" author="developer">
+        <comment>Добавление 100 тестовых товаров для проверки поиска и пагинации</comment>
+
+        <!-- Генерируем 100 товаров с названиями "Труба 1", "Труба 2", и т.д. -->
+        <insert tableName="products">
+            <column name="name" value="Труба 1"/>
+            <column name="description" value="Тестовая труба номер 1 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-001"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 2"/>
+            <column name="description" value="Тестовая труба номер 2 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-002"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 3"/>
+            <column name="description" value="Тестовая труба номер 3 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-003"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 4"/>
+            <column name="description" value="Тестовая труба номер 4 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-004"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 5"/>
+            <column name="description" value="Тестовая труба номер 5 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-005"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 6"/>
+            <column name="description" value="Тестовая труба номер 6 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-006"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 7"/>
+            <column name="description" value="Тестовая труба номер 7 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-007"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 8"/>
+            <column name="description" value="Тестовая труба номер 8 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-008"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 9"/>
+            <column name="description" value="Тестовая труба номер 9 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-009"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 10"/>
+            <column name="description" value="Тестовая труба номер 10 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-010"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 11"/>
+            <column name="description" value="Тестовая труба номер 11 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-011"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 12"/>
+            <column name="description" value="Тестовая труба номер 12 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-012"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 13"/>
+            <column name="description" value="Тестовая труба номер 13 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-013"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 14"/>
+            <column name="description" value="Тестовая труба номер 14 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-014"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 15"/>
+            <column name="description" value="Тестовая труба номер 15 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-015"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 16"/>
+            <column name="description" value="Тестовая труба номер 16 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-016"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 17"/>
+            <column name="description" value="Тестовая труба номер 17 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-017"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 18"/>
+            <column name="description" value="Тестовая труба номер 18 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-018"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 19"/>
+            <column name="description" value="Тестовая труба номер 19 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-019"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 20"/>
+            <column name="description" value="Тестовая труба номер 20 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-020"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 21"/>
+            <column name="description" value="Тестовая труба номер 21 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-021"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 22"/>
+            <column name="description" value="Тестовая труба номер 22 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-022"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 23"/>
+            <column name="description" value="Тестовая труба номер 23 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-023"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 24"/>
+            <column name="description" value="Тестовая труба номер 24 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-024"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 25"/>
+            <column name="description" value="Тестовая труба номер 25 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-025"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 26"/>
+            <column name="description" value="Тестовая труба номер 26 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-026"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 27"/>
+            <column name="description" value="Тестовая труба номер 27 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-027"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 28"/>
+            <column name="description" value="Тестовая труба номер 28 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-028"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 29"/>
+            <column name="description" value="Тестовая труба номер 29 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-029"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 30"/>
+            <column name="description" value="Тестовая труба номер 30 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-030"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 31"/>
+            <column name="description" value="Тестовая труба номер 31 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-031"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 32"/>
+            <column name="description" value="Тестовая труба номер 32 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-032"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 33"/>
+            <column name="description" value="Тестовая труба номер 33 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-033"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 34"/>
+            <column name="description" value="Тестовая труба номер 34 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-034"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 35"/>
+            <column name="description" value="Тестовая труба номер 35 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-035"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 36"/>
+            <column name="description" value="Тестовая труба номер 36 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-036"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 37"/>
+            <column name="description" value="Тестовая труба номер 37 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-037"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 38"/>
+            <column name="description" value="Тестовая труба номер 38 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-038"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 39"/>
+            <column name="description" value="Тестовая труба номер 39 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-039"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 40"/>
+            <column name="description" value="Тестовая труба номер 40 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-040"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 41"/>
+            <column name="description" value="Тестовая труба номер 41 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-041"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 42"/>
+            <column name="description" value="Тестовая труба номер 42 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-042"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 43"/>
+            <column name="description" value="Тестовая труба номер 43 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-043"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 44"/>
+            <column name="description" value="Тестовая труба номер 44 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-044"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 45"/>
+            <column name="description" value="Тестовая труба номер 45 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-045"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 46"/>
+            <column name="description" value="Тестовая труба номер 46 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-046"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 47"/>
+            <column name="description" value="Тестовая труба номер 47 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-047"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 48"/>
+            <column name="description" value="Тестовая труба номер 48 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-048"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 49"/>
+            <column name="description" value="Тестовая труба номер 49 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-049"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 50"/>
+            <column name="description" value="Тестовая труба номер 50 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-050"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 51"/>
+            <column name="description" value="Тестовая труба номер 51 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-051"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 52"/>
+            <column name="description" value="Тестовая труба номер 52 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-052"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 53"/>
+            <column name="description" value="Тестовая труба номер 53 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-053"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 54"/>
+            <column name="description" value="Тестовая труба номер 54 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-054"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 55"/>
+            <column name="description" value="Тестовая труба номер 55 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-055"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 56"/>
+            <column name="description" value="Тестовая труба номер 56 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-056"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 57"/>
+            <column name="description" value="Тестовая труба номер 57 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-057"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 58"/>
+            <column name="description" value="Тестовая труба номер 58 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-058"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 59"/>
+            <column name="description" value="Тестовая труба номер 59 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-059"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 60"/>
+            <column name="description" value="Тестовая труба номер 60 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-060"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 61"/>
+            <column name="description" value="Тестовая труба номер 61 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-061"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 62"/>
+            <column name="description" value="Тестовая труба номер 62 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-062"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 63"/>
+            <column name="description" value="Тестовая труба номер 63 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-063"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 64"/>
+            <column name="description" value="Тестовая труба номер 64 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-064"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 65"/>
+            <column name="description" value="Тестовая труба номер 65 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-065"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 66"/>
+            <column name="description" value="Тестовая труба номер 66 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-066"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 67"/>
+            <column name="description" value="Тестовая труба номер 67 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-067"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 68"/>
+            <column name="description" value="Тестовая труба номер 68 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-068"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 69"/>
+            <column name="description" value="Тестовая труба номер 69 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-069"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 70"/>
+            <column name="description" value="Тестовая труба номер 70 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-070"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 71"/>
+            <column name="description" value="Тестовая труба номер 71 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-071"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 72"/>
+            <column name="description" value="Тестовая труба номер 72 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-072"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 73"/>
+            <column name="description" value="Тестовая труба номер 73 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-073"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 74"/>
+            <column name="description" value="Тестовая труба номер 74 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-074"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 75"/>
+            <column name="description" value="Тестовая труба номер 75 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-075"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 76"/>
+            <column name="description" value="Тестовая труба номер 76 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-076"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 77"/>
+            <column name="description" value="Тестовая труба номер 77 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-077"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 78"/>
+            <column name="description" value="Тестовая труба номер 78 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-078"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 79"/>
+            <column name="description" value="Тестовая труба номер 79 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-079"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 80"/>
+            <column name="description" value="Тестовая труба номер 80 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-080"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 81"/>
+            <column name="description" value="Тестовая труба номер 81 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-081"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 82"/>
+            <column name="description" value="Тестовая труба номер 82 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-082"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 83"/>
+            <column name="description" value="Тестовая труба номер 83 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-083"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 84"/>
+            <column name="description" value="Тестовая труба номер 84 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-084"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 85"/>
+            <column name="description" value="Тестовая труба номер 85 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-085"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 86"/>
+            <column name="description" value="Тестовая труба номер 86 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-086"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 87"/>
+            <column name="description" value="Тестовая труба номер 87 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-087"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 88"/>
+            <column name="description" value="Тестовая труба номер 88 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-088"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 89"/>
+            <column name="description" value="Тестовая труба номер 89 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-089"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 90"/>
+            <column name="description" value="Тестовая труба номер 90 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-090"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 91"/>
+            <column name="description" value="Тестовая труба номер 91 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-091"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 92"/>
+            <column name="description" value="Тестовая труба номер 92 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-092"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 93"/>
+            <column name="description" value="Тестовая труба номер 93 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-093"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 94"/>
+            <column name="description" value="Тестовая труба номер 94 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-094"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 95"/>
+            <column name="description" value="Тестовая труба номер 95 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-095"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 96"/>
+            <column name="description" value="Тестовая труба номер 96 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-096"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 97"/>
+            <column name="description" value="Тестовая труба номер 97 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-097"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 98"/>
+            <column name="description" value="Тестовая труба номер 98 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-098"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 99"/>
+            <column name="description" value="Тестовая труба номер 99 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-099"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="name" value="Труба 100"/>
+            <column name="description" value="Тестовая труба номер 100 для проверки поиска и пагинации"/>
+            <column name="price" value="100.00"/>
+            <column name="brand" value="TestBrand"/>
+            <column name="sku" value="TEST-PIPE-100"/>
+            <column name="is_active" value="true"/>
+            <column name="is_featured" value="false"/>
+            <column name="category_id" value="1"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
