@@ -35,13 +35,13 @@ public class OrderController {
     @PostMapping
     @Operation(summary = "Создать заказ", description = "Создает новый заказ из корзины пользователя")
     @ApiResponse(responseCode = "200", description = "Заказ успешно создан")
-    public ResponseEntity<Order> createOrder(
+    public ResponseEntity<Boolean> createOrder(
             @Parameter(description = "Комментарий клиента") @RequestParam(required = false) String customerComment,
             @Parameter(description = "Контактная информация") @RequestParam(required = false) String contactInfo,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Order order = orderService.createOrderFromCart(user.getId(), customerComment, contactInfo);
-        return ResponseEntity.ok(order);
+        orderService.createOrderFromCart(user.getId(), customerComment, contactInfo);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("/my")
@@ -103,62 +103,62 @@ public class OrderController {
     @PatchMapping("/{id}/status")
     @Operation(summary = "Обновить статус заказа", description = "Обновляет статус заказа")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Order> updateOrderStatus(
+    public ResponseEntity<Boolean> updateOrderStatus(
             @Parameter(description = "ID заказа") @PathVariable Long id,
             @Parameter(description = "Новый статус") @RequestParam OrderStatus status,
             @Parameter(description = "Комментарий менеджера") @RequestParam(required = false) String managerComment) {
-        Order order = orderService.updateOrderStatus(id, status, managerComment);
-        return ResponseEntity.ok(order);
+        orderService.updateOrderStatus(id, status, managerComment);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{id}/confirm")
     @Operation(summary = "Подтвердить заказ", description = "Подтверждает заказ (PENDING -> CONFIRMED)")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Order> confirmOrder(
+    public ResponseEntity<Boolean> confirmOrder(
             @Parameter(description = "ID заказа") @PathVariable Long id,
             @Parameter(description = "Комментарий менеджера") @RequestParam(required = false) String managerComment) {
-        Order order = orderService.confirmOrder(id, managerComment);
-        return ResponseEntity.ok(order);
+        orderService.confirmOrder(id, managerComment);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{id}/process")
     @Operation(summary = "Начать обработку заказа", description = "Переводит заказ в обработку (CONFIRMED -> PROCESSING)")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Order> startProcessing(
+    public ResponseEntity<Boolean> startProcessing(
             @Parameter(description = "ID заказа") @PathVariable Long id,
             @Parameter(description = "Комментарий менеджера") @RequestParam(required = false) String managerComment) {
-        Order order = orderService.startProcessingOrder(id, managerComment);
-        return ResponseEntity.ok(order);
+        orderService.startProcessingOrder(id, managerComment);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{id}/ready")
     @Operation(summary = "Подготовить к выдаче", description = "Отмечает заказ как готовый к выдаче (PROCESSING -> READY)")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Order> markReady(
+    public ResponseEntity<Boolean> markReady(
             @Parameter(description = "ID заказа") @PathVariable Long id,
             @Parameter(description = "Комментарий менеджера") @RequestParam(required = false) String managerComment) {
-        Order order = orderService.markOrderReady(id, managerComment);
-        return ResponseEntity.ok(order);
+        orderService.markOrderReady(id, managerComment);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{id}/complete")
     @Operation(summary = "Завершить заказ", description = "Завершает заказ (READY -> COMPLETED)")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Order> completeOrder(
+    public ResponseEntity<Boolean> completeOrder(
             @Parameter(description = "ID заказа") @PathVariable Long id,
             @Parameter(description = "Комментарий менеджера") @RequestParam(required = false) String managerComment) {
-        Order order = orderService.completeOrder(id, managerComment);
-        return ResponseEntity.ok(order);
+        orderService.completeOrder(id, managerComment);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/{id}/cancel")
     @Operation(summary = "Отменить заказ", description = "Отменяет заказ")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or @orderService.isOrderOwner(#id, authentication.principal.id)")
-    public ResponseEntity<Order> cancelOrder(
+    public ResponseEntity<Boolean> cancelOrder(
             @Parameter(description = "ID заказа") @PathVariable Long id,
             @Parameter(description = "Причина отмены") @RequestParam String cancelReason) {
-        Order order = orderService.cancelOrder(id, cancelReason);
-        return ResponseEntity.ok(order);
+        orderService.cancelOrder(id, cancelReason);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("/date-range")

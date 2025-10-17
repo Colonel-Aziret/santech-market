@@ -55,7 +55,7 @@ public class CartController {
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "404", description = "Товар не найден")
     })
-    public ResponseEntity<CartResponseDTO> addItemToCart(
+    public ResponseEntity<Boolean> addItemToCart(
             @Parameter(description = "ID товара для добавления", example = "5", required = true)
             @RequestParam Long productId,
 
@@ -64,32 +64,29 @@ public class CartController {
 
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Cart cart = cartService.addItemToCart(user.getId(), productId, quantity);
-        CartResponseDTO response = cartService.toCartResponseDTO(cart);
-        return ResponseEntity.ok(response);
+        cartService.addItemToCart(user.getId(), productId, quantity);
+        return ResponseEntity.ok(true);
     }
 
     @PutMapping("/items/{productId}")
     @Operation(summary = "Обновить количество товара", description = "Обновляет количество указанного товара в корзине")
-    public ResponseEntity<CartResponseDTO> updateItemQuantity(
+    public ResponseEntity<Boolean> updateItemQuantity(
             @Parameter(description = "ID товара") @PathVariable Long productId,
             @Parameter(description = "Новое количество") @RequestParam Integer quantity,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Cart cart = cartService.updateItemQuantity(user.getId(), productId, quantity);
-        CartResponseDTO response = cartService.toCartResponseDTO(cart);
-        return ResponseEntity.ok(response);
+        cartService.updateItemQuantity(user.getId(), productId, quantity);
+        return ResponseEntity.ok(true);
     }
 
     @DeleteMapping("/items/{productId}")
     @Operation(summary = "Удалить товар из корзины", description = "Удаляет товар из корзины пользователя")
-    public ResponseEntity<CartResponseDTO> removeItemFromCart(
+    public ResponseEntity<Boolean> removeItemFromCart(
             @Parameter(description = "ID товара") @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Cart cart = cartService.removeItemFromCart(user.getId(), productId);
-        CartResponseDTO response = cartService.toCartResponseDTO(cart);
-        return ResponseEntity.ok(response);
+        cartService.removeItemFromCart(user.getId(), productId);
+        return ResponseEntity.ok(true);
     }
 
     @DeleteMapping
@@ -134,14 +131,13 @@ public class CartController {
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "404", description = "Товар не найден в корзине")
     })
-    public ResponseEntity<CartResponseDTO> incrementItemQuantity(
+    public ResponseEntity<Boolean> incrementItemQuantity(
             @Parameter(description = "ID товара в корзине", example = "5", required = true)
             @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Cart cart = cartService.incrementItemQuantity(user.getId(), productId);
-        CartResponseDTO response = cartService.toCartResponseDTO(cart);
-        return ResponseEntity.ok(response);
+        cartService.incrementItemQuantity(user.getId(), productId);
+        return ResponseEntity.ok(true);
     }
 
     @PatchMapping("/items/{productId}/decrement")
@@ -154,14 +150,13 @@ public class CartController {
             @ApiResponse(responseCode = "401", description = "Не авторизован"),
             @ApiResponse(responseCode = "404", description = "Товар не найден в корзине")
     })
-    public ResponseEntity<CartResponseDTO> decrementItemQuantity(
+    public ResponseEntity<Boolean> decrementItemQuantity(
             @Parameter(description = "ID товара в корзине", example = "5", required = true)
             @PathVariable Long productId,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Cart cart = cartService.decrementItemQuantity(user.getId(), productId);
-        CartResponseDTO response = cartService.toCartResponseDTO(cart);
-        return ResponseEntity.ok(response);
+        cartService.decrementItemQuantity(user.getId(), productId);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("/unique-count")
@@ -174,11 +169,10 @@ public class CartController {
 
     @PostMapping("/sync-prices")
     @Operation(summary = "Синхронизировать цены", description = "Синхронизирует цены в корзине с актуальными ценами товаров")
-    public ResponseEntity<CartResponseDTO> syncCartPrices(Authentication authentication) {
+    public ResponseEntity<Boolean> syncCartPrices(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Cart cart = cartService.syncCartPrices(user.getId());
-        CartResponseDTO response = cartService.toCartResponseDTO(cart);
-        return ResponseEntity.ok(response);
+        cartService.syncCartPrices(user.getId());
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping("/validate")

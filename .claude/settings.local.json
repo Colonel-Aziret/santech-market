@@ -22,7 +22,9 @@
       "Bash(.mvnw.cmd spring-boot:*)",
       "Bash(./mvnw.cmd clean:*)",
       "Bash(chmod:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(move:*)",
+      "Bash(./mvnw.cmd spring-boot:run:*)"
     ],
     "deny": [],
     "ask": []

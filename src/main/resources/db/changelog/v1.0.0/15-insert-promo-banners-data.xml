@@ -14,7 +14,7 @@
             <column name="updated_at" value="2025-09-16T00:45:43"/>
             <column name="title" value="РАСПРОДАЖА"/>
             <column name="subtitle" value="Трубы и герметики с 12.08 по 12.09"/>
-            <column name="image_url" value="/images/banners/sale-banner-1.svg"/>
+            <column name="image_url" value="/images/banners/sale-banner-1.jpg"/>
             <column name="link_url" value="/categories/1"/>
             <column name="display_order" value="1"/>
             <column name="is_active" value="true"/>
@@ -30,7 +30,7 @@
             <column name="updated_at" value="2025-09-16T00:45:43"/>
             <column name="title" value="Скидки!"/>
             <column name="subtitle" value="До 20 августа у нас действуют большие скидки на PPR трубы. Спешите купить!"/>
-            <column name="image_url" value="/images/banners/discount-banner.svg"/>
+            <column name="image_url" value="/images/banners/discount-banner.jpg"/>
             <column name="link_url" value="/products/search?query=PPR"/>
             <column name="display_order" value="2"/>
             <column name="is_active" value="true"/>
@@ -46,7 +46,7 @@
             <column name="updated_at" value="2025-09-16T00:45:43"/>
             <column name="title" value="Внимание!"/>
             <column name="subtitle" value="15 августа заканчивается акция на керамические трубы."/>
-            <column name="image_url" value="/images/banners/ceramic-tubes-promo.svg"/>
+            <column name="image_url" value="/images/banners/ceramic-tubes-promo.jpg"/>
             <column name="link_url" value="/categories/2"/>
             <column name="display_order" value="3"/>
             <column name="is_active" value="true"/>

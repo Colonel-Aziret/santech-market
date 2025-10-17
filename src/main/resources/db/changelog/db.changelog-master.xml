@@ -29,5 +29,6 @@
     <include file="db/changelog/v1.0.0/21-simplify-promo-banners.xml"/>
     <include file="db/changelog/v1.0.0/22-add-category-subcategories.xml"/>
     <include file="db/changelog/v1.0.0/23-insert-100-test-products.xml"/>
+    <include file="db/changelog/v1.0.0/24-update-banner-images-to-svg.xml"/>
 
 </databaseChangeLog>
