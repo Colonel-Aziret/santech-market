@@ -35,6 +35,11 @@ public interface ProductService {
     Page<Product> findProductsByCategory(Long categoryId, Pageable pageable);
 
     /**
+     * Получить товары по категории включая все подкатегории
+     */
+    Page<Product> findProductsByCategoryIncludingSubcategories(Long categoryId, Pageable pageable);
+
+    /**
      * Получить рекомендуемые товары для главной страницы
      */
     List<Product> getFeaturedProducts();

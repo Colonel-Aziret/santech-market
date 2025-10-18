@@ -81,6 +81,23 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/category/{categoryId}/with-subcategories")
+    @Operation(
+            summary = "Получить товары по категории включая подкатегории",
+            description = "Возвращает постраничный список товаров из указанной категории и всех её подкатегорий"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список товаров успешно получен")
+    })
+    public ResponseEntity<Page<Product>> getProductsByCategoryWithSubcategories(
+            @Parameter(description = "ID родительской категории", example = "1", required = true)
+            @PathVariable Long categoryId,
+            @Parameter(description = "Параметры пагинации и сортировки")
+            @PageableDefault(size = 20) Pageable pageable) {
+        Page<Product> products = productService.findProductsByCategoryIncludingSubcategories(categoryId, pageable);
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/featured")
     @Operation(summary = "Получить рекомендуемые товары", description = "Возвращает список рекомендуемых товаров для главной страницы")
     public ResponseEntity<List<Product>> getFeaturedProducts() {

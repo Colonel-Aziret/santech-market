@@ -69,6 +69,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /**
+     * Получить товары по категории включая все подкатегории
+     */
+    public Page<Product> findProductsByCategoryIncludingSubcategories(Long categoryId, Pageable pageable) {
+        log.debug("Поиск товаров для категории {} включая подкатегории", categoryId);
+        return productRepository.findByCategoryIdIncludingSubcategories(categoryId, pageable);
+    }
+
+    /**
      * Получить рекомендуемые товары для главной страницы
      */
     public List<Product> getFeaturedProducts() {

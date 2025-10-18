@@ -157,4 +157,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findSimilarProducts(@Param("categoryId") Long categoryId,
                                       @Param("excludeId") Long excludeId,
                                       Pageable pageable);
+
+    /**
+     * Получить товары по категории включая все подкатегории
+     */
+    @Query("SELECT p FROM Product p WHERE " +
+            "p.isActive = true " +
+            "AND (p.category.id = :categoryId OR p.category.parent.id = :categoryId)")
+    Page<Product> findByCategoryIdIncludingSubcategories(@Param("categoryId") Long categoryId, Pageable pageable);
 }

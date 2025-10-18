@@ -355,12 +355,27 @@ public class CartServiceImpl implements CartService {
     private CartItemDTO toCartItemDTO(CartItem item) {
         Product product = item.getProduct();
 
+        // Преобразуем List<ProductImage> в List<String> (URL изображений)
+        List<String> imageUrls = product.getAdditionalImages() != null
+                ? product.getAdditionalImages().stream()
+                    .map(img -> img.getImageUrl())
+                    .collect(Collectors.toList())
+                : null;
+
         return CartItemDTO.builder()
-                .id(item.getId())
-                .productId(product.getId())
-                .productName(product.getName())
-                .productImageUrl(product.getImageUrl())
-                .productBrand(product.getBrand())
+                .id(product.getId())
+                .createdAt(product.getCreatedAt())
+                .updatedAt(product.getUpdatedAt())
+                .name(product.getName())
+                .description(product.getDescription())
+                .brand(product.getBrand())
+                .sku(product.getSku())
+                .imageUrl(product.getImageUrl())
+                .oldPrice(product.getOldPrice())
+                .specifications(product.getSpecifications())
+                .isActive(product.getIsActive())
+                .isFeatured(product.getIsFeatured())
+                .additionalImages(imageUrls)
                 .quantity(item.getQuantity())
                 .price(item.getPrice())
                 .totalPrice(item.getTotalPrice())
