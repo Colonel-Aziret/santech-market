@@ -1,7 +1,10 @@
 package kg.santechmarket.service.impl;
 
+import kg.santechmarket.dto.OrderItemDTO;
+import kg.santechmarket.dto.OrderResponseDTO;
 import kg.santechmarket.entity.Cart;
 import kg.santechmarket.entity.Order;
+import kg.santechmarket.entity.OrderItem;
 import kg.santechmarket.enums.OrderStatus;
 import kg.santechmarket.repository.OrderRepository;
 import kg.santechmarket.service.CartService;
@@ -265,6 +268,73 @@ public class OrderServiceImpl implements OrderService {
      */
     public long getUserOrderCount(Long userId) {
         return orderRepository.countByUserId(userId);
+    }
+
+    /**
+     * Конвертировать Order entity в OrderResponseDTO
+     */
+    public OrderResponseDTO toOrderResponseDTO(Order order) {
+        if (order == null) {
+            return null;
+        }
+
+        List<OrderItemDTO> itemDTOs = order.getItems().stream()
+                .map(this::toOrderItemDTO)
+                .collect(Collectors.toList());
+
+        return OrderResponseDTO.builder()
+                .id(order.getId())
+                .orderNumber(order.getOrderNumber())
+                .userId(order.getUser().getId())
+                .userName(order.getUser().getFullName())
+                .status(order.getStatus())
+                .totalAmount(order.getTotalAmount())
+                .totalItems(order.getTotalItems())
+                .customerComment(order.getCustomerComment())
+                .managerComment(order.getManagerComment())
+                .contactInfo(order.getContactInfo())
+                .items(itemDTOs)
+                .createdAt(order.getCreatedAt())
+                .updatedAt(order.getUpdatedAt())
+                .confirmedAt(order.getConfirmedAt())
+                .completedAt(order.getCompletedAt())
+                .build();
+    }
+
+    /**
+     * Конвертировать OrderItem entity в OrderItemDTO
+     */
+    private OrderItemDTO toOrderItemDTO(OrderItem item) {
+        if (item == null) {
+            return null;
+        }
+
+        return OrderItemDTO.builder()
+                .id(item.getId())
+                .productId(item.getProduct().getId())
+                .productName(item.getProductName())
+                .quantity(item.getQuantity())
+                .price(item.getPrice())
+                .totalPrice(item.getTotalPrice())
+                .build();
+    }
+
+    /**
+     * Проверить, является ли пользователь владельцем заказа
+     */
+    public boolean isOrderOwner(Long orderId, Long userId) {
+        return orderRepository.findById(orderId)
+                .map(order -> order.getUser().getId().equals(userId))
+                .orElse(false);
+    }
+
+    /**
+     * Проверить, является ли пользователь владельцем заказа по номеру
+     */
+    public boolean isOrderOwnerByNumber(String orderNumber, Long userId) {
+        return orderRepository.findByOrderNumber(orderNumber)
+                .map(order -> order.getUser().getId().equals(userId))
+                .orElse(false);
     }
 
     /**

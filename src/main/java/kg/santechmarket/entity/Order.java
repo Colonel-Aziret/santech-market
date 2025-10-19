@@ -1,5 +1,6 @@
 package kg.santechmarket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -41,6 +42,7 @@ public class Order extends BaseEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"orders", "cart", "password", "notifications"})
     private User user;
 
     /**
@@ -101,6 +103,7 @@ public class Order extends BaseEntity {
      * Товары в заказе
      */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnoreProperties({"order"})
     private List<OrderItem> items = new ArrayList<>();
 
     /**

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kg.santechmarket.dto.OrderResponseDTO;
 import kg.santechmarket.entity.Order;
 import kg.santechmarket.entity.User;
 import kg.santechmarket.enums.OrderStatus;
@@ -46,27 +47,32 @@ public class OrderController {
 
     @GetMapping("/my")
     @Operation(summary = "Получить мои заказы", description = "Возвращает заказы текущего пользователя")
-    public ResponseEntity<Page<Order>> getMyOrders(
+    public ResponseEntity<Page<OrderResponseDTO>> getMyOrders(
             @PageableDefault(size = 10) Pageable pageable,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Page<Order> orders = orderService.getUserOrders(user.getId(), pageable);
-        return ResponseEntity.ok(orders);
+        Page<OrderResponseDTO> orderDTOs = orders.map(orderService::toOrderResponseDTO);
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @GetMapping("/my/with-items")
     @Operation(summary = "Получить мои заказы с товарами", description = "Возвращает заказы текущего пользователя с деталями товаров")
-    public ResponseEntity<List<Order>> getMyOrdersWithItems(Authentication authentication) {
+    public ResponseEntity<List<OrderResponseDTO>> getMyOrdersWithItems(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         List<Order> orders = orderService.getUserOrdersWithItems(user.getId());
-        return ResponseEntity.ok(orders);
+        List<OrderResponseDTO> orderDTOs = orders.stream()
+                .map(orderService::toOrderResponseDTO)
+                .toList();
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить заказ по ID", description = "Возвращает детали заказа по идентификатору")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or @orderService.isOrderOwner(#id, authentication.principal.id)")
-    public ResponseEntity<Order> getOrderById(@Parameter(description = "ID заказа") @PathVariable Long id) {
+    public ResponseEntity<OrderResponseDTO> getOrderById(@Parameter(description = "ID заказа") @PathVariable Long id) {
         return orderService.findByIdWithItems(id)
+                .map(orderService::toOrderResponseDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -74,8 +80,9 @@ public class OrderController {
     @GetMapping("/number/{orderNumber}")
     @Operation(summary = "Получить заказ по номеру", description = "Возвращает детали заказа по его номеру")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or @orderService.isOrderOwnerByNumber(#orderNumber, authentication.principal.id)")
-    public ResponseEntity<Order> getOrderByNumber(@Parameter(description = "Номер заказа") @PathVariable String orderNumber) {
+    public ResponseEntity<OrderResponseDTO> getOrderByNumber(@Parameter(description = "Номер заказа") @PathVariable String orderNumber) {
         return orderService.findByOrderNumber(orderNumber)
+                .map(orderService::toOrderResponseDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -83,21 +90,23 @@ public class OrderController {
     @GetMapping("/status/{status}")
     @Operation(summary = "Получить заказы по статусу", description = "Возвращает заказы с указанным статусом")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Page<Order>> getOrdersByStatus(
+    public ResponseEntity<Page<OrderResponseDTO>> getOrdersByStatus(
             @Parameter(description = "Статус заказа") @PathVariable OrderStatus status,
             @PageableDefault(size = 20) Pageable pageable) {
         Page<Order> orders = orderService.getOrdersByStatus(status, pageable);
-        return ResponseEntity.ok(orders);
+        Page<OrderResponseDTO> orderDTOs = orders.map(orderService::toOrderResponseDTO);
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @GetMapping("/search")
     @Operation(summary = "Поиск заказов", description = "Поиск заказов по различным критериям")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Page<Order>> searchOrders(
+    public ResponseEntity<Page<OrderResponseDTO>> searchOrders(
             @Parameter(description = "Поисковый запрос") @RequestParam String query,
             @PageableDefault(size = 20) Pageable pageable) {
         Page<Order> orders = orderService.searchOrders(query, pageable);
-        return ResponseEntity.ok(orders);
+        Page<OrderResponseDTO> orderDTOs = orders.map(orderService::toOrderResponseDTO);
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @PatchMapping("/{id}/status")
@@ -164,20 +173,26 @@ public class OrderController {
     @GetMapping("/date-range")
     @Operation(summary = "Получить заказы за период", description = "Возвращает заказы за указанный период времени")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<List<Order>> getOrdersByDateRange(
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByDateRange(
             @Parameter(description = "Начальная дата") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @Parameter(description = "Конечная дата") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         List<Order> orders = orderService.getOrdersByDateRange(startDate, endDate);
-        return ResponseEntity.ok(orders);
+        List<OrderResponseDTO> orderDTOs = orders.stream()
+                .map(orderService::toOrderResponseDTO)
+                .toList();
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @GetMapping("/overdue")
     @Operation(summary = "Получить просроченные заказы", description = "Возвращает заказы, которые находятся в статусе PENDING дольше указанного времени")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<List<Order>> getOverdueOrders(
+    public ResponseEntity<List<OrderResponseDTO>> getOverdueOrders(
             @Parameter(description = "Пороговое количество часов") @RequestParam(defaultValue = "24") int hoursThreshold) {
         List<Order> orders = orderService.getOverdueOrders(hoursThreshold);
-        return ResponseEntity.ok(orders);
+        List<OrderResponseDTO> orderDTOs = orders.stream()
+                .map(orderService::toOrderResponseDTO)
+                .toList();
+        return ResponseEntity.ok(orderDTOs);
     }
 
     @GetMapping("/stats")

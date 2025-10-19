@@ -1,5 +1,6 @@
 package kg.santechmarket.service;
 
+import kg.santechmarket.dto.OrderResponseDTO;
 import kg.santechmarket.entity.Order;
 import kg.santechmarket.enums.OrderStatus;
 import kg.santechmarket.service.impl.OrderServiceImpl;
@@ -105,6 +106,21 @@ public interface OrderService {
      * Получить количество заказов пользователя
      */
     long getUserOrderCount(Long userId);
+
+    /**
+     * Конвертировать Order entity в OrderResponseDTO
+     */
+    OrderResponseDTO toOrderResponseDTO(Order order);
+
+    /**
+     * Проверить, является ли пользователь владельцем заказа
+     */
+    boolean isOrderOwner(Long orderId, Long userId);
+
+    /**
+     * Проверить, является ли пользователь владельцем заказа по номеру
+     */
+    boolean isOrderOwnerByNumber(String orderNumber, Long userId);
 
     /**
      * DTO для статистики заказов
