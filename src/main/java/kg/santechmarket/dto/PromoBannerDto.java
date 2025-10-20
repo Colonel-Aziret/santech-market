@@ -22,8 +22,16 @@ public class PromoBannerDto {
     @AllArgsConstructor
     public static class BannerResponse {
         private Long id;
+        private String title;
+        private String subtitle;
         private String imageUrl;
+        private String linkUrl;
         private Integer displayOrder;
+        private Boolean isActive;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private String backgroundColor;
+        private String textColor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -35,10 +43,21 @@ public class PromoBannerDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateBannerRequest {
+        @NotBlank(message = "Заголовок не может быть пустым")
+        private String title;
+
+        private String subtitle;
+
         @NotBlank(message = "URL изображения не может быть пустым")
         private String imageUrl;
 
+        private String linkUrl;
         private Integer displayOrder;
+        private Boolean isActive;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private String backgroundColor;
+        private String textColor;
     }
 
     /**
@@ -48,7 +67,15 @@ public class PromoBannerDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateBannerRequest {
+        private String title;
+        private String subtitle;
         private String imageUrl;
+        private String linkUrl;
         private Integer displayOrder;
+        private Boolean isActive;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private String backgroundColor;
+        private String textColor;
     }
 }
