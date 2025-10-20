@@ -108,17 +108,22 @@ public class ProductController {
     @GetMapping("/search")
     @Operation(
             summary = "Поиск товаров",
-            description = "Полнотекстовый поиск товаров по названию и описанию. Результаты сортируются по релевантности."
+            description = "Полнотекстовый поиск товаров по названию и описанию. Если query не указан, возвращает все активные товары."
     )
     @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Результаты поиска получены")
     })
     public ResponseEntity<Page<Product>> searchProducts(
-            @Parameter(description = "Поисковый запрос", example = "труба полипропиленовая", required = true)
-            @RequestParam String query,
+            @Parameter(description = "Поисковый запрос (опционально)", example = "труба полипропиленовая")
+            @RequestParam(required = false) String query,
             @Parameter(description = "Параметры пагинации")
             @PageableDefault(size = 20) Pageable pageable) {
-        Page<Product> products = productService.searchProducts(query, pageable);
+        Page<Product> products;
+        if (query == null || query.trim().isEmpty()) {
+            products = productService.findAllActiveProducts(pageable);
+        } else {
+            products = productService.searchProducts(query, pageable);
+        }
         return ResponseEntity.ok(products);
     }
 
