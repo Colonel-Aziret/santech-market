@@ -169,7 +169,7 @@ public class ProductController {
 
     @GetMapping("/discounted")
     @Operation(summary = "Получить товары со скидкой", description = "Возвращает постраничный список товаров со скидкой")
-    public ResponseEntity<Page<Product>> getDiscountedProducts(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<Product>> getDiscountedProducts(@ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.getDiscountedProducts(pageable);
         return ResponseEntity.ok(products);
     }

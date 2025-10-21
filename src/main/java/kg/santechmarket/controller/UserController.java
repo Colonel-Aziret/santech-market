@@ -127,7 +127,7 @@ public class UserController {
     @GetMapping("/pending")
     @Operation(summary = "Получить пользователей на модерации", description = "Возвращает список пользователей со статусом PENDING")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<Page<User>> getPendingUsers(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<User>> getPendingUsers(@ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<User> users = userService.getPendingUsers(pageable);
         return ResponseEntity.ok(users);
     }
