@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="26-restore-promo-banner-columns" author="developer">
+        <comment>Восстановление колонок promo_banners, которые были удалены migration 21</comment>
+
+        <!-- Добавляем удалённые колонки обратно -->
+        <addColumn tableName="promo_banners">
+            <column name="title" type="VARCHAR(100)"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="subtitle" type="VARCHAR(500)"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="link_url" type="VARCHAR(500)"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="start_date" type="TIMESTAMP"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="end_date" type="TIMESTAMP"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="background_color" type="VARCHAR(7)"/>
+        </addColumn>
+
+        <addColumn tableName="promo_banners">
+            <column name="text_color" type="VARCHAR(7)"/>
+        </addColumn>
+
+        <!-- Восстанавливаем индексы -->
+        <createIndex tableName="promo_banners" indexName="idx_promo_banner_dates">
+            <column name="start_date"/>
+            <column name="end_date"/>
+        </createIndex>
+
+        <createIndex tableName="promo_banners" indexName="idx_promo_banner_active">
+            <column name="is_active"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="25-update-images-for-categories-and-products" author="developer">
+        <comment>Добавление изображений для всех категорий и товаров</comment>
+
+        <!-- Обновление изображений для основных категорий -->
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Truby"/>
+            <where>name = 'Трубы'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Fitingi"/>
+            <where>name = 'Фитинги'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Armatura"/>
+            <where>name = 'Арматура'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Kanalizacia"/>
+            <where>name = 'Канализация'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Otoplenie"/>
+            <where>name = 'Отопление'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Germetiki"/>
+            <where>name = 'Герметики'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Shlangi"/>
+            <where>name = 'Шланги'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Instrumenty"/>
+            <where>name = 'Инструменты'</where>
+        </update>
+
+        <!-- Обновление изображений для подкатегорий -->
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=PPR"/>
+            <where>name = 'PPR трубы'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Cold+Water"/>
+            <where>name = 'Трубы для холодной воды'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Hot+Water"/>
+            <where>name = 'Трубы для горячей воды'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Sewage"/>
+            <where>name = 'Канализационные трубы'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Floor+Heating"/>
+            <where>name = 'Трубы для теплого пола'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Corrugated"/>
+            <where>name = 'Гофрированные трубы'</where>
+        </update>
+
+        <update tableName="categories">
+            <column name="image_url" value="https://placehold.co/400x400/png?text=Insulation"/>
+            <where>name = 'Теплоизоляционные трубки'</where>
+        </update>
+
+        <!-- Обновление изображений для всех товаров (используем одно изображение для простоты) -->
+        <update tableName="products">
+            <column name="image_url" value="https://placehold.co/600x600/png?text=Product"/>
+            <where>image_url IS NULL</where>
+        </update>
+
+    </changeSet>
+
+</databaseChangeLog>
