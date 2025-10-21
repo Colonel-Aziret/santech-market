@@ -12,6 +12,7 @@ import kg.santechmarket.enums.OrderStatus;
 import kg.santechmarket.service.OrderService;
 import kg.santechmarket.service.impl.OrderServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -48,7 +49,7 @@ public class OrderController {
     @GetMapping("/my")
     @Operation(summary = "Получить мои заказы", description = "Возвращает заказы текущего пользователя")
     public ResponseEntity<Page<OrderResponseDTO>> getMyOrders(
-            @PageableDefault(size = 10) Pageable pageable,
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Page<Order> orders = orderService.getUserOrders(user.getId(), pageable);
@@ -92,7 +93,7 @@ public class OrderController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public ResponseEntity<Page<OrderResponseDTO>> getOrdersByStatus(
             @Parameter(description = "Статус заказа") @PathVariable OrderStatus status,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Order> orders = orderService.getOrdersByStatus(status, pageable);
         Page<OrderResponseDTO> orderDTOs = orders.map(orderService::toOrderResponseDTO);
         return ResponseEntity.ok(orderDTOs);
@@ -103,7 +104,7 @@ public class OrderController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public ResponseEntity<Page<OrderResponseDTO>> searchOrders(
             @Parameter(description = "Поисковый запрос") @RequestParam String query,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Order> orders = orderService.searchOrders(query, pageable);
         Page<OrderResponseDTO> orderDTOs = orders.map(orderService::toOrderResponseDTO);
         return ResponseEntity.ok(orderDTOs);

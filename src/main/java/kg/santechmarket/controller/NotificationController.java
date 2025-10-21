@@ -9,6 +9,7 @@ import kg.santechmarket.entity.Notification;
 import kg.santechmarket.entity.User;
 import kg.santechmarket.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -28,10 +29,14 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    @Operation(summary = "Получить мои уведомления", description = "Возвращает список уведомлений текущего пользователя")
+    @Operation(
+            summary = "Получить мои уведомления",
+            description = "Возвращает список уведомлений текущего пользователя. " +
+                    "Параметры пагинации передаются как query параметры: ?page=0&size=10&sort=createdAt,desc"
+    )
     @ApiResponse(responseCode = "200", description = "Успешно получен список уведомлений")
     public ResponseEntity<Page<Notification>> getMyNotifications(
-            @PageableDefault(size = 20) Pageable pageable,
+            @ParameterObject @PageableDefault(size = 20, sort = "createdAt") Pageable pageable,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Page<Notification> notifications = notificationService.getUserNotifications(user.getId(), pageable);

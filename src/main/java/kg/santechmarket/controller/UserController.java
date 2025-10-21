@@ -10,6 +10,7 @@ import kg.santechmarket.entity.User;
 import kg.santechmarket.enums.UserRole;
 import kg.santechmarket.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -52,7 +53,7 @@ public class UserController {
     public ResponseEntity<Page<User>> getUsers(
             @Parameter(description = "Поисковый запрос") @RequestParam(required = false) String search,
             @Parameter(description = "Фильтр по активности") @RequestParam(required = false) Boolean isActive,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<User> users = userService.searchUsers(search, isActive, pageable);
         return ResponseEntity.ok(users);
     }

@@ -11,6 +11,7 @@ import kg.santechmarket.entity.Product;
 import kg.santechmarket.entity.ProductImage;
 import kg.santechmarket.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -44,7 +45,7 @@ public class ProductController {
     })
     public ResponseEntity<Page<Product>> getAllActiveProducts(
             @Parameter(description = "Параметры пагинации и сортировки (page, size, sort)")
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findAllActiveProducts(pageable);
         return ResponseEntity.ok(products);
     }
@@ -76,7 +77,7 @@ public class ProductController {
     @Operation(summary = "Получить товары по категории", description = "Возвращает постраничный список товаров в указанной категории")
     public ResponseEntity<Page<Product>> getProductsByCategory(
             @Parameter(description = "ID категории") @PathVariable Long categoryId,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findProductsByCategory(categoryId, pageable);
         return ResponseEntity.ok(products);
     }
@@ -93,7 +94,7 @@ public class ProductController {
             @Parameter(description = "ID родительской категории", example = "1", required = true)
             @PathVariable Long categoryId,
             @Parameter(description = "Параметры пагинации и сортировки")
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findProductsByCategoryIncludingSubcategories(categoryId, pageable);
         return ResponseEntity.ok(products);
     }
@@ -117,7 +118,7 @@ public class ProductController {
             @Parameter(description = "Поисковый запрос (опционально)", example = "труба полипропиленовая")
             @RequestParam(required = false) String query,
             @Parameter(description = "Параметры пагинации")
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products;
         if (query == null || query.trim().isEmpty()) {
             products = productService.findAllActiveProducts(pageable);
@@ -160,7 +161,7 @@ public class ProductController {
             @RequestParam(required = false) String search,
 
             @Parameter(description = "Параметры пагинации")
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findProductsWithFilters(
                 categoryId, brand, minPrice, maxPrice, search, pageable);
         return ResponseEntity.ok(products);
@@ -194,7 +195,7 @@ public class ProductController {
     public ResponseEntity<Page<Product>> searchBySpecification(
             @Parameter(description = "Ключ характеристики") @RequestParam String specKey,
             @Parameter(description = "Значение характеристики") @RequestParam String specValue,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findBySpecification(specKey, specValue, pageable);
         return ResponseEntity.ok(products);
     }
@@ -205,7 +206,7 @@ public class ProductController {
             @Parameter(description = "Диаметр трубы") @RequestParam(required = false) String diameter,
             @Parameter(description = "Рабочее давление") @RequestParam(required = false) String pressure,
             @Parameter(description = "Материал") @RequestParam(required = false) String material,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<Product> products = productService.findByMultipleSpecifications(diameter, pressure, material, pageable);
         return ResponseEntity.ok(products);
     }

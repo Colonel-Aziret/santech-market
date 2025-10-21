@@ -10,6 +10,7 @@ import kg.santechmarket.dto.PromoBannerDto;
 import kg.santechmarket.entity.PromoBanner;
 import kg.santechmarket.service.PromoBannerService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -45,7 +46,7 @@ public class PromoBannerController {
             @Parameter(description = "Фильтр по активности (true - только активные, false - только неактивные, null - все)")
             @RequestParam(required = false) Boolean isActive,
             @Parameter(description = "Параметры пагинации и сортировки")
-            @PageableDefault(size = 20) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 20) Pageable pageable) {
         Page<PromoBannerDto.BannerResponse> banners = promoBannerService.getBannersWithFilters(isActive, pageable);
         return ResponseEntity.ok(banners);
     }
