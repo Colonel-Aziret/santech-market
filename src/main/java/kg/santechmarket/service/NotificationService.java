@@ -87,4 +87,9 @@ public interface NotificationService {
      * Очистка старых уведомлений (старше N дней)
      */
     void cleanupOldNotifications(int daysThreshold);
+
+    /**
+     * Конвертировать Notification entity в NotificationResponseDTO
+     */
+    kg.santechmarket.dto.NotificationResponseDTO toNotificationResponseDTO(Notification notification);
 }

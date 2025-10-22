@@ -1,5 +1,6 @@
 package kg.santechmarket.service;
 
+import kg.santechmarket.dto.FilterMetadataResponse;
 import kg.santechmarket.entity.Product;
 import kg.santechmarket.entity.ProductImage;
 import org.springframework.data.domain.Page;
@@ -144,4 +145,9 @@ public interface ProductService {
      * Обновить изображение товара
      */
     ProductImage updateProductImage(Long productId, Long imageId, String imageUrl, Integer displayOrder, String altText);
+
+    /**
+     * Получить метаданные для фильтров (списки доступных значений)
+     */
+    FilterMetadataResponse getFilterMetadata();
 }

@@ -1,5 +1,8 @@
 package kg.santechmarket.service.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kg.santechmarket.dto.FilterMetadataResponse;
 import kg.santechmarket.entity.Category;
 import kg.santechmarket.entity.Product;
 import kg.santechmarket.entity.ProductImage;
@@ -16,8 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для работы с товарами
@@ -405,5 +408,99 @@ public class ProductServiceImpl implements ProductService {
         log.info("Изображение обновлено");
 
         return updatedImage;
+    }
+
+    /**
+     * Получить метаданные для фильтров (списки доступных значений)
+     */
+    @Override
+    public FilterMetadataResponse getFilterMetadata() {
+        log.info("Получение метаданных для фильтров");
+
+        // Получить все бренды
+        List<String> brands = productRepository.findDistinctBrands();
+
+        // Получить диапазон цен
+        BigDecimal minPrice = productRepository.findMinPrice();
+        BigDecimal maxPrice = productRepository.findMaxPrice();
+
+        // Получить все specifications для извлечения уникальных значений
+        List<String> allSpecifications = productRepository.findAllSpecifications();
+
+        // Извлечь уникальные значения из specifications
+        Set<String> diameters = new HashSet<>();
+        Set<String> pressures = new HashSet<>();
+        Set<String> materials = new HashSet<>();
+        Set<String> reinforcements = new HashSet<>();
+        Set<String> lengths = new HashSet<>();
+        Set<String> purposes = new HashSet<>();
+        Set<String> wallThicknesses = new HashSet<>();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        for (String spec : allSpecifications) {
+            try {
+                JsonNode node = objectMapper.readTree(spec);
+
+                // Извлечь диаметры
+                if (node.has("diameter")) {
+                    diameters.add(node.get("diameter").asText());
+                }
+
+                // Извлечь давления
+                if (node.has("pressure")) {
+                    pressures.add(node.get("pressure").asText());
+                }
+
+                // Извлечь материалы
+                if (node.has("material")) {
+                    materials.add(node.get("material").asText());
+                }
+
+                // Извлечь армирование
+                if (node.has("reinforcement")) {
+                    reinforcements.add(node.get("reinforcement").asText());
+                }
+
+                // Извлечь длину
+                if (node.has("length")) {
+                    lengths.add(node.get("length").asText());
+                }
+
+                // Извлечь назначение
+                if (node.has("purpose")) {
+                    purposes.add(node.get("purpose").asText());
+                }
+
+                // Извлечь толщину стенки
+                if (node.has("wall_thickness")) {
+                    wallThicknesses.add(node.get("wall_thickness").asText());
+                }
+
+            } catch (Exception e) {
+                log.warn("Ошибка парсинга specifications: {}", e.getMessage());
+            }
+        }
+
+        // Построить ответ
+        FilterMetadataResponse response = FilterMetadataResponse.builder()
+                .brands(brands.stream().sorted().collect(Collectors.toList()))
+                .diameters(diameters.stream().sorted().collect(Collectors.toList()))
+                .pressures(pressures.stream().sorted().collect(Collectors.toList()))
+                .materials(materials.stream().sorted().collect(Collectors.toList()))
+                .reinforcements(reinforcements.stream().sorted().collect(Collectors.toList()))
+                .lengths(lengths.stream().sorted().collect(Collectors.toList()))
+                .purposes(purposes.stream().sorted().collect(Collectors.toList()))
+                .wallThicknesses(wallThicknesses.stream().sorted().collect(Collectors.toList()))
+                .priceRange(FilterMetadataResponse.PriceRange.builder()
+                        .min(minPrice != null ? minPrice : BigDecimal.ZERO)
+                        .max(maxPrice != null ? maxPrice : BigDecimal.ZERO)
+                        .build())
+                .build();
+
+        log.info("Метаданные фильтров получены: {} брендов, {} диаметров, {} давлений",
+                brands.size(), diameters.size(), pressures.size());
+
+        return response;
     }
 }

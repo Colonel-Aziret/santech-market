@@ -1,5 +1,6 @@
 package kg.santechmarket.service.impl;
 
+import kg.santechmarket.dto.NotificationResponseDTO;
 import kg.santechmarket.entity.Notification;
 import kg.santechmarket.entity.Order;
 import kg.santechmarket.entity.User;
@@ -256,5 +257,26 @@ public class NotificationServiceImpl implements NotificationService {
             case CANCELLED -> String.format("Заказ %s был отменен.", orderNumber);
             default -> String.format("Статус заказа %s изменен.", orderNumber);
         };
+    }
+
+    /**
+     * Конвертировать Notification entity в NotificationResponseDTO
+     */
+    public NotificationResponseDTO toNotificationResponseDTO(Notification notification) {
+        if (notification == null) {
+            return null;
+        }
+
+        return NotificationResponseDTO.builder()
+                .id(notification.getId())
+                .type(notification.getType())
+                .title(notification.getTitle())
+                .content(notification.getContent())
+                .isRead(notification.getIsRead())
+                .readAt(notification.getReadAt())
+                .metadata(notification.getMetadata())
+                .createdAt(notification.getCreatedAt())
+                .updatedAt(notification.getUpdatedAt())
+                .build();
     }
 }

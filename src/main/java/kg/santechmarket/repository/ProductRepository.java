@@ -165,4 +165,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.isActive = true " +
             "AND (p.category.id = :categoryId OR p.category.parent.id = :categoryId)")
     Page<Product> findByCategoryIdIncludingSubcategories(@Param("categoryId") Long categoryId, Pageable pageable);
+
+    /**
+     * Получить минимальную цену среди активных товаров
+     */
+    @Query("SELECT MIN(p.price) FROM Product p WHERE p.isActive = true")
+    BigDecimal findMinPrice();
+
+    /**
+     * Получить максимальную цену среди активных товаров
+     */
+    @Query("SELECT MAX(p.price) FROM Product p WHERE p.isActive = true")
+    BigDecimal findMaxPrice();
+
+    /**
+     * Получить все specifications активных товаров для извлечения уникальных значений
+     */
+    @Query("SELECT p.specifications FROM Product p WHERE p.isActive = true AND p.specifications IS NOT NULL")
+    List<String> findAllSpecifications();
 }

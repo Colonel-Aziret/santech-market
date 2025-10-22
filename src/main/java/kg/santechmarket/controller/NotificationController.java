@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kg.santechmarket.entity.Notification;
+import kg.santechmarket.dto.NotificationResponseDTO;
 import kg.santechmarket.entity.User;
 import kg.santechmarket.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/notifications")
@@ -35,19 +36,23 @@ public class NotificationController {
                     "Параметры пагинации передаются как query параметры: ?page=0&size=10&sort=createdAt,desc"
     )
     @ApiResponse(responseCode = "200", description = "Успешно получен список уведомлений")
-    public ResponseEntity<Page<Notification>> getMyNotifications(
+    public ResponseEntity<Page<NotificationResponseDTO>> getMyNotifications(
             @ParameterObject @PageableDefault(size = 20, sort = "createdAt") Pageable pageable,
             Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        Page<Notification> notifications = notificationService.getUserNotifications(user.getId(), pageable);
+        Page<NotificationResponseDTO> notifications = notificationService.getUserNotifications(user.getId(), pageable)
+                .map(notificationService::toNotificationResponseDTO);
         return ResponseEntity.ok(notifications);
     }
 
     @GetMapping("/unread")
     @Operation(summary = "Получить непрочитанные уведомления", description = "Возвращает список непрочитанных уведомлений")
-    public ResponseEntity<List<Notification>> getUnreadNotifications(Authentication authentication) {
+    public ResponseEntity<List<NotificationResponseDTO>> getUnreadNotifications(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        List<Notification> notifications = notificationService.getUnreadNotifications(user.getId());
+        List<NotificationResponseDTO> notifications = notificationService.getUnreadNotifications(user.getId())
+                .stream()
+                .map(notificationService::toNotificationResponseDTO)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(notifications);
     }
 

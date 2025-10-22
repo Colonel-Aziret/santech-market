@@ -190,6 +190,32 @@ public class ProductController {
         return ResponseEntity.ok(brands);
     }
 
+    @GetMapping("/filters/metadata")
+    @Operation(
+            summary = "Получить метаданные для фильтров",
+            description = """
+                    Возвращает все доступные значения для фильтрации товаров:
+                    - Список всех брендов
+                    - Список всех диаметров (извлечено из specifications)
+                    - Список всех давлений (извлечено из specifications)
+                    - Список всех материалов (извлечено из specifications)
+                    - Список всех типов армирования (извлечено из specifications)
+                    - Список всех длин (извлечено из specifications)
+                    - Список всех назначений (извлечено из specifications)
+                    - Список всех толщин стенки (извлечено из specifications)
+                    - Диапазон цен (min/max)
+
+                    Используется фронтендом для построения UI фильтров.
+                    """
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Метаданные успешно получены")
+    })
+    public ResponseEntity<kg.santechmarket.dto.FilterMetadataResponse> getFilterMetadata() {
+        kg.santechmarket.dto.FilterMetadataResponse metadata = productService.getFilterMetadata();
+        return ResponseEntity.ok(metadata);
+    }
+
     @GetMapping("/search-by-spec")
     @Operation(summary = "Поиск по характеристике", description = "Поиск товаров по конкретной характеристике")
     public ResponseEntity<Page<Product>> searchBySpecification(
