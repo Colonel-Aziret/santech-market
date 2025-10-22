@@ -103,30 +103,58 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUser(Long id, User userUpdate) {
+    public User updateUser(Long id, kg.santechmarket.dto.UserDto.UpdateUserRequest userUpdate) {
         log.info("Обновление пользователя с ID: {}", id);
 
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + id));
 
-        // Проверяем уникальность только если данные изменились
-        if (!existingUser.getUsername().equals(userUpdate.getUsername()) ||
-                !existingUser.getEmail().equals(userUpdate.getEmail()) ||
-                !existingUser.getPhoneNumber().equals(userUpdate.getPhoneNumber())) {
-            validateUserUniqueness(userUpdate, id);
+        // Обновляем только те поля, которые переданы (не null)
+        boolean needsUniquenessCheck = false;
+
+        if (userUpdate.username() != null && !userUpdate.username().equals(existingUser.getUsername())) {
+            existingUser.setUsername(userUpdate.username());
+            needsUniquenessCheck = true;
         }
 
-        // Обновляем поля
-        existingUser.setUsername(userUpdate.getUsername());
-        existingUser.setFullName(userUpdate.getFullName());
-        existingUser.setEmail(userUpdate.getEmail());
-        existingUser.setPhoneNumber(userUpdate.getPhoneNumber());
-        existingUser.setRole(userUpdate.getRole());
-        existingUser.setIsActive(userUpdate.getIsActive());
+        if (userUpdate.fullName() != null) {
+            existingUser.setFullName(userUpdate.fullName());
+        }
 
-        // Обновляем пароль только если он был изменен
-        if (userUpdate.getPassword() != null && !userUpdate.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+        if (userUpdate.email() != null && !userUpdate.email().equals(existingUser.getEmail())) {
+            existingUser.setEmail(userUpdate.email());
+            needsUniquenessCheck = true;
+        }
+
+        if (userUpdate.phoneNumber() != null && !userUpdate.phoneNumber().equals(existingUser.getPhoneNumber())) {
+            existingUser.setPhoneNumber(userUpdate.phoneNumber());
+            needsUniquenessCheck = true;
+        }
+
+        if (userUpdate.role() != null) {
+            existingUser.setRole(userUpdate.role());
+        }
+
+        if (userUpdate.isActive() != null) {
+            existingUser.setIsActive(userUpdate.isActive());
+        }
+
+        // Проверяем уникальность только если критичные поля изменились
+        if (needsUniquenessCheck) {
+            if (userUpdate.username() != null && userRepository.existsByUsernameAndIdNot(userUpdate.username(), id)) {
+                throw new IllegalArgumentException("Пользователь с таким логином уже существует");
+            }
+            if (userUpdate.email() != null && userRepository.existsByEmailAndIdNot(userUpdate.email(), id)) {
+                throw new IllegalArgumentException("Пользователь с таким email уже существует");
+            }
+            if (userUpdate.phoneNumber() != null && userRepository.existsByPhoneNumberAndIdNot(userUpdate.phoneNumber(), id)) {
+                throw new IllegalArgumentException("Пользователь с таким номером телефона уже существует");
+            }
+        }
+
+        // Обновляем пароль только если он передан
+        if (userUpdate.password() != null && !userUpdate.password().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(userUpdate.password()));
             log.info("Пароль обновлен для пользователя: {}", existingUser.getUsername());
         }
 

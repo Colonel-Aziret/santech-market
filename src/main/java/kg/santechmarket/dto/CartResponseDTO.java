@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,8 +24,9 @@ public class CartResponseDTO {
     @Schema(description = "ID корзины", example = "1")
     private Long id;
 
+    @Builder.Default
     @Schema(description = "Список товаров в корзине")
-    private List<CartItemDTO> items;
+    private List<CartItemDTO> items = new ArrayList<>();
 
     @Schema(description = "Общая сумма всех товаров в корзине в сомах", example = "15750.50")
     private BigDecimal totalAmount;

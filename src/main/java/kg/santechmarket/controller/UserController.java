@@ -75,11 +75,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Обновить пользователя", description = "Обновляет информацию о пользователе")
+    @Operation(summary = "Обновить пользователя", description = "Обновляет информацию о пользователе. Все поля опциональны - обновляются только переданные поля.")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or #id == authentication.principal.id")
     public ResponseEntity<User> updateUser(
             @Parameter(description = "ID пользователя") @PathVariable Long id,
-            @Valid @RequestBody User userUpdate) {
+            @Valid @RequestBody kg.santechmarket.dto.UserDto.UpdateUserRequest userUpdate) {
         User updatedUser = userService.updateUser(id, userUpdate);
         return ResponseEntity.ok(updatedUser);
     }

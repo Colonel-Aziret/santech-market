@@ -96,4 +96,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Найти пользователей по статусу
      */
     List<User> findByStatus(UserStatus status);
+
+    /**
+     * Проверить существование пользователя по логину, исключая конкретный ID
+     */
+    boolean existsByUsernameAndIdNot(String username, Long id);
+
+    /**
+     * Проверить существование пользователя по email, исключая конкретный ID
+     */
+    boolean existsByEmailAndIdNot(String email, Long id);
+
+    /**
+     * Проверить существование пользователя по номеру телефона, исключая конкретный ID
+     */
+    boolean existsByPhoneNumberAndIdNot(String phoneNumber, Long id);
 }

@@ -41,9 +41,10 @@ public interface UserService extends UserDetailsService {
     User createUser(User user);
 
     /**
-     * Обновить пользователя
+     * Обновить пользователя (частичное обновление)
+     * Обновляются только те поля, которые переданы (не null)
      */
-    User updateUser(Long id, User userUpdate);
+    User updateUser(Long id, kg.santechmarket.dto.UserDto.UpdateUserRequest userUpdate);
 
     /**
      * Деактивировать пользователя (мягкое удаление)

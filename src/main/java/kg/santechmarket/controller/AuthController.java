@@ -296,17 +296,20 @@ public class AuthController {
         log.info("Обновление профиля пользователя: {}", currentUser.getUsername());
 
         try {
-            // Создаем объект с обновленными данными
-            User updatedUser = new User();
-            updatedUser.setUsername(currentUser.getUsername()); // логин не меняется
-            updatedUser.setFullName(request.fullName());
-            updatedUser.setEmail(request.email());
-            updatedUser.setPhoneNumber(request.phoneNumber());
-            updatedUser.setRole(currentUser.getRole());
-            updatedUser.setIsActive(currentUser.getIsActive());
+            // Создаем DTO с обновленными данными
+            kg.santechmarket.dto.UserDto.UpdateUserRequest updateRequest =
+                    new kg.santechmarket.dto.UserDto.UpdateUserRequest(
+                            currentUser.getUsername(), // логин не меняется
+                            request.fullName(),
+                            request.email(),
+                            request.phoneNumber(),
+                            null, // password не меняется
+                            null, // role не меняется
+                            null  // isActive не меняется
+                    );
 
             // Обновляем пользователя
-            User savedUser = userService.updateUser(currentUser.getId(), updatedUser);
+            User savedUser = userService.updateUser(currentUser.getId(), updateRequest);
 
             AuthDto.UserInfo userInfo = mapToUserInfo(savedUser);
 
@@ -377,18 +380,20 @@ public class AuthController {
                 return ResponseEntity.badRequest().body(new ErrorResponse("Неверный текущий пароль", ErrorCode.USER_INVALID_PASSWORD.getCode()));
             }
 
-            // Создаем объект с новым паролем
-            User updatedUser = new User();
-            updatedUser.setUsername(currentUser.getUsername());
-            updatedUser.setPassword(request.newPassword()); // будет хеширован в сервисе
-            updatedUser.setFullName(currentUser.getFullName());
-            updatedUser.setEmail(currentUser.getEmail());
-            updatedUser.setPhoneNumber(currentUser.getPhoneNumber());
-            updatedUser.setRole(currentUser.getRole());
-            updatedUser.setIsActive(currentUser.getIsActive());
+            // Создаем DTO с новым паролем
+            kg.santechmarket.dto.UserDto.UpdateUserRequest updateRequest =
+                    new kg.santechmarket.dto.UserDto.UpdateUserRequest(
+                            null, // username не меняется
+                            null, // fullName не меняется
+                            null, // email не меняется
+                            null, // phoneNumber не меняется
+                            request.newPassword(), // меняем только пароль
+                            null, // role не меняется
+                            null  // isActive не меняется
+                    );
 
             // Обновляем пользователя
-            userService.updateUser(currentUser.getId(), updatedUser);
+            userService.updateUser(currentUser.getId(), updateRequest);
 
             log.info("Пароль пользователя {} успешно изменен", currentUser.getUsername());
             return ResponseEntity.ok(new SuccessResponse("Пароль успешно изменен"));

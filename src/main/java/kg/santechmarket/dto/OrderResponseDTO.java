@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,8 +52,9 @@ public class OrderResponseDTO {
     @Schema(description = "Контактная информация", example = "{\"phone\":\"+996555123456\",\"address\":\"г. Бишкек, ул. Манаса 123\"}")
     private String contactInfo;
 
+    @Builder.Default
     @Schema(description = "Список товаров в заказе")
-    private List<OrderItemDTO> items;
+    private List<OrderItemDTO> items = new ArrayList<>();
 
     @Schema(description = "Дата создания заказа", example = "2025-10-20T12:30:00")
     private LocalDateTime createdAt;
