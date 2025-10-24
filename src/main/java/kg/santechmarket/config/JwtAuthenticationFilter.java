@@ -48,6 +48,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
+            // Пропускаем публичные endpoints без проверки токена
+            String path = request.getRequestURI();
+            if (isPublicEndpoint(path)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             // Извлечение JWT токена из заголовка
             String jwt = extractJwtFromRequest(request);
 
@@ -136,5 +143,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jsonResponse = objectMapper.writeValueAsString(errorResponse);
 
         response.getWriter().write(jsonResponse);
+    }
+
+    /**
+     * Проверка, является ли endpoint публичным (не требует аутентификации)
+     *
+     * @param path URI запроса
+     * @return true если endpoint публичный
+     */
+    private boolean isPublicEndpoint(String path) {
+        // Удаляем контекстный путь /api/v1 если есть
+        String cleanPath = path.replaceFirst("^/api/v1", "");
+
+        return cleanPath.equals("/auth/login") ||
+               cleanPath.equals("/auth/register") ||
+               cleanPath.equals("/auth/refresh") ||
+               cleanPath.startsWith("/categories") ||
+               cleanPath.startsWith("/products") ||
+               cleanPath.startsWith("/promo-banners") ||
+               cleanPath.startsWith("/test") ||
+               cleanPath.startsWith("/swagger-ui") ||
+               cleanPath.startsWith("/api-docs") ||
+               cleanPath.startsWith("/v3/api-docs") ||
+               cleanPath.equals("/actuator/health");
     }
 }
