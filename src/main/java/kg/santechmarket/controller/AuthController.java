@@ -299,7 +299,7 @@ public class AuthController {
             // Создаем DTO с обновленными данными
             kg.santechmarket.dto.UserDto.UpdateUserRequest updateRequest =
                     new kg.santechmarket.dto.UserDto.UpdateUserRequest(
-                            currentUser.getUsername(), // логин не меняется
+                            request.username(), // username может быть изменен
                             request.fullName(),
                             request.email(),
                             request.phoneNumber(),
@@ -313,7 +313,7 @@ public class AuthController {
 
             AuthDto.UserInfo userInfo = mapToUserInfo(savedUser);
 
-            log.info("Профиль пользователя {} успешно обновлен", currentUser.getUsername());
+            log.info("Профиль пользователя {} успешно обновлен", savedUser.getUsername());
             return ResponseEntity.ok(userInfo);
 
         } catch (IllegalArgumentException e) {

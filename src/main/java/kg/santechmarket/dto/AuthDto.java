@@ -111,6 +111,10 @@ public class AuthDto {
      */
     @Schema(description = "Запрос на обновление профиля пользователя")
     public record UpdateProfileRequest(
+            @Size(min = 3, max = 50, message = "Логин должен содержать от 3 до 50 символов")
+            @Schema(description = "Логин пользователя (username)", example = "ivanov123", minLength = 3, maxLength = 50)
+            String username,
+
             @NotBlank(message = "Имя не может быть пустым")
             @Size(max = 100, message = "Имя не может превышать 100 символов")
             @Schema(description = "ФИО или название компании", example = "Иванов Иван Иванович", required = true, maxLength = 100)

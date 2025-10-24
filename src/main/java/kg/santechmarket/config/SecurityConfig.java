@@ -51,9 +51,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Публичные endpoints
                         .requestMatchers("/auth/login", "/auth/register", "/auth/refresh").permitAll()
-                        .requestMatchers("/categories").permitAll()
+                        .requestMatchers("/categories/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
-                        .requestMatchers("/promo-banners").permitAll()
+                        .requestMatchers("/promo-banners/**").permitAll()
                         .requestMatchers("/test/**").permitAll()
 
                         // Swagger/OpenAPI
