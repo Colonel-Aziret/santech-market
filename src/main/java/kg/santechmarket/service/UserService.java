@@ -36,6 +36,11 @@ public interface UserService extends UserDetailsService {
     Optional<User> findByEmail(String email);
 
     /**
+     * Найти пользователя по номеру телефона
+     */
+    Optional<User> findByPhoneNumber(String phoneNumber);
+
+    /**
      * Создать нового пользователя
      */
     User createUser(User user);

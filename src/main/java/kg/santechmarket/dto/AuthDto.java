@@ -211,4 +211,67 @@ public class AuthDto {
             String message
     ) {
     }
+
+    /**
+     * DTO для запроса сброса пароля
+     */
+    @Schema(description = "Запрос на сброс пароля")
+    public record ForgotPasswordRequest(
+            @NotBlank(message = "Номер телефона не может быть пустым")
+            @jakarta.validation.constraints.Pattern(
+                    regexp = "^\\+996\\d{9}$",
+                    message = "Номер телефона должен быть в формате +996XXXXXXXXX"
+            )
+            @Schema(description = "Номер телефона для сброса пароля", example = "+996700123456", required = true, pattern = "^\\+996\\d{9}$")
+            String phoneNumber
+    ) {
+    }
+
+    /**
+     * DTO для ответа на запрос сброса пароля
+     */
+    @Schema(description = "Ответ на запрос сброса пароля")
+    public record ForgotPasswordResponse(
+            @Schema(description = "Сообщение об отправке кода", example = "Код для сброса пароля отправлен на ваш номер телефона")
+            String message,
+
+            @Schema(description = "Номер телефона (последние 4 цифры замаскированы)", example = "+996700***456")
+            String phoneNumber
+    ) {
+    }
+
+    /**
+     * DTO для подтверждения сброса пароля
+     */
+    @Schema(description = "Запрос на подтверждение сброса пароля")
+    public record ResetPasswordRequest(
+            @NotBlank(message = "Номер телефона не может быть пустым")
+            @jakarta.validation.constraints.Pattern(
+                    regexp = "^\\+996\\d{9}$",
+                    message = "Номер телефона должен быть в формате +996XXXXXXXXX"
+            )
+            @Schema(description = "Номер телефона", example = "+996700123456", required = true)
+            String phoneNumber,
+
+            @NotBlank(message = "Код подтверждения не может быть пустым")
+            @Size(min = 6, max = 6, message = "Код должен состоять из 6 символов")
+            @Schema(description = "Код подтверждения из SMS/уведомления", example = "123456", required = true, minLength = 6, maxLength = 6)
+            String code,
+
+            @NotBlank(message = "Новый пароль не может быть пустым")
+            @Size(min = 6, message = "Новый пароль должен содержать минимум 6 символов")
+            @Schema(description = "Новый пароль", example = "newpassword123", required = true, minLength = 6)
+            String newPassword
+    ) {
+    }
+
+    /**
+     * DTO для ответа при успешном сбросе пароля
+     */
+    @Schema(description = "Ответ при успешном сбросе пароля")
+    public record ResetPasswordResponse(
+            @Schema(description = "Сообщение об успешном сбросе", example = "Пароль успешно изменен")
+            String message
+    ) {
+    }
 }

@@ -27,5 +27,10 @@ public enum NotificationType {
     /**
      * Системные уведомления
      */
-    SYSTEM
+    SYSTEM,
+
+    /**
+     * Сброс пароля
+     */
+    PASSWORD_RESET
 }

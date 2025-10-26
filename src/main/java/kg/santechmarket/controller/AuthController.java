@@ -44,6 +44,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+    private final kg.santechmarket.service.PasswordResetService passwordResetService;
 
     /**
      * Регистрация нового пользователя
@@ -528,6 +529,163 @@ public class AuthController {
             log.error("Ошибка при выходе из системы для {}: {}", currentUser.getUsername(), e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorResponse("Не удалось выйти из системы", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
+        }
+    }
+
+    /**
+     * Запрос на сброс пароля (забыли пароль)
+     */
+    @PostMapping("/forgot-password")
+    @Operation(
+            summary = "Забыли пароль",
+            description = "Отправка кода для сброса пароля на номер телефона пользователя. Код действителен 15 минут."
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Код успешно отправлен",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.ForgotPasswordResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Пользователь с таким номером не найден",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody AuthDto.ForgotPasswordRequest request) {
+        log.info("Запрос на сброс пароля для номера: {}", request.phoneNumber());
+
+        try {
+            // Поиск пользователя по номеру телефона
+            User user = userService.findByPhoneNumber(request.phoneNumber())
+                    .orElseThrow(() -> new IllegalArgumentException("Пользователь с таким номером телефона не найден"));
+
+            // Создаем токен сброса пароля
+            kg.santechmarket.entity.PasswordResetToken resetToken = passwordResetService.createPasswordResetToken(user);
+
+            // Маскируем номер телефона для ответа
+            String maskedPhone = passwordResetService.maskPhoneNumber(request.phoneNumber());
+
+            AuthDto.ForgotPasswordResponse response = new AuthDto.ForgotPasswordResponse(
+                    "Код для сброса пароля отправлен. Проверьте ваши уведомления.",
+                    maskedPhone
+            );
+
+            log.info("Код сброса пароля создан для пользователя: {}", user.getUsername());
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Ошибка при запросе сброса пароля: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse(e.getMessage(), ErrorCode.USER_NOT_FOUND.getCode()));
+        } catch (Exception e) {
+            log.error("Ошибка при запросе сброса пароля: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Не удалось отправить код сброса пароля", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
+        }
+    }
+
+    /**
+     * Подтверждение сброса пароля с кодом
+     */
+    @PostMapping("/reset-password")
+    @Operation(
+            summary = "Сброс пароля",
+            description = "Сброс пароля с использованием кода подтверждения из SMS/уведомления"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Пароль успешно изменен",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = AuthDto.ResetPasswordResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Неверный или истекший код",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "404",
+                    description = "Пользователь не найден",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "500",
+                    description = "Внутренняя ошибка сервера",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            mediaType = "application/json",
+                            schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody AuthDto.ResetPasswordRequest request) {
+        log.info("Запрос на сброс пароля с кодом для номера: {}", request.phoneNumber());
+
+        try {
+            // Поиск пользователя по номеру телефона
+            User user = userService.findByPhoneNumber(request.phoneNumber())
+                    .orElseThrow(() -> new IllegalArgumentException("Пользователь с таким номером телефона не найден"));
+
+            // Поиск и проверка токена
+            kg.santechmarket.entity.PasswordResetToken resetToken = passwordResetService.findActiveToken(request.code())
+                    .orElseThrow(() -> new IllegalArgumentException("Неверный или истекший код подтверждения"));
+
+            // Проверка, что токен принадлежит этому пользователю
+            if (!resetToken.getUser().getId().equals(user.getId())) {
+                log.warn("Попытка использования чужого токена");
+                throw new IllegalArgumentException("Неверный код подтверждения");
+            }
+
+            // Обновляем пароль пользователя
+            kg.santechmarket.dto.UserDto.UpdateUserRequest updateRequest =
+                    new kg.santechmarket.dto.UserDto.UpdateUserRequest(
+                            null, null, null, null,
+                            request.newPassword(),
+                            null, null
+                    );
+            userService.updateUser(user.getId(), updateRequest);
+
+            // Отмечаем токен как использованный
+            passwordResetService.markTokenAsUsed(resetToken);
+
+            AuthDto.ResetPasswordResponse response = new AuthDto.ResetPasswordResponse(
+                    "Пароль успешно изменен. Теперь вы можете войти с новым паролем."
+            );
+
+            log.info("Пароль успешно сброшен для пользователя: {}", user.getUsername());
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Ошибка при сбросе пароля: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(e.getMessage(), ErrorCode.VALIDATION_ERROR.getCode()));
+        } catch (Exception e) {
+            log.error("Ошибка при сбросе пароля: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse("Не удалось сбросить пароль", ErrorCode.INTERNAL_SERVER_ERROR.getCode()));
         }
     }
 
