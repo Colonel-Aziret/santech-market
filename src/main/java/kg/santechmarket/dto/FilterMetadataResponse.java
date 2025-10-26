@@ -22,39 +22,31 @@ import java.util.List;
 public class FilterMetadataResponse {
 
     @Builder.Default
-    @Schema(description = "Список всех брендов", example = "[\"Lammin\", \"PRO AQUA\", \"VALTEC\"]")
-    private List<String> brands = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех диаметров", example = "[\"20 мм\", \"25 мм\", \"32 мм\"]")
-    private List<String> diameters = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех давлений", example = "[\"PN10\", \"PN20\", \"PN25\"]")
-    private List<String> pressures = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех материалов", example = "[\"PPR\", \"PVC\", \"Metal\"]")
-    private List<String> materials = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех типов армирования", example = "[\"Без армирования\", \"Стекловолокно\", \"Алюминий\"]")
-    private List<String> reinforcements = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех длин бухт/труб", example = "[\"28 м\", \"40 м\", \"60 м\", \"100 м\"]")
-    private List<String> lengths = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех назначений", example = "[\"Холодная вода\", \"Горячая вода\", \"Универсальные\"]")
-    private List<String> purposes = new ArrayList<>();
-
-    @Builder.Default
-    @Schema(description = "Список всех толщин стенки", example = "[\"SDR6\", \"SDR7.4\"]")
-    private List<String> wallThicknesses = new ArrayList<>();
+    @Schema(description = "Список всех доступных фильтров")
+    private List<FilterItem> filters = new ArrayList<>();
 
     @Schema(description = "Диапазон цен")
     private PriceRange priceRange;
+
+    /**
+     * DTO для элемента фильтра
+     */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(description = "Элемент фильтра с ключом, названием и списком значений")
+    public static class FilterItem {
+
+        @Schema(description = "Ключ фильтра (используется в запросах)", example = "brand")
+        private String key;
+
+        @Schema(description = "Название фильтра (отображается пользователю)", example = "Бренд")
+        private String label;
+
+        @Schema(description = "Список доступных значений", example = "[\"Lammin\", \"PRO AQUA\", \"VALTEC\"]")
+        private List<String> list;
+    }
 
     /**
      * DTO для диапазона цен

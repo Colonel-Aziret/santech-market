@@ -482,24 +482,92 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
+        // Построить список фильтров
+        List<FilterMetadataResponse.FilterItem> filters = new ArrayList<>();
+
+        // Добавить фильтр брендов
+        if (!brands.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("brand")
+                    .label("Бренд")
+                    .list(brands.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр диаметров
+        if (!diameters.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("diameter")
+                    .label("Диаметр")
+                    .list(diameters.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр давлений
+        if (!pressures.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("pressure")
+                    .label("Давление")
+                    .list(pressures.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр материалов
+        if (!materials.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("material")
+                    .label("Материал")
+                    .list(materials.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр армирования
+        if (!reinforcements.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("reinforcement")
+                    .label("Армирование")
+                    .list(reinforcements.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр длин
+        if (!lengths.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("length")
+                    .label("Длина")
+                    .list(lengths.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр назначений
+        if (!purposes.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("purpose")
+                    .label("Назначение")
+                    .list(purposes.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
+        // Добавить фильтр толщин стенки
+        if (!wallThicknesses.isEmpty()) {
+            filters.add(FilterMetadataResponse.FilterItem.builder()
+                    .key("wall_thickness")
+                    .label("Толщина стенки")
+                    .list(wallThicknesses.stream().sorted().collect(Collectors.toList()))
+                    .build());
+        }
+
         // Построить ответ
         FilterMetadataResponse response = FilterMetadataResponse.builder()
-                .brands(brands.stream().sorted().collect(Collectors.toList()))
-                .diameters(diameters.stream().sorted().collect(Collectors.toList()))
-                .pressures(pressures.stream().sorted().collect(Collectors.toList()))
-                .materials(materials.stream().sorted().collect(Collectors.toList()))
-                .reinforcements(reinforcements.stream().sorted().collect(Collectors.toList()))
-                .lengths(lengths.stream().sorted().collect(Collectors.toList()))
-                .purposes(purposes.stream().sorted().collect(Collectors.toList()))
-                .wallThicknesses(wallThicknesses.stream().sorted().collect(Collectors.toList()))
+                .filters(filters)
                 .priceRange(FilterMetadataResponse.PriceRange.builder()
                         .min(minPrice != null ? minPrice : BigDecimal.ZERO)
                         .max(maxPrice != null ? maxPrice : BigDecimal.ZERO)
                         .build())
                 .build();
 
-        log.info("Метаданные фильтров получены: {} брендов, {} диаметров, {} давлений",
-                brands.size(), diameters.size(), pressures.size());
+        log.info("Метаданные фильтров получены: {} фильтров, {} брендов, {} диаметров, {} давлений",
+                filters.size(), brands.size(), diameters.size(), pressures.size());
 
         return response;
     }
