@@ -104,3 +104,17 @@ file-storage:
     access-key: ${AWS_ACCESS_KEY:}
     secret-key: ${AWS_SECRET_KEY:}
     cloudfront-domain: ${AWS_CLOUDFRONT_DOMAIN:}
+
+# Application Configuration
+app:
+  password-reset:
+    expiration-minutes: 15  # Время действия кода сброса пароля в минутах
+
+  # Nikita Mobile SMS Configuration
+  nikita-sms:
+    enabled: true  # Включить/выключить отправку SMS
+    test-mode: true  # Тестовый режим (SMS не будут отправляться реально)
+    api-url: https://smspro.nikita.kg/api/message
+    login: ${NIKITA_SMS_LOGIN:test_login}  # Логин партнера (из переменной окружения)
+    password: ${NIKITA_SMS_PASSWORD:test_password}  # Пароль партнера (из переменной окружения)
+    sender: SanTech  # Имя отправителя (до 11 латинских символов или 14 цифр)
