@@ -108,28 +108,27 @@ public class AuthDto {
 
     /**
      * DTO для обновления профиля пользователя
+     * Все поля опциональны - обновляются только те, которые переданы
      */
-    @Schema(description = "Запрос на обновление профиля пользователя")
+    @Schema(description = "Запрос на обновление профиля пользователя (все поля опциональны)")
     public record UpdateProfileRequest(
             @Size(min = 3, max = 50, message = "Логин должен содержать от 3 до 50 символов")
             @Schema(description = "Логин пользователя (username)", example = "ivanov123", minLength = 3, maxLength = 50)
             String username,
 
-            @NotBlank(message = "Имя не может быть пустым")
             @Size(max = 100, message = "Имя не может превышать 100 символов")
-            @Schema(description = "ФИО или название компании", example = "Иванов Иван Иванович", required = true, maxLength = 100)
+            @Schema(description = "ФИО или название компании", example = "Иванов Иван Иванович", maxLength = 100)
             String fullName,
 
             @jakarta.validation.constraints.Email(message = "Некорректный формат email")
             @Schema(description = "Email адрес", example = "user@example.com")
             String email,
 
-            @NotBlank(message = "Номер телефона не может быть пустым")
             @jakarta.validation.constraints.Pattern(
                     regexp = "^\\+996\\d{9}$",
                     message = "Номер телефона должен быть в формате +996XXXXXXXXX"
             )
-            @Schema(description = "Номер телефона в формате +996XXXXXXXXX", example = "+996700123456", required = true, pattern = "^\\+996\\d{9}$")
+            @Schema(description = "Номер телефона в формате +996XXXXXXXXX", example = "+996700123456", pattern = "^\\+996\\d{9}$")
             String phoneNumber
     ) {
     }
