@@ -10,6 +10,12 @@ import kg.santechmarket.repository.OrderRepository;
 import kg.santechmarket.service.CartService;
 import kg.santechmarket.service.NotificationService;
 import kg.santechmarket.service.OrderService;
+import kg.santechmarket.service.ProductService;
+import kg.santechmarket.service.UserService;
+import kg.santechmarket.entity.Product;
+import kg.santechmarket.entity.User;
+
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final NotificationService notificationService;
+    private final ProductService productService;
+    private final UserService userService;
 
     /**
      * Найти заказ по ID
@@ -94,6 +102,64 @@ public class OrderServiceImpl implements OrderService {
         notificationService.sendOrderCreatedNotification(savedOrder);
 
         log.info("Заказ создан: {} на сумму {} с. для пользователя {}",
+                savedOrder.getOrderNumber(), savedOrder.getTotalAmount(), userId);
+
+        return savedOrder;
+    }
+
+    /**
+     * Создать заказ напрямую без добавления в корзину (функция "Оформить сейчас")
+     */
+    @Transactional
+    public Order createDirectOrder(Long userId, Long productId, Integer quantity, String customerComment, String contactInfo) {
+        log.info("Создание прямого заказа для пользователя: {}, товар: {}, количество: {}", userId, productId, quantity);
+
+        // Получаем пользователя
+        User user = userService.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + userId));
+
+        // Получаем товар
+        Product product = productService.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Товар не найден: " + productId));
+
+        // Проверяем, что товар активен
+        if (!product.getIsActive()) {
+            throw new IllegalArgumentException("Товар недоступен для заказа: " + product.getName());
+        }
+
+        // Проверяем количество
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException("Количество должно быть больше 0");
+        }
+
+        // Создаем заказ
+        Order order = new Order();
+        order.setUser(user);
+        order.setCustomerComment(customerComment);
+        order.setContactInfo(contactInfo);
+
+        // Создаем элемент заказа
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrder(order);
+        orderItem.setProduct(product);
+        orderItem.setQuantity(quantity);
+        orderItem.setPrice(product.getPrice());
+
+        // Добавляем элемент в заказ
+        order.getItems().add(orderItem);
+
+        // Рассчитываем общую сумму и количество
+        BigDecimal totalAmount = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        order.setTotalAmount(totalAmount);
+        order.setTotalItems(quantity);
+
+        // Сохраняем заказ
+        Order savedOrder = orderRepository.save(order);
+
+        // Отправляем уведомление пользователю
+        notificationService.sendOrderCreatedNotification(savedOrder);
+
+        log.info("Прямой заказ создан: {} на сумму {} с. для пользователя {}",
                 savedOrder.getOrderNumber(), savedOrder.getTotalAmount(), userId);
 
         return savedOrder;

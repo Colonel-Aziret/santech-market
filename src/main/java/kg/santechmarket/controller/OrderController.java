@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import kg.santechmarket.dto.DirectOrderRequestDTO;
 import kg.santechmarket.dto.OrderResponseDTO;
 import kg.santechmarket.entity.Order;
+import jakarta.validation.Valid;
 import kg.santechmarket.entity.User;
 import kg.santechmarket.enums.OrderStatus;
 import kg.santechmarket.service.OrderService;
@@ -44,6 +46,24 @@ public class OrderController {
         User user = (User) authentication.getPrincipal();
         orderService.createOrderFromCart(user.getId(), customerComment, contactInfo);
         return ResponseEntity.ok(true);
+    }
+
+    @PostMapping("/direct")
+    @Operation(summary = "Оформить заказ сразу", description = "Создает заказ напрямую без добавления в корзину (функция 'Оформить сейчас')")
+    @ApiResponse(responseCode = "200", description = "Заказ успешно создан")
+    public ResponseEntity<OrderResponseDTO> createDirectOrder(
+            @Parameter(description = "Данные для прямого заказа") @Valid @RequestBody DirectOrderRequestDTO request,
+            Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        Order order = orderService.createDirectOrder(
+                user.getId(),
+                request.getProductId(),
+                request.getQuantity(),
+                request.getCustomerComment(),
+                request.getContactInfo()
+        );
+        OrderResponseDTO orderDTO = orderService.toOrderResponseDTO(order);
+        return ResponseEntity.ok(orderDTO);
     }
 
     @GetMapping("/my")

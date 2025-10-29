@@ -38,6 +38,11 @@ public interface OrderService {
     Order createOrderFromCart(Long userId, String customerComment, String contactInfo);
 
     /**
+     * Создать заказ напрямую без добавления в корзину (функция "Оформить сейчас")
+     */
+    Order createDirectOrder(Long userId, Long productId, Integer quantity, String customerComment, String contactInfo);
+
+    /**
      * Получить заказы пользователя
      */
     Page<Order> getUserOrders(Long userId, Pageable pageable);

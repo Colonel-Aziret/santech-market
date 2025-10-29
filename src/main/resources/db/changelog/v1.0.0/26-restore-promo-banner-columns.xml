@@ -5,52 +5,125 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
-    <changeSet id="26-restore-promo-banner-columns" author="developer">
-        <comment>Восстановление колонок promo_banners, которые были удалены migration 21</comment>
-
-        <!-- Добавляем удалённые колонки обратно -->
+    <!-- Восстановление столбца title -->
+    <changeSet id="26-restore-title-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="title"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="title" type="VARCHAR(100)"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца subtitle -->
+    <changeSet id="26-restore-subtitle-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="subtitle"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="subtitle" type="VARCHAR(500)"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца link_url -->
+    <changeSet id="26-restore-link-url-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="link_url"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="link_url" type="VARCHAR(500)"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца is_active -->
+    <changeSet id="26-restore-is-active-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="is_active"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="is_active" type="BOOLEAN" defaultValueBoolean="true"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца start_date -->
+    <changeSet id="26-restore-start-date-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="start_date"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="start_date" type="TIMESTAMP"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца end_date -->
+    <changeSet id="26-restore-end-date-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="end_date"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="end_date" type="TIMESTAMP"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца background_color -->
+    <changeSet id="26-restore-background-color-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="background_color"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="background_color" type="VARCHAR(7)"/>
         </addColumn>
+    </changeSet>
 
+    <!-- Восстановление столбца text_color -->
+    <changeSet id="26-restore-text-color-column" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="promo_banners" columnName="text_color"/>
+            </not>
+        </preConditions>
         <addColumn tableName="promo_banners">
             <column name="text_color" type="VARCHAR(7)"/>
         </addColumn>
+    </changeSet>
 
-        <!-- Восстанавливаем индексы -->
+    <!-- Восстановление индекса idx_promo_banner_dates -->
+    <changeSet id="26-restore-dates-index" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="promo_banners" indexName="idx_promo_banner_dates"/>
+            </not>
+        </preConditions>
         <createIndex tableName="promo_banners" indexName="idx_promo_banner_dates">
             <column name="start_date"/>
             <column name="end_date"/>
         </createIndex>
+    </changeSet>
 
+    <!-- Восстановление индекса idx_promo_banner_active -->
+    <changeSet id="26-restore-active-index" author="developer">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists tableName="promo_banners" indexName="idx_promo_banner_active"/>
+            </not>
+        </preConditions>
         <createIndex tableName="promo_banners" indexName="idx_promo_banner_active">
             <column name="is_active"/>
         </createIndex>
-
     </changeSet>
 
 </databaseChangeLog>
