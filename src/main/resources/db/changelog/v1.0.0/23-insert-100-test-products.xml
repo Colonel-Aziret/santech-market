@@ -6,9 +6,9 @@
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
     <changeSet id="23-insert-100-test-products" author="developer">
-        <comment>Добавление 100 тестовых товаров для проверки поиска и пагинации</comment>
+        <comment>Добавление 100 тестовых товаров PPR труб для проверки поиска и пагинации</comment>
 
-        <!-- Генерируем 100 товаров с названиями "Труба 1", "Труба 2", и т.д. -->
+        <!-- Генерируем 100 товаров PPR труб с названиями "PPR Труба 1", "PPR Труба 2", и т.д. для подкатегории ID=9 -->
         <insert tableName="products">
             <column name="name" value="Труба 1"/>
             <column name="description" value="Тестовая труба номер 1 для проверки поиска и пагинации"/>
@@ -17,7 +17,7 @@
             <column name="sku" value="TEST-PIPE-001"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -30,7 +30,7 @@
             <column name="sku" value="TEST-PIPE-002"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -43,7 +43,7 @@
             <column name="sku" value="TEST-PIPE-003"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -56,7 +56,7 @@
             <column name="sku" value="TEST-PIPE-004"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -69,7 +69,7 @@
             <column name="sku" value="TEST-PIPE-005"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -82,7 +82,7 @@
             <column name="sku" value="TEST-PIPE-006"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -95,7 +95,7 @@
             <column name="sku" value="TEST-PIPE-007"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -108,7 +108,7 @@
             <column name="sku" value="TEST-PIPE-008"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -121,7 +121,7 @@
             <column name="sku" value="TEST-PIPE-009"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -134,7 +134,7 @@
             <column name="sku" value="TEST-PIPE-010"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -147,7 +147,7 @@
             <column name="sku" value="TEST-PIPE-011"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -160,7 +160,7 @@
             <column name="sku" value="TEST-PIPE-012"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -173,7 +173,7 @@
             <column name="sku" value="TEST-PIPE-013"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -186,7 +186,7 @@
             <column name="sku" value="TEST-PIPE-014"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -199,7 +199,7 @@
             <column name="sku" value="TEST-PIPE-015"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -212,7 +212,7 @@
             <column name="sku" value="TEST-PIPE-016"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -225,7 +225,7 @@
             <column name="sku" value="TEST-PIPE-017"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -238,7 +238,7 @@
             <column name="sku" value="TEST-PIPE-018"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -251,7 +251,7 @@
             <column name="sku" value="TEST-PIPE-019"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -264,7 +264,7 @@
             <column name="sku" value="TEST-PIPE-020"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -277,7 +277,7 @@
             <column name="sku" value="TEST-PIPE-021"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -290,7 +290,7 @@
             <column name="sku" value="TEST-PIPE-022"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -303,7 +303,7 @@
             <column name="sku" value="TEST-PIPE-023"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -316,7 +316,7 @@
             <column name="sku" value="TEST-PIPE-024"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -329,7 +329,7 @@
             <column name="sku" value="TEST-PIPE-025"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -342,7 +342,7 @@
             <column name="sku" value="TEST-PIPE-026"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -355,7 +355,7 @@
             <column name="sku" value="TEST-PIPE-027"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -368,7 +368,7 @@
             <column name="sku" value="TEST-PIPE-028"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -381,7 +381,7 @@
             <column name="sku" value="TEST-PIPE-029"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -394,7 +394,7 @@
             <column name="sku" value="TEST-PIPE-030"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -407,7 +407,7 @@
             <column name="sku" value="TEST-PIPE-031"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -420,7 +420,7 @@
             <column name="sku" value="TEST-PIPE-032"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -433,7 +433,7 @@
             <column name="sku" value="TEST-PIPE-033"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -446,7 +446,7 @@
             <column name="sku" value="TEST-PIPE-034"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -459,7 +459,7 @@
             <column name="sku" value="TEST-PIPE-035"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -472,7 +472,7 @@
             <column name="sku" value="TEST-PIPE-036"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -485,7 +485,7 @@
             <column name="sku" value="TEST-PIPE-037"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -498,7 +498,7 @@
             <column name="sku" value="TEST-PIPE-038"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -511,7 +511,7 @@
             <column name="sku" value="TEST-PIPE-039"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -524,7 +524,7 @@
             <column name="sku" value="TEST-PIPE-040"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -537,7 +537,7 @@
             <column name="sku" value="TEST-PIPE-041"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -550,7 +550,7 @@
             <column name="sku" value="TEST-PIPE-042"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -563,7 +563,7 @@
             <column name="sku" value="TEST-PIPE-043"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -576,7 +576,7 @@
             <column name="sku" value="TEST-PIPE-044"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -589,7 +589,7 @@
             <column name="sku" value="TEST-PIPE-045"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -602,7 +602,7 @@
             <column name="sku" value="TEST-PIPE-046"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -615,7 +615,7 @@
             <column name="sku" value="TEST-PIPE-047"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -628,7 +628,7 @@
             <column name="sku" value="TEST-PIPE-048"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -641,7 +641,7 @@
             <column name="sku" value="TEST-PIPE-049"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -654,7 +654,7 @@
             <column name="sku" value="TEST-PIPE-050"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -667,7 +667,7 @@
             <column name="sku" value="TEST-PIPE-051"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -680,7 +680,7 @@
             <column name="sku" value="TEST-PIPE-052"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -693,7 +693,7 @@
             <column name="sku" value="TEST-PIPE-053"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -706,7 +706,7 @@
             <column name="sku" value="TEST-PIPE-054"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -719,7 +719,7 @@
             <column name="sku" value="TEST-PIPE-055"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -732,7 +732,7 @@
             <column name="sku" value="TEST-PIPE-056"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -745,7 +745,7 @@
             <column name="sku" value="TEST-PIPE-057"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -758,7 +758,7 @@
             <column name="sku" value="TEST-PIPE-058"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -771,7 +771,7 @@
             <column name="sku" value="TEST-PIPE-059"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -784,7 +784,7 @@
             <column name="sku" value="TEST-PIPE-060"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -797,7 +797,7 @@
             <column name="sku" value="TEST-PIPE-061"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -810,7 +810,7 @@
             <column name="sku" value="TEST-PIPE-062"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -823,7 +823,7 @@
             <column name="sku" value="TEST-PIPE-063"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -836,7 +836,7 @@
             <column name="sku" value="TEST-PIPE-064"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -849,7 +849,7 @@
             <column name="sku" value="TEST-PIPE-065"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -862,7 +862,7 @@
             <column name="sku" value="TEST-PIPE-066"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -875,7 +875,7 @@
             <column name="sku" value="TEST-PIPE-067"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -888,7 +888,7 @@
             <column name="sku" value="TEST-PIPE-068"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -901,7 +901,7 @@
             <column name="sku" value="TEST-PIPE-069"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -914,7 +914,7 @@
             <column name="sku" value="TEST-PIPE-070"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -927,7 +927,7 @@
             <column name="sku" value="TEST-PIPE-071"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -940,7 +940,7 @@
             <column name="sku" value="TEST-PIPE-072"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -953,7 +953,7 @@
             <column name="sku" value="TEST-PIPE-073"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -966,7 +966,7 @@
             <column name="sku" value="TEST-PIPE-074"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -979,7 +979,7 @@
             <column name="sku" value="TEST-PIPE-075"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -992,7 +992,7 @@
             <column name="sku" value="TEST-PIPE-076"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1005,7 +1005,7 @@
             <column name="sku" value="TEST-PIPE-077"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1018,7 +1018,7 @@
             <column name="sku" value="TEST-PIPE-078"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1031,7 +1031,7 @@
             <column name="sku" value="TEST-PIPE-079"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1044,7 +1044,7 @@
             <column name="sku" value="TEST-PIPE-080"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1057,7 +1057,7 @@
             <column name="sku" value="TEST-PIPE-081"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1070,7 +1070,7 @@
             <column name="sku" value="TEST-PIPE-082"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1083,7 +1083,7 @@
             <column name="sku" value="TEST-PIPE-083"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1096,7 +1096,7 @@
             <column name="sku" value="TEST-PIPE-084"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1109,7 +1109,7 @@
             <column name="sku" value="TEST-PIPE-085"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1122,7 +1122,7 @@
             <column name="sku" value="TEST-PIPE-086"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1135,7 +1135,7 @@
             <column name="sku" value="TEST-PIPE-087"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1148,7 +1148,7 @@
             <column name="sku" value="TEST-PIPE-088"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1161,7 +1161,7 @@
             <column name="sku" value="TEST-PIPE-089"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1174,7 +1174,7 @@
             <column name="sku" value="TEST-PIPE-090"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1187,7 +1187,7 @@
             <column name="sku" value="TEST-PIPE-091"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1200,7 +1200,7 @@
             <column name="sku" value="TEST-PIPE-092"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1213,7 +1213,7 @@
             <column name="sku" value="TEST-PIPE-093"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1226,7 +1226,7 @@
             <column name="sku" value="TEST-PIPE-094"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1239,7 +1239,7 @@
             <column name="sku" value="TEST-PIPE-095"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1252,7 +1252,7 @@
             <column name="sku" value="TEST-PIPE-096"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1265,7 +1265,7 @@
             <column name="sku" value="TEST-PIPE-097"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1278,7 +1278,7 @@
             <column name="sku" value="TEST-PIPE-098"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1291,7 +1291,7 @@
             <column name="sku" value="TEST-PIPE-099"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
@@ -1304,7 +1304,7 @@
             <column name="sku" value="TEST-PIPE-100"/>
             <column name="is_active" value="true"/>
             <column name="is_featured" value="false"/>
-            <column name="category_id" value="1"/>
+            <column name="category_id" value="9"/>
             <column name="created_at" valueComputed="NOW()"/>
             <column name="updated_at" valueComputed="NOW()"/>
         </insert>
