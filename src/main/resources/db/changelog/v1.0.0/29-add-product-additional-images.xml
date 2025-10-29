@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="29-add-product-additional-images" author="developer">
+        <comment>Добавление дополнительных изображений к товарам для тестирования фронтенда</comment>
+
+        <!-- Добавляем дополнительные изображения к товару ID=3 (Труба PPR PN20 20мм) -->
+        <insert tableName="product_images">
+            <column name="product_id" value="3"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&amp;q=80"/>
+            <column name="display_order" value="1"/>
+            <column name="alt_text" value="Труба PPR PN20 20мм белая - вид сбоку"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="product_images">
+            <column name="product_id" value="3"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&amp;q=80"/>
+            <column name="display_order" value="2"/>
+            <column name="alt_text" value="Труба PPR PN20 20мм белая - детали соединения"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="product_images">
+            <column name="product_id" value="3"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1597740985671-2a8a3b1e0b94?w=800&amp;q=80"/>
+            <column name="display_order" value="3"/>
+            <column name="alt_text" value="Труба PPR PN20 20мм белая - упаковка"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <!-- Добавляем дополнительные изображения к товару ID=4 (Труба PPR PN25 армированная) -->
+        <insert tableName="product_images">
+            <column name="product_id" value="4"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1565122982-28d37e1a8460?w=800&amp;q=80"/>
+            <column name="display_order" value="1"/>
+            <column name="alt_text" value="Труба PPR PN25 армированная 25мм - крупный план"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="product_images">
+            <column name="product_id" value="4"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&amp;q=80"/>
+            <column name="display_order" value="2"/>
+            <column name="alt_text" value="Труба PPR PN25 армированная 25мм - армирование"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <!-- Добавляем дополнительные изображения к товару ID=9 (Кран шаровый) -->
+        <insert tableName="product_images">
+            <column name="product_id" value="9"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&amp;q=70"/>
+            <column name="display_order" value="1"/>
+            <column name="alt_text" value="Кран шаровый 1/2 дюйма - открытое положение"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="product_images">
+            <column name="product_id" value="9"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&amp;q=80"/>
+            <column name="display_order" value="2"/>
+            <column name="alt_text" value="Кран шаровый 1/2 дюйма - закрытое положение"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="product_images">
+            <column name="product_id" value="9"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=800&amp;q=80"/>
+            <column name="display_order" value="3"/>
+            <column name="alt_text" value="Кран шаровый 1/2 дюйма - детали резьбы"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <!-- Добавляем дополнительные изображения к товару ID=10 (Смеситель для кухни) -->
+        <insert tableName="product_images">
+            <column name="product_id" value="10"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&amp;q=80"/>
+            <column name="display_order" value="1"/>
+            <column name="alt_text" value="Смеситель для кухни - вид спереди"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+        <insert tableName="product_images">
+            <column name="product_id" value="10"/>
+            <column name="image_url" value="https://images.unsplash.com/photo-1620626011761-996317b8d101?w=700&amp;q=80"/>
+            <column name="display_order" value="2"/>
+            <column name="alt_text" value="Смеситель для кухни - хромированная отделка"/>
+            <column name="created_at" valueComputed="NOW()"/>
+            <column name="updated_at" valueComputed="NOW()"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

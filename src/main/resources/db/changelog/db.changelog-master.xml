@@ -34,5 +34,6 @@
     <include file="db/changelog/v1.0.0/26-restore-promo-banner-columns.xml"/>
     <include file="db/changelog/v1.0.0/27-create-password-reset-tokens-table.xml"/>
     <include file="db/changelog/v1.0.0/28-add-password-reset-notification-type.xml"/>
+    <include file="db/changelog/v1.0.0/29-add-product-additional-images.xml"/>
 
 </databaseChangeLog>

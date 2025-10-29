@@ -33,7 +33,8 @@
       "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbl9uZXciLCJ1c2VySWQiOjEsInJvbGUiOiJBRE1JTiIsImZ1bGxOYW1lIjoiVGVzdCBBZG1pbiBVcGRhdGVkIiwiaWF0IjoxNzYxMzE5MDk4LCJleHAiOjE3NjE0MDU0OTh9.v6CwRwYNQsK8AjYVu2T9JQ_Wv1XYyE8nw3zGCStlXxSj8YaLSEaGb6sRUvk8utE1_9uOZX9kMC1sHsfoc1pZHQ\")",
       "Bash(python -m json.tool:*)",
       "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXJJZCI6MSwicm9sZSI6IkFETUlOIiwiZnVsbE5hbWUiOiJTeXN0ZW0gQWRtaW4iLCJpYXQiOjE3NjE1MTEwNTYsImV4cCI6MTc2MTU5NzQ1Nn0.duW0vti0PhMZMsjzoYx99jzitjrOOF5MpZzz9DqOqvb1Vprj36dYUVEpdBJkgkF91j8WiALdf4VVJ4f5Y-sJJA\")",
-      "Bash(.mvnw.cmd spring-boot:run)"
+      "Bash(.mvnw.cmd spring-boot:run)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInVzZXJJZCI6MSwicm9sZSI6IkFETUlOIiwiZnVsbE5hbWUiOiLQodC40YHRgtC10LzQvdGL0Lkg0LDQtNC80LjQvdC40YHRgtGA0LDRgtC-0YAiLCJpYXQiOjE3NjE3NjU3MDUsImV4cCI6MTc2MTg1MjEwNX0.Wm8kiLnoyK0caSOLllcVs2H2k0N71WYB5sl8_Hi-2PAp1IrjAk4VwU3tHvpivlf2cEptU64l7PyNEgsLzBRr1A\")"
     ],
     "deny": [],
     "ask": []
