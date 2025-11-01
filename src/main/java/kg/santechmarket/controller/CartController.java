@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.santechmarket.dto.CartResponseDTO;
+import kg.santechmarket.dto.MessageResponse;
 import kg.santechmarket.entity.Cart;
 import kg.santechmarket.entity.User;
 import kg.santechmarket.service.CartService;
@@ -91,10 +92,14 @@ public class CartController {
 
     @DeleteMapping
     @Operation(summary = "Очистить корзину", description = "Удаляет все товары из корзины пользователя")
-    public ResponseEntity<Void> clearCart(Authentication authentication) {
+    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Корзина успешно очищена"),
+            @ApiResponse(responseCode = "401", description = "Не авторизован")
+    })
+    public ResponseEntity<MessageResponse> clearCart(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         cartService.clearUserCart(user.getId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new MessageResponse("Корзина успешно очищена"));
     }
 
     @GetMapping("/count")

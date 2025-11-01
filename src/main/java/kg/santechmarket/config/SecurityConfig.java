@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/categories/**").permitAll()
                         .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/promo-banners/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/test/**").permitAll()
 
                         // Swagger/OpenAPI
