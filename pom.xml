@@ -54,6 +54,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
+        <!-- Email support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- JWT library -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
