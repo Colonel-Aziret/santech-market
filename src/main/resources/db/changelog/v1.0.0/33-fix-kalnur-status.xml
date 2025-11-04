@@ -5,23 +5,18 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
-    <changeSet id="32-update-kalnur-password" author="admin">
+    <changeSet id="33-fix-kalnur-status" author="admin">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="1">
-                SELECT COUNT(*) FROM users WHERE username = 'kalnur'
+                SELECT COUNT(*) FROM users WHERE username = 'kalnur' AND (is_active = false OR status != 'APPROVED')
             </sqlCheck>
         </preConditions>
 
         <update tableName="users">
-            <column name="password" value="$2a$12$H9T594P/lmn9ysNnmHJ8futW/Rd8wVeCMj74lP5RbBigZCMGM7Vl2"/> <!-- qwert123 -->
             <column name="is_active" valueBoolean="true"/>
             <column name="status" value="APPROVED"/>
             <column name="updated_at" valueComputed="NOW()"/>
             <where>username = 'kalnur'</where>
         </update>
-
-        <rollback>
-            <comment>Откат обновления пароля невозможен, так как предыдущий пароль неизвестен</comment>
-        </rollback>
     </changeSet>
 </databaseChangeLog>
