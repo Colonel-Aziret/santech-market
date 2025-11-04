@@ -36,5 +36,6 @@
     <include file="db/changelog/v1.0.0/28-add-password-reset-notification-type.xml"/>
     <include file="db/changelog/v1.0.0/29-add-product-additional-images.xml"/>
     <include file="db/changelog/v1.0.0/30-create-verification-codes-table.xml"/>
+    <include file="db/changelog/v1.0.0/31-insert-kalnur-user.xml"/>
 
 </databaseChangeLog>
