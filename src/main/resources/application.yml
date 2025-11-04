@@ -54,8 +54,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:marketsantech@gmail.com}
-    password: ${MAIL_PASSWORD:atabeksila}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -126,6 +126,11 @@ file-storage:
 app:
   password-reset:
     expiration-minutes: 15  # Время действия кода сброса пароля в минутах
+
+  # Verification codes configuration
+  verification:
+    expiration-minutes: 15  # Время действия кода верификации в минутах
+    max-attempts: 5  # Максимальное количество попыток ввода кода
 
   # Nikita Mobile SMS Configuration
   nikita-sms:

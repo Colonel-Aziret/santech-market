@@ -1,10 +1,13 @@
 package kg.santechmarket.service.impl;
 
 import kg.santechmarket.entity.User;
+import kg.santechmarket.entity.VerificationCode;
 import kg.santechmarket.enums.UserRole;
 import kg.santechmarket.enums.UserStatus;
+import kg.santechmarket.enums.VerificationType;
 import kg.santechmarket.repository.UserRepository;
 import kg.santechmarket.service.UserService;
+import kg.santechmarket.service.VerificationCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -36,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final VerificationCodeService verificationCodeService;
 
     /**
      * Загрузка пользователя по логину для Spring Security
@@ -324,5 +328,115 @@ public class UserServiceImpl implements UserService {
                 throw new IllegalArgumentException("Пользователь с таким номером телефона уже существует: " + user.getPhoneNumber());
             }
         }
+    }
+
+    /**
+     * Инициировать смену email (отправить код на новый email)
+     */
+    @Override
+    @Transactional
+    public void initiateEmailChange(User user, String newEmail) {
+        log.info("Инициирование смены email для пользователя: {} -> {}", user.getUsername(), newEmail);
+
+        // Проверяем, что новый email не совпадает с текущим
+        if (user.getEmail() != null && user.getEmail().equalsIgnoreCase(newEmail)) {
+            throw new IllegalArgumentException("Новый email совпадает с текущим");
+        }
+
+        // Проверяем, что email не занят другим пользователем
+        Optional<User> existingUser = userRepository.findByEmail(newEmail);
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Email уже используется другим пользователем");
+        }
+
+        // Создаем код верификации и отправляем на новый email
+        verificationCodeService.createEmailChangeCode(user, newEmail);
+
+        log.info("Код для смены email отправлен на: {}", newEmail);
+    }
+
+    /**
+     * Подтвердить смену email с кодом
+     */
+    @Override
+    @Transactional
+    public User confirmEmailChange(User user, String newEmail, String code) {
+        log.info("Подтверждение смены email для пользователя: {}", user.getUsername());
+
+        // Проверяем код верификации
+        VerificationCode verificationCode = verificationCodeService.verifyCode(code, user, VerificationType.EMAIL_CHANGE);
+
+        // Проверяем, что email в запросе совпадает с email в коде верификации
+        if (!verificationCode.getNewValue().equalsIgnoreCase(newEmail)) {
+            throw new IllegalArgumentException("Email в запросе не совпадает с email в коде верификации");
+        }
+
+        // Проверяем еще раз, что email не занят (на случай гонки)
+        Optional<User> existingUser = userRepository.findByEmail(newEmail);
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Email уже используется другим пользователем");
+        }
+
+        // Обновляем email
+        user.setEmail(newEmail);
+        User updatedUser = userRepository.save(user);
+
+        log.info("Email успешно изменен для пользователя: {} -> {}", user.getUsername(), newEmail);
+        return updatedUser;
+    }
+
+    /**
+     * Инициировать смену телефона (отправить код на email)
+     */
+    @Override
+    @Transactional
+    public void initiatePhoneChange(User user, String newPhone) {
+        log.info("Инициирование смены телефона для пользователя: {} -> {}", user.getUsername(), newPhone);
+
+        // Проверяем, что новый телефон не совпадает с текущим
+        if (user.getPhoneNumber() != null && user.getPhoneNumber().equals(newPhone)) {
+            throw new IllegalArgumentException("Новый номер телефона совпадает с текущим");
+        }
+
+        // Проверяем, что телефон не занят другим пользователем
+        Optional<User> existingUser = userRepository.findByPhoneNumber(newPhone);
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Номер телефона уже используется другим пользователем");
+        }
+
+        // Создаем код верификации и отправляем на email
+        verificationCodeService.createPhoneChangeCode(user, newPhone);
+
+        log.info("Код для смены телефона отправлен на email: {}", user.getEmail());
+    }
+
+    /**
+     * Подтвердить смену телефона с кодом
+     */
+    @Override
+    @Transactional
+    public User confirmPhoneChange(User user, String newPhone, String code) {
+        log.info("Подтверждение смены телефона для пользователя: {}", user.getUsername());
+
+        // Проверяем код верификации
+        VerificationCode verificationCode = verificationCodeService.verifyCode(code, user, VerificationType.PHONE_CHANGE);
+
+        // Проверяем, что телефон в запросе совпадает с телефоном в коде верификации
+        if (!verificationCode.getNewValue().equals(newPhone)) {
+            throw new IllegalArgumentException("Номер телефона в запросе не совпадает с номером в коде верификации");
+        }
+
+        // Проверяем еще раз, что телефон не занят (на случай гонки)
+        Optional<User> existingUser = userRepository.findByPhoneNumber(newPhone);
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("Номер телефона уже используется другим пользователем");
+        }
+
+        // Обновляем телефон
+        user.setPhoneNumber(newPhone);
+        User updatedUser = userRepository.save(user);
+
+        log.info("Телефон успешно изменен для пользователя: {} -> {}", user.getUsername(), newPhone);
+        return updatedUser;
     }
 }

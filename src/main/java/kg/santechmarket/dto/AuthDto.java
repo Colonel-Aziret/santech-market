@@ -1,6 +1,7 @@
 package kg.santechmarket.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -271,6 +272,41 @@ public class AuthDto {
     public record ResetPasswordResponse(
             @Schema(description = "Сообщение об успешном сбросе", example = "Пароль успешно изменен")
             String message
+    ) {
+    }
+
+    /**
+     * DTO для запроса сброса пароля через email
+     */
+    @Schema(description = "Запрос на сброс пароля через email")
+    public record ForgotPasswordEmailRequest(
+            @NotBlank(message = "Email не может быть пустым")
+            @Email(message = "Некорректный формат email")
+            @Schema(description = "Email для сброса пароля", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
+            String email
+    ) {
+    }
+
+    /**
+     * DTO для подтверждения сброса пароля через email с кодом
+     */
+    @Schema(description = "Запрос на подтверждение сброса пароля через email")
+    public record ResetPasswordEmailRequest(
+            @NotBlank(message = "Email не может быть пустым")
+            @Email(message = "Некорректный формат email")
+            @Schema(description = "Email адрес", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
+            String email,
+
+            @NotBlank(message = "Код подтверждения не может быть пустым")
+            @Size(min = 6, max = 6, message = "Код должен состоять из 6 символов")
+            @jakarta.validation.constraints.Pattern(regexp = "^\\d{6}$", message = "Код должен содержать только цифры")
+            @Schema(description = "6-значный код из email", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
+            String code,
+
+            @NotBlank(message = "Новый пароль не может быть пустым")
+            @Size(min = 6, message = "Новый пароль должен содержать минимум 6 символов")
+            @Schema(description = "Новый пароль", example = "newpassword123", requiredMode = Schema.RequiredMode.REQUIRED, minLength = 6)
+            String newPassword
     ) {
     }
 }

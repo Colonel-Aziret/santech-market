@@ -47,4 +47,64 @@ public class UserDto {
             Boolean isActive
     ) {
     }
+
+    /**
+     * Запрос на смену email (шаг 1 - отправка кода)
+     */
+    @Schema(description = "Запрос на отправку кода для смены email")
+    public record ChangeEmailRequest(
+            @Email(message = "Некорректный формат email")
+            @Schema(description = "Новый email адрес", example = "newemail@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
+            String newEmail
+    ) {
+    }
+
+    /**
+     * Запрос на подтверждение смены email (шаг 2 - проверка кода)
+     */
+    @Schema(description = "Запрос на подтверждение смены email с кодом")
+    public record ConfirmEmailChangeRequest(
+            @Email(message = "Некорректный формат email")
+            @Schema(description = "Новый email адрес", example = "newemail@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
+            String newEmail,
+
+            @Size(min = 6, max = 6, message = "Код должен содержать 6 цифр")
+            @Pattern(regexp = "^\\d{6}$", message = "Код должен содержать только цифры")
+            @Schema(description = "6-значный код подтверждения", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
+            String code
+    ) {
+    }
+
+    /**
+     * Запрос на смену телефона (шаг 1 - отправка кода)
+     */
+    @Schema(description = "Запрос на отправку кода для смены телефона")
+    public record ChangePhoneRequest(
+            @Pattern(
+                    regexp = "^\\+996\\d{9}$",
+                    message = "Номер телефона должен быть в формате +996XXXXXXXXX"
+            )
+            @Schema(description = "Новый номер телефона в формате +996XXXXXXXXX", example = "+996700987654", pattern = "^\\+996\\d{9}$", requiredMode = Schema.RequiredMode.REQUIRED)
+            String newPhoneNumber
+    ) {
+    }
+
+    /**
+     * Запрос на подтверждение смены телефона (шаг 2 - проверка кода)
+     */
+    @Schema(description = "Запрос на подтверждение смены телефона с кодом")
+    public record ConfirmPhoneChangeRequest(
+            @Pattern(
+                    regexp = "^\\+996\\d{9}$",
+                    message = "Номер телефона должен быть в формате +996XXXXXXXXX"
+            )
+            @Schema(description = "Новый номер телефона в формате +996XXXXXXXXX", example = "+996700987654", pattern = "^\\+996\\d{9}$", requiredMode = Schema.RequiredMode.REQUIRED)
+            String newPhoneNumber,
+
+            @Size(min = 6, max = 6, message = "Код должен содержать 6 цифр")
+            @Pattern(regexp = "^\\d{6}$", message = "Код должен содержать только цифры")
+            @Schema(description = "6-значный код подтверждения", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
+            String code
+    ) {
+    }
 }

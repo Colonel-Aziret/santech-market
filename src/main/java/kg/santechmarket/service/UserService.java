@@ -119,4 +119,24 @@ public interface UserService extends UserDetailsService {
      * Получить пользователей на модерации (PENDING)
      */
     Page<User> getPendingUsers(Pageable pageable);
+
+    /**
+     * Инициировать смену email (отправить код на новый email)
+     */
+    void initiateEmailChange(User user, String newEmail);
+
+    /**
+     * Подтвердить смену email с кодом
+     */
+    User confirmEmailChange(User user, String newEmail, String code);
+
+    /**
+     * Инициировать смену телефона (отправить код на email)
+     */
+    void initiatePhoneChange(User user, String newPhone);
+
+    /**
+     * Подтвердить смену телефона с кодом
+     */
+    User confirmPhoneChange(User user, String newPhone, String code);
 }

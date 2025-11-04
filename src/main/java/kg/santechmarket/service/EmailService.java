@@ -32,4 +32,32 @@ public interface EmailService {
      * @param attachmentPath путь к файлу вложения
      */
     void sendMessageWithAttachment(String to, String subject, String text, String attachmentPath);
+
+    /**
+     * Отправка кода верификации для смены email
+     *
+     * @param to       новый email адрес
+     * @param code     6-значный код
+     * @param userName имя пользователя
+     */
+    void sendEmailChangeVerificationCode(String to, String code, String userName);
+
+    /**
+     * Отправка кода верификации для смены телефона
+     *
+     * @param to       email адрес
+     * @param code     6-значный код
+     * @param userName имя пользователя
+     * @param newPhone новый номер телефона
+     */
+    void sendPhoneChangeVerificationCode(String to, String code, String userName, String newPhone);
+
+    /**
+     * Отправка кода верификации для сброса пароля
+     *
+     * @param to       email адрес
+     * @param code     6-значный код
+     * @param userName имя пользователя
+     */
+    void sendPasswordResetVerificationCode(String to, String code, String userName);
 }

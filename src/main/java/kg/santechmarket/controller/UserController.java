@@ -149,4 +149,122 @@ public class UserController {
         User user = userService.rejectUser(id, reason);
         return ResponseEntity.ok(user);
     }
+
+    /**
+     * Инициировать смену email (шаг 1)
+     */
+    @PostMapping("/me/email/request-change")
+    @Operation(
+            summary = "Запросить смену email",
+            description = "Отправляет 6-значный код подтверждения на новый email адрес. Код действителен 15 минут."
+    )
+    @ApiResponse(responseCode = "200", description = "Код успешно отправлен на новый email")
+    @ApiResponse(responseCode = "400", description = "Некорректные данные или email уже используется")
+    public ResponseEntity<?> requestEmailChange(
+            Authentication authentication,
+            @Valid @RequestBody kg.santechmarket.dto.UserDto.ChangeEmailRequest request) {
+        User user = (User) authentication.getPrincipal();
+
+        try {
+            userService.initiateEmailChange(user, request.newEmail());
+            return ResponseEntity.ok(new MessageResponse(
+                    "Код подтверждения отправлен на новый email адрес: " + maskEmail(request.newEmail())
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    /**
+     * Подтвердить смену email (шаг 2)
+     */
+    @PostMapping("/me/email/confirm-change")
+    @Operation(
+            summary = "Подтвердить смену email",
+            description = "Подтверждает смену email адреса с помощью кода из письма"
+    )
+    @ApiResponse(responseCode = "200", description = "Email успешно изменен")
+    @ApiResponse(responseCode = "400", description = "Неверный или истекший код")
+    public ResponseEntity<?> confirmEmailChange(
+            Authentication authentication,
+            @Valid @RequestBody kg.santechmarket.dto.UserDto.ConfirmEmailChangeRequest request) {
+        User user = (User) authentication.getPrincipal();
+
+        try {
+            User updatedUser = userService.confirmEmailChange(user, request.newEmail(), request.code());
+            return ResponseEntity.ok(new MessageResponse("Email успешно изменен на: " + updatedUser.getEmail()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    /**
+     * Инициировать смену телефона (шаг 1)
+     */
+    @PostMapping("/me/phone/request-change")
+    @Operation(
+            summary = "Запросить смену телефона",
+            description = "Отправляет 6-значный код подтверждения на текущий email. Код действителен 15 минут."
+    )
+    @ApiResponse(responseCode = "200", description = "Код успешно отправлен на email")
+    @ApiResponse(responseCode = "400", description = "Некорректные данные или телефон уже используется")
+    public ResponseEntity<?> requestPhoneChange(
+            Authentication authentication,
+            @Valid @RequestBody kg.santechmarket.dto.UserDto.ChangePhoneRequest request) {
+        User user = (User) authentication.getPrincipal();
+
+        try {
+            userService.initiatePhoneChange(user, request.newPhoneNumber());
+            return ResponseEntity.ok(new MessageResponse(
+                    "Код подтверждения отправлен на ваш email: " + maskEmail(user.getEmail())
+            ));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    /**
+     * Подтвердить смену телефона (шаг 2)
+     */
+    @PostMapping("/me/phone/confirm-change")
+    @Operation(
+            summary = "Подтвердить смену телефона",
+            description = "Подтверждает смену номера телефона с помощью кода из email"
+    )
+    @ApiResponse(responseCode = "200", description = "Телефон успешно изменен")
+    @ApiResponse(responseCode = "400", description = "Неверный или истекший код")
+    public ResponseEntity<?> confirmPhoneChange(
+            Authentication authentication,
+            @Valid @RequestBody kg.santechmarket.dto.UserDto.ConfirmPhoneChangeRequest request) {
+        User user = (User) authentication.getPrincipal();
+
+        try {
+            User updatedUser = userService.confirmPhoneChange(user, request.newPhoneNumber(), request.code());
+            return ResponseEntity.ok(new MessageResponse("Телефон успешно изменен на: " + updatedUser.getPhoneNumber()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+    }
+
+    /**
+     * Вспомогательный метод для маскировки email
+     */
+    private String maskEmail(String email) {
+        if (email == null || !email.contains("@")) {
+            return email;
+        }
+        String[] parts = email.split("@");
+        String localPart = parts[0];
+        String domain = parts[1];
+        if (localPart.length() <= 2) {
+            return "**@" + domain;
+        }
+        return localPart.substring(0, 2) + "***@" + domain;
+    }
+
+    /**
+     * Простой record для ответа с сообщением
+     */
+    private record MessageResponse(String message) {
+    }
 }

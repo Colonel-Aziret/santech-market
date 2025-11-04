@@ -109,7 +109,7 @@ public class EmailTestController {
                             </ul>
                         </div>
                         <div class="footer">
-                            <p>&copy; 2024 SanTech Market. Все права защищены.</p>
+                            <p>&copy; 2025 SanTech Market. Все права защищены.</p>
                         </div>
                     </div>
                 </body>
