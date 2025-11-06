@@ -51,10 +51,10 @@ spring:
       file-size-threshold: 2KB
 
   # Mail Configuration
-  # Brevo (Sendinblue) SMTP - работает на DigitalOcean без блокировок
+  # Brevo (Sendinblue) SMTP - используем порт 2525 для обхода блокировок DigitalOcean
   mail:
     host: smtp-relay.brevo.com
-    port: 587
+    port: 2525  # Альтернативный порт для облачных провайдеров
     username: ${MAIL_USERNAME}  # Ваш email, зарегистрированный в Brevo
     password: ${MAIL_PASSWORD}  # SMTP API ключ из Brevo
     properties:
