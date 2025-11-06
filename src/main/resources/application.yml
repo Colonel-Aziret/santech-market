@@ -55,8 +55,9 @@ spring:
   mail:
     host: smtp-relay.brevo.com
     port: 2525  # Альтернативный порт для облачных провайдеров
-    username: ${MAIL_USERNAME}  # Ваш email, зарегистрированный в Brevo
+    username: ${MAIL_USERNAME}  # Технический логин Brevo (9af096001@smtp-brevo.com)
     password: ${MAIL_PASSWORD}  # SMTP API ключ из Brevo
+    from: ${MAIL_FROM:noreply@santechmarket.com}  # Верифицированный sender email в Brevo
     properties:
       mail:
         smtp:
