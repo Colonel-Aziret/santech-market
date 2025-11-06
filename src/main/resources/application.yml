@@ -51,11 +51,12 @@ spring:
       file-size-threshold: 2KB
 
   # Mail Configuration
+  # Brevo (Sendinblue) SMTP - работает на DigitalOcean без блокировок
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.brevo.com
     port: 587
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME}  # Ваш email, зарегистрированный в Brevo
+    password: ${MAIL_PASSWORD}  # SMTP API ключ из Brevo
     properties:
       mail:
         smtp:
@@ -63,9 +64,9 @@ spring:
           starttls:
             enable: true
             required: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
 
 # Server Configuration
 server:
