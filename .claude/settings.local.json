@@ -40,7 +40,10 @@
       "Bash(./mvnw.cmd exec:java:*)",
       "Bash(jar tf:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(pip3 install:*)",
+      "Bash(qlmanage:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []
